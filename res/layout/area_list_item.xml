@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="50dp"
+    >
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent" 
+        android:gravity="center"
+        android:layout_weight="1"
+        >
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/area_icon" />
+
+
+        <TextView
+            android:id="@+id/areaName"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/list_margin_size"
+            android:text="Admin" />
+        
+    </LinearLayout>
+    
+      
+      
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent" 
+        android:gravity="center"
+        android:layout_weight="1"
+        >
+     <ImageView
+        android:id="@+id/modify_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/list_modify_iv_selector" />
+
+    <ImageView
+        android:id="@+id/delete_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/list_delete_iv_selector" />
+      </LinearLayout>
+
+   
+      
+</LinearLayout>

@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/bg"
+    android:orientation="vertical"
+    >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" 
+        android:background="@drawable/manage_bar_bg"
+        android:gravity="center"
+        >
+
+        <TextView
+            android:id="@+id/userlist_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/location"
+            android:textSize="@dimen/list_title_size"
+             />
+</LinearLayout>
+
+    
+     <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" 
+        android:background="@drawable/list_bg"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+		android:layout_margin="10dp"
+		android:padding="10dp"
+        >
+        
+     <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" 
+        android:background="@drawable/list_small_bg"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="10dp"
+        >
+        
+          
+         <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" 
+                  android:layout_marginTop="@dimen/add_margin_size"   
+            android:gravity="center"    
+            >
+
+            <TextView
+                android:id="@+id/distance_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/location_distance" />
+
+            <EditText
+                android:id="@+id/distance_et"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10" 
+                android:background="@drawable/edittext_bg"
+                android:paddingLeft="@dimen/padding_large"
+                android:textColor="@color/white"
+                android:numeric="integer"
+                >
+
+          
+            </EditText>
+            
+        </LinearLayout>
+                  
+         
+         <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" 
+                  android:layout_marginTop="@dimen/add_margin_size"   
+            android:gravity="center"    
+            >
+
+            <TextView
+                android:id="@+id/ctrl_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/exe_mode" />
+
+           
+            <Spinner
+                android:id="@+id/ctrl_sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edittext_bg"
+                  android:paddingLeft="@dimen/padding_large"
+                   android:textColor="@color/white"
+                android:layout_weight="1" />
+            
+            
+        </LinearLayout>
+                  
+         
+         <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" 
+                  android:layout_marginTop="@dimen/add_margin_size"   
+            android:gravity="center"    
+            >
+
+            <TextView
+                android:id="@+id/position_name_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/position_name" />
+
+            <TextView
+                android:id="@+id/position_name_et"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10" 
+                android:gravity="center_vertical"
+                android:background="@drawable/edittext_bg"
+                android:paddingLeft="@dimen/padding_large"
+                android:textColor="@color/white"
+                >
+
+          
+            </TextView>
+            
+        </LinearLayout>
+
+       <LinearLayout
+		android:id="@+id/remeber_ll"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content" 
+         android:layout_marginTop="20dp"
+         >
+         
+         <ImageView
+             android:id="@+id/remeber_iv"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:src="@drawable/checkbox_bg" />
+
+         <TextView
+             android:id="@+id/remeber_tv"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:textColor="@color/white"
+             android:layout_marginLeft="@dimen/padding_small"
+             android:text="@string/on_location" />
+
+         </LinearLayout>
+
+             <LinearLayout
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_marginTop="20dp"
+                  >
+
+                 <ImageView
+                     android:id="@+id/position_iv"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_weight="1"
+                     android:src="@drawable/activity_location_position_iv_selector" />
+
+                 <ImageView
+                     android:id="@+id/save_iv"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_weight="1"
+                     android:src="@drawable/activity_location_save_iv_selector" />
+
+             </LinearLayout>
+     
+     </LinearLayout>
+            </LinearLayout>
+</LinearLayout>
