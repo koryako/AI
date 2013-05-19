@@ -14,6 +14,7 @@ import com.mac.smartcontrol.SocketService;
 
 import define.entity.Ctrl_S;
 import define.oper.body.ack.MsgAddAck_S;
+import define.oper.body.ack.MsgCtrlTestAck_S;
 import define.oper.body.ack.MsgQryAck_S;
 import define.type.ErrCode_E;
 import define.type.MsgId_E;
@@ -63,6 +64,17 @@ public class AddCmdBroadcastReceiver extends BroadcastReceiver {
 				}
 			}
 		}
+
+		if (msgId == 2 && msgOper == 6) {
+			MsgCtrlTestAck_S msgCtrlTestAck_S = new MsgCtrlTestAck_S();
+			msgCtrlTestAck_S.setMsgCtrlTestAck_S(body);
+			if (msgCtrlTestAck_S.getUsError() == 0) {
+				Toast.makeText(context, "≤‚ ‘≥…π¶", Toast.LENGTH_SHORT).show();
+			} else {
+				ErrCode_E.showError(context, msgCtrlTestAck_S.getUsError());
+			}
+		}
+
 		if (msgId == MsgId_E.MSGID_CMD.getVal() && msgOper == 1) {
 			MsgAddAck_S msgAddAck_S = new MsgAddAck_S();
 			msgAddAck_S.setMsgAddAck_S(body);

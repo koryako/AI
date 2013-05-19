@@ -13,6 +13,7 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -25,7 +26,9 @@ import com.mac.smartcontrol.util.WriteUtil;
 import define.entity.Appl_S;
 import define.entity.Cmd_S;
 import define.entity.Ctrl_S;
+import define.oper.MsgOperCtrl_E;
 import define.oper.MsgOper_E;
+import define.oper.body.req.MsgCtrlTestReq_S;
 import define.oper.body.req.MsgQryReq_S;
 import define.type.MsgId_E;
 import define.type.MsgType_E;
@@ -48,6 +51,7 @@ public class AddCmdActivity extends Activity {
 	private Appl_S appl_S;
 	LinearLayout para_ll;
 	LinearLayout infrared_ll;
+	Button test_Btn;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +73,38 @@ public class AddCmdActivity extends Activity {
 		final Spinner ctrl_sp = (Spinner) findViewById(R.id.ctrl_sp);
 		final Spinner code_sp = (Spinner) findViewById(R.id.cmdcode_sp);
 		final Spinner para_sp = (Spinner) findViewById(R.id.param_sp);
-		ImageView study_Iv = (ImageView) findViewById(R.id.study_iv);
+		test_Btn = (Button) findViewById(R.id.test_btn);
+		test_Btn.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				MsgCtrlTestReq_S ctrlTestReq_S = new MsgCtrlTestReq_S();
+				ctrlTestReq_S.setUsIdx(appl_S.getUsIdx());
+				ctrlTestReq_S.setUcCode((byte) (code_sp
+						.getSelectedItemPosition() + 1));
+				if (code_sp.getSelectedItemPosition() == 2) {
+					ctrlTestReq_S.setUiPara(0);
+				} else {
+					ctrlTestReq_S.setUiPara(para_sp.getSelectedItemPosition() + 1);
+				}
+
+				try {
+					WriteUtil.write(MsgId_E.MSGID_CTRL.getVal(), 1,
+							MsgType_E.MSGTYPE_REQ.getVal(),
+							MsgOperCtrl_E.MSGOPER_CTRL_TEST.getVal(),
+							MsgCtrlTestReq_S.getSize(),
+							ctrlTestReq_S.getMsgCtrlTestReq_S());
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					Toast.makeText(AddCmdActivity.this, "请确认网络是否开启,连接失败",
+							Toast.LENGTH_LONG).show();
+				}
+
+			}
+		});
+		// ImageView study_Iv = (ImageView) findViewById(R.id.study_iv);
+		// study_Iv.setVisibility(View.INVISIBLE);
 		code_sp.setOnItemSelectedListener(new OnItemSelectedListener() {
 
 			@Override
@@ -96,6 +131,7 @@ public class AddCmdActivity extends Activity {
 		IntentFilter filter = new IntentFilter();
 		filter.addAction("5_1");
 		filter.addAction("2_4");
+		filter.addAction("2_6");
 		filter.addAction("IOException");
 		registerReceiver(addCmdBroadcastReceiver, filter);
 
@@ -133,10 +169,10 @@ public class AddCmdActivity extends Activity {
 				.setDropDownViewResource(android.R.layout.simple_spinner_item);
 		para_sp.setAdapter(para_adapter);
 
-		ImageView add_Iv = (ImageView) findViewById(R.id.add);
+		Button add_Btn = (Button) findViewById(R.id.add_btn);
 		ImageView back_Iv = (ImageView) findViewById(R.id.back);
 		cmd_S = new Cmd_S();
-		add_Iv.setOnClickListener(new OnClickListener() {
+		add_Btn.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -169,8 +205,13 @@ public class AddCmdActivity extends Activity {
 
 				cmd_S.setUsCtrlIdx(ctrlList.get(
 						ctrl_sp.getSelectedItemPosition()).getUsIdx());
+
 				cmd_S.setUcCode((byte) (code_sp.getSelectedItemPosition() + 1));
-				cmd_S.setUiPara(para_sp.getSelectedItemPosition() + 1);
+				if (code_sp.getSelectedItemPosition() == 2) {
+					cmd_S.setUiPara(0);
+				} else {
+					cmd_S.setUiPara(para_sp.getSelectedItemPosition() + 1);
+				}
 				cmd_S.setUsDevIdx(appl_S.getUsIdx());
 				cmd_S.setUcDevType(appl_S.getUcType());
 				try {

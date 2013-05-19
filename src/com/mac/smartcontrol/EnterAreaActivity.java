@@ -116,4 +116,5 @@ public class EnterAreaActivity extends Activity {
 		}
 		return true;
 	}
+
 }

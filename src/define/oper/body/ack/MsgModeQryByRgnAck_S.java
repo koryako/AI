@@ -2,18 +2,18 @@ package define.oper.body.ack;
 
 import com.mac.smartcontrol.util.FormatTransfer;
 
-public class MsgSensQryByRgnAck_S {
+public class MsgModeQryByRgnAck_S {
 	short usRgnIdx; // 区域索引
 	byte ucErr;
 	short usCnt; // 对象数量
 	byte[] pucData; // 对象结构，多个
 
-	public MsgSensQryByRgnAck_S() {
+	public MsgModeQryByRgnAck_S() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public MsgSensQryByRgnAck_S(short usRgnIdx, byte ucErr, short usCnt,
+	public MsgModeQryByRgnAck_S(short usRgnIdx, byte ucErr, short usCnt,
 			byte[] pucData) {
 		super();
 		this.usRgnIdx = usRgnIdx;
@@ -54,7 +54,7 @@ public class MsgSensQryByRgnAck_S {
 		this.pucData = pucData;
 	}
 
-	public void setMsgSensQryByRgnAck_S(byte[] b) {
+	public void setMsgModeQryByRgnAck_S(byte[] b) {
 
 		byte[] usRgnIdx_b = new byte[2];
 		System.arraycopy(b, 0, usRgnIdx_b, 0, 2);

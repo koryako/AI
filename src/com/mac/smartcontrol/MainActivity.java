@@ -143,17 +143,13 @@ public class MainActivity extends ActivityGroup {
 		}
 	}
 
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
-			Intent intent = new Intent();
-			intent.setClass(MainActivity.this, SocketService.class);
-			stopService(intent);
-			dialog();
-			return true;
-		}
-		return true;
-	}
+	// @Override
+	// public boolean onKeyDown(int keyCode, KeyEvent event) {
+	// if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+	// return getCurrentActivity().onKeyDown(keyCode, event);
+	// }
+	// return false;
+	// }
 
 	protected void dialog() {
 		AlertDialog.Builder builder = new Builder(MainActivity.this);
@@ -192,6 +188,16 @@ public class MainActivity extends ActivityGroup {
 				});
 
 		builder.create().show();
+	}
+
+	@Override
+	public boolean dispatchKeyEvent(KeyEvent event) {
+		// TODO Auto-generated method stub
+		if (event.getKeyCode() == KeyEvent.KEYCODE_BACK
+				&& event.getAction() == KeyEvent.ACTION_UP) {
+			dialog();
+		}
+		return false;
 	}
 
 	@Override

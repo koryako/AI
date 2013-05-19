@@ -32,7 +32,6 @@ public class LocationActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		System.out.println("½øÀ´ÁË");
 		setContentView(R.layout.activity_location);
 		ImageView postion_Iv = (ImageView) findViewById(R.id.position_iv);
 		ImageView save_Iv = (ImageView) findViewById(R.id.save_iv);

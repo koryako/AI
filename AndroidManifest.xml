@@ -92,6 +92,13 @@
         </activity>
         <activity android:name=".ModifyCameraActivity" >
         </activity>
+        <activity android:name=".EnterModeListActivity" >
+        </activity>
+        <activity android:name=".AddModeActivity" >
+        </activity>
+         <activity android:name=".ModifyModeActivity" >
+        </activity>
+        
     </application>
 
 </manifest>

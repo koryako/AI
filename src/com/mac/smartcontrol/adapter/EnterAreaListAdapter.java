@@ -13,8 +13,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mac.smartcontrol.CameraListActivity;
-import com.mac.smartcontrol.DeviceListActivity;
 import com.mac.smartcontrol.EnterDeviceListActivity;
+import com.mac.smartcontrol.EnterModeListActivity;
 import com.mac.smartcontrol.R;
 import com.mac.smartcontrol.SenseListActivity;
 
@@ -76,7 +76,8 @@ public class EnterAreaListAdapter extends BaseAdapter {
 					intent.putExtra("areaName", rgn_S.getSzName());
 
 					if (msgId == MsgId_E.MSGID_APPL.getVal()) {
-						intent.setClass(context, DeviceListActivity.class);
+						intent.putExtra("msgId", 4);
+						intent.setClass(context, EnterDeviceListActivity.class);
 					} else if (msgId == MsgId_E.MSGID_SENS.getVal()) {
 						intent.setClass(context, SenseListActivity.class);
 					} else if (msgId == MsgId_E.MSGID_CAMA.getVal()) {
@@ -84,6 +85,8 @@ public class EnterAreaListAdapter extends BaseAdapter {
 					} else if (msgId == 34) {
 						intent.putExtra("msgId", 34);
 						intent.setClass(context, EnterDeviceListActivity.class);
+					} else if (msgId == MsgId_E.MSGID_MODE.getVal()) {
+						intent.setClass(context, EnterModeListActivity.class);
 					}
 					context.startActivity(intent);
 				}

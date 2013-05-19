@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="2"
-            android:text="@string/add_cmd"
+            android:text="@string/add_mode_cmd"
             android:textSize="@dimen/list_title_size" />
     </LinearLayout>
 
@@ -42,63 +42,13 @@
             android:gravity="center" >
 
             <TextView
-                android:id="@+id/cmdname_tv"
-                android:layout_width="70dp"
-                android:layout_height="wrap_content"
-                android:text="@string/cmd_name" />
-
-            <EditText
-                android:id="@+id/cmdname_et"
+                android:id="@+id/type_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/edittext_bg"
-                android:ems="10"
-                android:paddingLeft="@dimen/padding_large"
-                android:textColor="@color/white" >
+                android:text="@string/name_tv" />
 
-                <requestFocus />
-            </EditText>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/add_margin_size"
-            android:gravity="center" >
-
-            <TextView
-                android:id="@+id/voicename_tv"
-                android:layout_width="70dp"
-                android:layout_height="wrap_content"
-                android:text="@string/voice_name" />
-
-            <EditText
-                android:id="@+id/voicename_et"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/edittext_bg"
-                android:ems="10"
-                android:paddingLeft="@dimen/padding_large"
-                android:textColor="@color/white" >
-            </EditText>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/add_margin_size"
-            android:gravity="center" >
-
-            <TextView
-                android:id="@+id/ctrl_tv"
-                android:layout_width="70dp"
-                android:layout_height="wrap_content"
-                android:text="@string/ctrl_name" />
-
-            <Spinner
-                android:id="@+id/ctrl_sp"
+             <Spinner
+                android:id="@+id/type_sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -114,13 +64,13 @@
             android:gravity="center" >
 
             <TextView
-                android:id="@+id/codcode_tv"
-                android:layout_width="70dp"
+                android:id="@+id/area_tv"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/cmd_code" />
+                android:text="@string/area" />
 
             <Spinner
-                android:id="@+id/cmdcode_sp"
+                android:id="@+id/area_sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -129,21 +79,20 @@
                 android:textColor="@color/white" />
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/param_ll"
+      <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/add_margin_size"
             android:gravity="center" >
 
             <TextView
-                android:id="@+id/param_tv"
-                android:layout_width="70dp"
+                android:id="@+id/device_tv"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/cmd_para" />
+                android:text="@string/area" />
 
             <Spinner
-                android:id="@+id/param_sp"
+                android:id="@+id/device_sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -152,53 +101,34 @@
                 android:textColor="@color/white" />
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/infrared_ll"
+      <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/add_margin_size"
+            android:gravity="center" >
+
+            <TextView
+                android:id="@+id/cmd_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/area" />
+
+            <Spinner
+                android:id="@+id/cmd_sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/edittext_bg"
+                android:paddingLeft="@dimen/padding_large"
+                android:textColor="@color/white" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/add"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/add_margin_size"
-            android:gravity="center" >
-
-            <TextView
-                android:id="@+id/textView1"
-                android:layout_width="70dp"
-                android:layout_height="wrap_content"
-                android:text="@string/Infrared_code" />
-
-            <TextView
-                android:id="@+id/infrared_code_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/edittext_bg"
-                android:gravity="center_vertical"
-                android:paddingLeft="@dimen/padding_large"
-                android:text="0" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/add_margin_size"
-            android:gravity="center" >
-
-            <Button
-                android:id="@+id/test_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/btn_bg_selector"
-                android:text="@string/btn_test" />
-
-               <Button
-                android:id="@+id/add_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginLeft="@dimen/padding_medium"
-                android:background="@drawable/btn_bg_selector"
-                android:text="@string/btn_test" />
-        </LinearLayout>
+            android:layout_marginTop="@dimen/add_addBtn_margin_size"
+            android:src="@drawable/add_iv_selector" />
     </LinearLayout>
 
 </LinearLayout>

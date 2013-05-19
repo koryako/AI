@@ -102,6 +102,19 @@ public class ManageActivity extends Activity {
 			}
 		});
 
+		ImageView mode_Iv = (ImageView) findViewById(R.id.manage_mode_iv);
+		mode_Iv.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent();
+				intent.putExtra("msgId", 9);
+				intent.setClass(ManageActivity.this, EnterAreaActivity.class);
+				startActivity(intent);
+			}
+		});
+
 	}
 
 	@Override

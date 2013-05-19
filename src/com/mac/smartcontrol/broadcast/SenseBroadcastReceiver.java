@@ -76,6 +76,7 @@ public class SenseBroadcastReceiver extends BroadcastReceiver {
 			enterAreaActivity = (EnterAreaActivity) activity;
 			if (msgQryAck_S.getUsCnt() > 0) {
 				if (msgQryAck_S.getUsError() == 0) {
+					enterAreaActivity.areaList.clear();
 					for (int i = 0; i < msgQryAck_S.getUsCnt(); i++) {
 						byte[] rgn_S_Byte = Arrays.copyOfRange(
 								msgQryAck_S.getPucData(), i * Rgn_S.getSize(),

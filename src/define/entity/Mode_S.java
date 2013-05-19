@@ -99,7 +99,7 @@ public class Mode_S {
 
 		byte[] szVoice_b = new byte[64];
 		System.arraycopy(b, 36, szVoice_b, 0, 64);
-		szVoice = new String(szVoice).trim();
+		szVoice = new String(szVoice_b).trim();
 		// try {
 		// szVoice=new String(szVoice_b,"gbk").trim();
 		// } catch (UnsupportedEncodingException e) {

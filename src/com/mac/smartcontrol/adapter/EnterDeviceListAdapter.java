@@ -19,6 +19,7 @@ import com.mac.smartcontrol.widget.MarqueeText;
 
 import define.entity.Appl_S;
 import define.entity.Rgn_S;
+import define.type.MsgId_E;
 
 public class EnterDeviceListAdapter extends BaseAdapter {
 	private Context context;
@@ -95,7 +96,7 @@ public class EnterDeviceListAdapter extends BaseAdapter {
 					Intent intent = new Intent();
 					intent.putExtra("device", appl_S.getAppl_S());
 					int msgId = ((EnterDeviceListActivity) context).msgId;
-					if (msgId == -1) {
+					if (msgId == MsgId_E.MSGID_APPL.getVal()) {
 						intent.setClass(context, CmdListActivity.class);
 					} else if (msgId == 34) {
 						// intent.setClass(context, CmdListActivity.class);

@@ -110,6 +110,26 @@ public class CmdBroadcastReceiver extends BroadcastReceiver {
 			}
 		}
 
+		if (msgId == 4 && msgOper == 2) {
+
+			MsgDelAck_S msgDelAck_S = new MsgDelAck_S();
+			msgDelAck_S.setMsgDelAck_S(body);
+			enterDeviceListActivity = (EnterDeviceListActivity) activity;
+			if (msgDelAck_S.getUsError() == 0) {
+				for (int i = 0; i < enterDeviceListActivity.deviceList.size(); i++) {
+					Appl_S appl_S = enterDeviceListActivity.deviceList.get(i);
+					if (appl_S.getUsIdx() == msgDelAck_S.getUsIdx()) {
+						enterDeviceListActivity.deviceList.remove(i);
+						enterDeviceListActivity.deviceListAdapter
+								.notifyDataSetChanged();
+					}
+				}
+				Toast.makeText(activity, "É¾³ý³É¹¦", Toast.LENGTH_LONG).show();
+			} else {
+				ErrCode_E.showError(context, msgDelAck_S.getUsError());
+			}
+		}
+
 		if (msgId == 4 && msgOper == 5) {
 			MsgQryAck_S msgQryAck_S = new MsgQryAck_S();
 			msgQryAck_S.setMsgQryAck_S(body);
