@@ -14,7 +14,6 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mac.smartcontrol.broadcast.AddCameraBroadcastReceiver;
@@ -36,7 +35,6 @@ public class AddCameraActivity extends Activity {
 	public List<Rgn_S> areaList = new ArrayList<Rgn_S>();
 	public List<String> areaNameList = new ArrayList<String>();
 	public ArrayAdapter<String> area_adapter;
-	private TextView title_tv;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +45,6 @@ public class AddCameraActivity extends Activity {
 		final EditText ip_Et = (EditText) findViewById(R.id.ip_et);
 		final EditText port_Et = (EditText) findViewById(R.id.port_et);
 		area_sp = (Spinner) findViewById(R.id.area_sp);
-		title_tv = (TextView) findViewById(R.id.list_title);
-		title_tv.setText(R.string.add_device);
 		addCameraBroadcastReceiver = new AddCameraBroadcastReceiver(
 				AddCameraActivity.this);
 		IntentFilter filter = new IntentFilter();
@@ -94,7 +90,7 @@ public class AddCameraActivity extends Activity {
 					return;
 				}
 				String ip = ip_Et.getText().toString().trim();
-				if (RegularUtil.isIp(ip)) {
+				if (!RegularUtil.isIp(ip)) {
 					Toast.makeText(AddCameraActivity.this, "Ip格式错误,请重新输入",
 							Toast.LENGTH_LONG).show();
 					return;

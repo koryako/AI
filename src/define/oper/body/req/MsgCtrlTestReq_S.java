@@ -51,9 +51,9 @@ public class MsgCtrlTestReq_S {
 
 	public byte[] getMsgCtrlTestReq_S() {
 		ByteBuffer bb_Msg = ByteBuffer.allocate(7);
-		bb_Msg.asShortBuffer().put(FormatTransfer.reverseShort(usIdx));
+		bb_Msg.put(FormatTransfer.toLH(usIdx));
 		bb_Msg.put(ucCode);
-		bb_Msg.asIntBuffer().put(FormatTransfer.reverseInt(uiPara));
+		bb_Msg.put(FormatTransfer.toLH(uiPara));
 		return bb_Msg.array();
 	}
 }

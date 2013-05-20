@@ -8,7 +8,7 @@ public class RegularUtil {
 		Pattern p = Pattern
 				.compile("^(\\d{1,2}|1\\d\\d|2[0-4]\\d|25[0-5])\\.(\\d{1,2}|1\\d\\d|2[0-4]\\d|25[0-5])\\."
 						+ "(\\d{1,2}|1\\d\\d|2[0-4]\\d|25[0-5])\\.(\\d{1,2}|1\\d\\d|2[0-4]\\d|25[0-5])$");
-		Matcher m = p.matcher("192.168.168.1");
+		Matcher m = p.matcher(ipAddress);
 		return m.matches();
 	}
 }

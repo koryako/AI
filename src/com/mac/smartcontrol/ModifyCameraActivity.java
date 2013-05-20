@@ -14,7 +14,6 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mac.smartcontrol.broadcast.ModifyCameraBroadcastReceiver;
@@ -36,7 +35,6 @@ public class ModifyCameraActivity extends Activity {
 	public List<Rgn_S> areaList = new ArrayList<Rgn_S>();
 	public List<String> areaNameList = new ArrayList<String>();
 	public ArrayAdapter<String> area_adapter;
-	private TextView title_tv;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -68,8 +66,6 @@ public class ModifyCameraActivity extends Activity {
 		port_Et.setText(cama_S.getUsPort() + "");
 
 		area_sp = (Spinner) findViewById(R.id.area_sp);
-		title_tv = (TextView) findViewById(R.id.list_title);
-		title_tv.setText(R.string.add_device);
 		modifyCameraBroadcastReceiver = new ModifyCameraBroadcastReceiver(
 				ModifyCameraActivity.this);
 		IntentFilter filter = new IntentFilter();
@@ -114,12 +110,12 @@ public class ModifyCameraActivity extends Activity {
 					return;
 				}
 				String ip = ip_Et.getText().toString().trim();
-				if (RegularUtil.isIp(ip)) {
+				if (!RegularUtil.isIp(ip)) {
 					Toast.makeText(ModifyCameraActivity.this, "Ip格式错误,请重新输入",
 							Toast.LENGTH_LONG).show();
 					return;
 				}
-				String port = port_Et.getText().toString().trim();
+				String port_Str = port_Et.getText().toString().trim();
 				cama_S.setSzName(camera_name);
 				String[] ip_Str = ip.split("\\.");
 				byte[] ip_b = new byte[4];
@@ -131,7 +127,21 @@ public class ModifyCameraActivity extends Activity {
 					ip_b[3 - i] = (byte) b_p;
 				}
 				cama_S.setUiIpAddr(FormatTransfer.lBytesToInt(ip_b));
-				cama_S.setUsPort(Short.parseShort(port));
+				short port = 0;
+				try {
+					port = Short.parseShort(port_Str);
+					if (port <= 0) {
+						Toast.makeText(ModifyCameraActivity.this, "端口不正确",
+								Toast.LENGTH_LONG).show();
+						return;
+					}
+				} catch (NumberFormatException e1) {
+					// TODO Auto-generated catch block
+					Toast.makeText(ModifyCameraActivity.this, "端口范围为：0—32767",
+							Toast.LENGTH_LONG).show();
+					return;
+				}
+				cama_S.setUsPort(port);
 				cama_S.setUsRgnIdx(areaList.get(
 						area_sp.getSelectedItemPosition()).getUsIdx());
 				try {

@@ -76,18 +76,18 @@ public class ManageActivity extends Activity {
 			}
 		});
 
-		ImageView cmd_Iv = (ImageView) findViewById(R.id.manage_cmd_iv);
-		cmd_Iv.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Intent intent = new Intent();
-				intent.setClass(ManageActivity.this,
-						EnterDeviceListActivity.class);
-				startActivity(intent);
-			}
-		});
+		// ImageView cmd_Iv = (ImageView) findViewById(R.id.manage_cmd_iv);
+		// cmd_Iv.setOnClickListener(new OnClickListener() {
+		//
+		// @Override
+		// public void onClick(View v) {
+		// // TODO Auto-generated method stub
+		// Intent intent = new Intent();
+		// intent.setClass(ManageActivity.this,
+		// EnterDeviceListActivity.class);
+		// startActivity(intent);
+		// }
+		// });
 
 		ImageView camera_Iv = (ImageView) findViewById(R.id.manage_camera_iv);
 		camera_Iv.setOnClickListener(new OnClickListener() {

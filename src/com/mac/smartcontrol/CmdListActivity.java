@@ -91,6 +91,7 @@ public class CmdListActivity extends Activity {
 		cmdBroadcastReceiver = new CmdBroadcastReceiver(CmdListActivity.this);
 		IntentFilter filter = new IntentFilter();
 		filter.addAction("2_4");
+		filter.addAction("5_2");
 		filter.addAction("5_4");
 		filter.addAction("5_5");
 		filter.addAction("IOException");

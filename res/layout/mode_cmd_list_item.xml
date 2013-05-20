@@ -3,53 +3,51 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content" >
 
-    
-     <LinearLayout
-        android:layout_width="wrap_content"
+    <TextView
+        android:id="@+id/device_name_tv"
+        android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_weight="1"
-        android:gravity="center" >
-
-             <TextView
-                android:id="@+id/mode_cmd_name_tv"
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"
-                 android:layout_gravity="center"
-                 android:gravity="center"
-                 android:layout_marginLeft="@dimen/padding_small"
-                 android:text="客厅电视打开指令" 
-                />
-</LinearLayout>
+        android:gravity="center"
+        android:text="客厅电视" />
     
-    <LinearLayout
-        android:layout_width="wrap_content"
+    <TextView
+        android:id="@+id/area_name_tv"
+        android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginLeft="@dimen/padding_small"
         android:layout_weight="1"
-        android:gravity="center" >
+        android:gravity="center"
+        android:text="客厅" />
 
-   	<TextView
-                android:id="@+id/device_name_tv"
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"
-                 android:layout_gravity="center"
-                 android:gravity="center"
-                 android:layout_marginLeft="@dimen/padding_small"
-                 android:text="客厅电视" 
-                />
-        
-
-    </LinearLayout>
+    
+      <com.mac.smartcontrol.widget.MarqueeText
+            android:id="@+id/cmd_name_tv"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/padding_small"
+            android:ellipsize="marquee"
+            android:focusable="true"
+            android:layout_weight="1"
+            android:focusableInTouchMode="true"
+            android:gravity="center"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:scrollHorizontally="true"
+            android:singleLine="true"
+            android:text="打开客厅电视" />
+    
 
     <LinearLayout
         android:id="@+id/operate_ll"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:orientation="vertical"
+        android:layout_marginLeft="@dimen/padding_small"
         android:gravity="center"
-        >
+        android:orientation="vertical" >
 
         <ImageView
             android:id="@+id/modify_btn"

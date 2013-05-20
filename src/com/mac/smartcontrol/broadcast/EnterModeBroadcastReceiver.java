@@ -118,7 +118,6 @@ public class EnterModeBroadcastReceiver extends BroadcastReceiver {
 			}
 
 		}
-
 	}
 
 	public void parseToList(byte[] body) {

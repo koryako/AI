@@ -173,8 +173,6 @@ public class CmdBroadcastReceiver extends BroadcastReceiver {
 				}
 				break;
 			case 4:
-
-				break;
 			case 5:
 				parseToList(body);
 				break;

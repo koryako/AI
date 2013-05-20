@@ -50,13 +50,17 @@
     <string name="mode_list">智能模式列表</string>
     <string name="add_mode">添加智能模式</string>
     <string name="modify_mode">修改智能模式</string>
+    <string name="choose_device_type">选择类型：</string>
+    <string name="choose_area">选择区域：</string>
+    <string name="choose_device">选择设备：</string>
+    <string name="choose_cmd">选择指令：</string>
     <string name="name_tv">名　称：</string>
 
     <string-array name="usertype_name">
         <item>普通</item>
         <item>系统</item>
     </string-array>
-    
+
     <string name="btn_add">添　加</string>
     <string name="btn_test">测　试</string>
 

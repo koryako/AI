@@ -98,6 +98,10 @@
         </activity>
          <activity android:name=".ModifyModeActivity" >
         </activity>
+        <activity android:name=".ModeCmdListActivity" >
+        </activity>
+        <activity android:name=".AddModeCmdActivity" >
+        </activity>
         
     </application>
 

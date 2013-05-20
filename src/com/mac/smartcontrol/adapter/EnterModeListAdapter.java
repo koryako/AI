@@ -3,6 +3,7 @@ package com.mac.smartcontrol.adapter;
 import java.util.List;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -12,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mac.smartcontrol.EnterModeListActivity;
+import com.mac.smartcontrol.ModeCmdListActivity;
 import com.mac.smartcontrol.R;
 import com.mac.smartcontrol.widget.MarqueeText;
 
@@ -66,54 +68,18 @@ public class EnterModeListAdapter extends BaseAdapter {
 			voice_name_Tv.setText(mode_S.getSzVoice());
 			area_name_Tv.setText(((EnterModeListActivity) context).rgn_S
 					.getSzName());
-			System.out.println(enter_Iv + "---->>>>");
 			enter_Iv.setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
-					// Intent intent = new Intent();
-					// intent.putExtra("mode", mode_S.getMode_S());
-					// context.startActivity(intent);
+					Intent intent = new Intent();
+					intent.putExtra("mode", mode_S.getMode_S());
+					intent.setClass(context, ModeCmdListActivity.class);
+					context.startActivity(intent);
 				}
 			});
-
-			// delete_Iv.setOnClickListener(new OnClickListener() {
-			//
-			// @Override
-			// public void onClick(View v) {
-			// // TODO Auto-generated method stub
-			// try {
-			// WriteUtil.write(MsgId_E.MSGID_MODE.getVal(), 0,
-			// MsgType_E.MSGTYPE_REQ.getVal(),
-			// MsgOper_E.MSGOPER_DEL.getVal(), MsgDelReq_S
-			// .getSize(),
-			// new MsgDelReq_S(mode_S.getUsIdx())
-			// .getMsgDelReq_S());
-			// ((ModeListActivity) context).del_Idx = position;
-			// } catch (IOException e) {
-			// // TODO Auto-generated catch block
-			// Intent i = new Intent("IOException");
-			// context.sendBroadcast(i);
-			// }
-			// }
-			// });
-			// modify_Iv.setOnClickListener(new OnClickListener() {
-			//
-			// @Override
-			// public void onClick(View v) {
-			// // TODO Auto-generated method stub
-			// Intent intent = new Intent();
-			// intent.setClass(context, ModifyModeActivity.class);
-			// intent.putExtra("mode", mode_S.getMode_S());
-			// ((ModeListActivity) context).mod_Idx = position;
-			// // 开始一个新的 Activity等候返回结果
-			// ((Activity) context).startActivityForResult(intent, 1);
-			// }
-			// });
-
 		}
 		return convertView;
 	}
-
 }

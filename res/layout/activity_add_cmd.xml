@@ -197,7 +197,7 @@
                 android:layout_weight="1"
                 android:layout_marginLeft="@dimen/padding_medium"
                 android:background="@drawable/btn_bg_selector"
-                android:text="@string/btn_test" />
+                android:text="@string/btn_add" />
         </LinearLayout>
     </LinearLayout>
 

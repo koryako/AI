@@ -42,13 +42,13 @@
             android:gravity="center" >
 
             <TextView
-                android:id="@+id/type_tv"
+                android:id="@+id/device_type_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/name_tv" />
+                android:text="@string/choose_device_type" />
 
              <Spinner
-                android:id="@+id/type_sp"
+                android:id="@+id/device_type_sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -67,7 +67,7 @@
                 android:id="@+id/area_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/area" />
+                android:text="@string/choose_area" />
 
             <Spinner
                 android:id="@+id/area_sp"
@@ -89,7 +89,7 @@
                 android:id="@+id/device_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/area" />
+                android:text="@string/choose_device" />
 
             <Spinner
                 android:id="@+id/device_sp"
@@ -111,10 +111,10 @@
                 android:id="@+id/cmd_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/area" />
+                android:text="@string/choose_cmd" />
 
             <Spinner
-                android:id="@+id/cmd_sp"
+            	android:id="@+id/cmd_sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

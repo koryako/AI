@@ -48,7 +48,9 @@ public class UserBroadcastReceiver extends BroadcastReceiver {
 		}
 		if (action.equals("IOException")) {
 			Intent it = new Intent();
+			LoginActivity loginActivity = (LoginActivity) activity;
 			it.setClass(activity, SocketService.class);
+			loginActivity.progressDialog.dismiss();
 			activity.stopService(it);
 			Toast.makeText(activity, "请确认网络是否开启,操作失败,请重新登录", Toast.LENGTH_LONG)
 					.show();

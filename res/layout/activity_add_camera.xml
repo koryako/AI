@@ -104,7 +104,6 @@
                 android:ems="10"
                 android:paddingLeft="@dimen/padding_large"
                 android:textColor="@color/white" >
-
                 <requestFocus />
             </EditText>
         </LinearLayout>
@@ -129,8 +128,9 @@
                 android:background="@drawable/edittext_bg"
                 android:ems="10"
                 android:paddingLeft="@dimen/padding_large"
-                android:textColor="@color/white" >
-
+                android:textColor="@color/white" 
+                android:numeric="integer"
+                >
                 <requestFocus />
             </EditText>
         </LinearLayout>

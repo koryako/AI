@@ -19,9 +19,10 @@ public class MsgModeExcReq_S {
 	public void setUsIdx(short usIdx) {
 		this.usIdx = usIdx;
 	}
-	public byte[] getMsgModeExcReq_S(){
-		ByteBuffer bb_Msg=ByteBuffer.allocate(2);
-		bb_Msg.asShortBuffer().put(FormatTransfer.reverseShort(usIdx));
+
+	public byte[] getMsgModeExcReq_S() {
+		ByteBuffer bb_Msg = ByteBuffer.allocate(2);
+		bb_Msg.put(FormatTransfer.toLH(usIdx));
 		return bb_Msg.array();
 	}
 }

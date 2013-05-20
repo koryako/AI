@@ -23,37 +23,41 @@ import com.mac.smartcontrol.widget.MarqueeText;
 
 import define.entity.Appl_S;
 import define.entity.Cmd_S;
-import define.entity.Ctrl_S;
+import define.entity.ModeCmd_S;
+import define.entity.Rgn_S;
 import define.oper.MsgOper_E;
 import define.oper.body.req.MsgDelReq_S;
 import define.type.MsgId_E;
 import define.type.MsgType_E;
 
-public class CmdListAdapter extends BaseAdapter {
+public class ModeCmdListAdapter extends BaseAdapter {
 	private Context context;
-	private List<Cmd_S> cmdList;
-	private Map<Short, Ctrl_S> ctrlMap;
-	private Appl_S appl_S;
+	private Map<Short, Cmd_S> cmdMap;
+	private List<ModeCmd_S> modecmdList;
+	private Map<Short, Appl_S> deviceMap;
+	private Map<Short, Rgn_S> areaMap;
 
-	public CmdListAdapter(Context context, List<Cmd_S> cmdList,
-			Map<Short, Ctrl_S> ctrlMap, Appl_S appl_S) {
+	public ModeCmdListAdapter(Context context, List<ModeCmd_S> modecmdList,
+			Map<Short, Cmd_S> cmdMap, Map<Short, Appl_S> deviceMap,
+			Map<Short, Rgn_S> areaMap) {
 		super();
 		this.context = context;
-		this.cmdList = cmdList;
-		this.ctrlMap = ctrlMap;
-		this.appl_S = appl_S;
+		this.cmdMap = cmdMap;
+		this.modecmdList = modecmdList;
+		this.deviceMap = deviceMap;
+		this.areaMap = areaMap;
 	}
 
 	@Override
 	public int getCount() {
 		// TODO Auto-generated method stub
-		return cmdList.size();
+		return modecmdList.size();
 	}
 
 	@Override
 	public Object getItem(int position) {
 		// TODO Auto-generated method stub
-		return cmdList.get(position);
+		return modecmdList.get(position);
 	}
 
 	@Override
@@ -68,46 +72,44 @@ public class CmdListAdapter extends BaseAdapter {
 		if (convertView == null) {
 			LayoutInflater localinflater = (LayoutInflater) context
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			convertView = localinflater.inflate(R.layout.cmd_list_item, null);
-			ImageView cmd_icon_Iv = (ImageView) convertView
-					.findViewById(R.id.cmd_icon);
-			TextView cmd_name_Tv = (TextView) convertView
+			convertView = localinflater.inflate(R.layout.mode_cmd_list_item,
+					null);
+			MarqueeText cmd_name_Tv = (MarqueeText) convertView
 					.findViewById(R.id.cmd_name_tv);
-			MarqueeText voice_name_Tv = (MarqueeText) convertView
-					.findViewById(R.id.voice_name_tv);
-			MarqueeText ctrl_name_Tv = (MarqueeText) convertView
-					.findViewById(R.id.ctrl_name_tv);
+
+			TextView device_name_Tv = (TextView) convertView
+					.findViewById(R.id.mode_name_tv);
+
+			TextView area_name_Tv = (TextView) convertView
+					.findViewById(R.id.area_name_tv);
 
 			ImageView delete_Iv = (ImageView) convertView
 					.findViewById(R.id.delete_btn);
 
 			ImageView modify_Iv = (ImageView) convertView
 					.findViewById(R.id.modify_btn);
-			final Cmd_S cmd_S = cmdList.get(position);
-			Ctrl_S ctrl_S = ctrlMap.get(cmd_S.getUsCtrlIdx());
-			if (ctrl_S != null)
-				ctrl_name_Tv.setText(ctrl_S.getSzName());
-			cmd_name_Tv.setText(cmd_S.getSzName());
-			voice_name_Tv.setText(cmd_S.getSzVoice());
-			if (cmd_S.getUcDevType() == 1) {
-				cmd_icon_Iv.setImageResource(R.drawable.light_icon);
-			} else if (cmd_S.getUcDevType() == 2) {
-				cmd_icon_Iv.setImageResource(R.drawable.tv_icon);
-			} else if (cmd_S.getUcDevType() == 3) {
-				cmd_icon_Iv.setImageResource(R.drawable.light_icon);
+			final ModeCmd_S modeCmd_S = modecmdList.get(position);
+			final Cmd_S cmd_S = cmdMap.get(modeCmd_S.getUsCmdIdx());
+			if (cmd_S != null) {
+				Appl_S appl_S = deviceMap.get(cmd_S.getUsDevIdx());
+				cmd_name_Tv.setText(cmd_S.getSzName());
+				if (appl_S != null) {
+					Rgn_S rgn_S = areaMap.get(appl_S.getUsRgnIdx());
+					device_name_Tv.setText(appl_S.getSzName());
+					area_name_Tv.setText(rgn_S.getSzName());
+				}
 			}
-
 			delete_Iv.setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
 					try {
-						WriteUtil.write(MsgId_E.MSGID_CMD.getVal(), 0,
+						WriteUtil.write(MsgId_E.MSGID_MODECMD.getVal(), 0,
 								MsgType_E.MSGTYPE_REQ.getVal(),
 								MsgOper_E.MSGOPER_DEL.getVal(), MsgDelReq_S
 										.getSize(),
-								new MsgDelReq_S(cmd_S.getUsIdx())
+								new MsgDelReq_S(modeCmd_S.getUsIdx())
 										.getMsgDelReq_S());
 						((CmdListActivity) context).del_Idx = position;
 					} catch (IOException e) {
@@ -124,8 +126,7 @@ public class CmdListAdapter extends BaseAdapter {
 					// TODO Auto-generated method stub
 					Intent intent = new Intent();
 					intent.setClass(context, ModifyCmdActivity.class);
-					intent.putExtra("cmd", cmd_S.getCmd_S());
-					intent.putExtra("device", appl_S.getAppl_S());
+					intent.putExtra("modecmd", modeCmd_S.getModeCmd_S());
 					((CmdListActivity) context).mod_Idx = position;
 					// 开始一个新的 Activity等候返回结果
 					((Activity) context).startActivityForResult(intent, 1);

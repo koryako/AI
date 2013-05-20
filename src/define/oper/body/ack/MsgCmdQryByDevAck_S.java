@@ -78,8 +78,8 @@ public class MsgCmdQryByDevAck_S {
 		System.arraycopy(b, 4, usCnt_b, 0, 2);
 		usCnt = FormatTransfer.lBytesToShort(usCnt_b);
 
-		byte[] pucData_b = new byte[b.length - 5];
-		System.arraycopy(b, 6, pucData_b, 0, b.length - 5);
+		byte[] pucData_b = new byte[b.length - 6];
+		System.arraycopy(b, 6, pucData_b, 0, b.length - 6);
 		pucData = pucData_b;
 
 	}
