@@ -14,9 +14,11 @@ import com.mac.smartcontrol.SocketService;
 
 import define.entity.Appl_S;
 import define.entity.Rgn_S;
+import define.oper.MsgOper_E;
 import define.oper.body.ack.MsgDelAck_S;
 import define.oper.body.ack.MsgQryAck_S;
 import define.type.ErrCode_E;
+import define.type.MsgId_E;
 
 public class DeviceBroadcastReceiver extends BroadcastReceiver {
 
@@ -45,7 +47,8 @@ public class DeviceBroadcastReceiver extends BroadcastReceiver {
 		byte[] body = intent.getExtras().getByteArray("data");
 		EnterAreaActivity enterAreaActivity = null;
 		DeviceListActivity deviceListActivity = null;
-		if (msgId == 3 && msgOper == 4) {
+		if (msgId == MsgId_E.MSGID_RGN.getVal()
+				&& msgOper == MsgOper_E.MSGOPER_QRY.getVal()) {
 			MsgQryAck_S msgQryAck_S = new MsgQryAck_S();
 			msgQryAck_S.setMsgQryAck_S(body);
 			enterAreaActivity = (EnterAreaActivity) activity;
@@ -66,8 +69,9 @@ public class DeviceBroadcastReceiver extends BroadcastReceiver {
 				}
 			}
 		}
-		switch (msgOper) {
-		case 2:
+
+		if (msgId == MsgId_E.MSGID_APPL.getVal()
+				&& msgOper == MsgOper_E.MSGOPER_DEL.getVal()) {
 			MsgDelAck_S msgDelAck_S = new MsgDelAck_S();
 			msgDelAck_S.setMsgDelAck_S(body);
 			deviceListActivity = (DeviceListActivity) activity;
@@ -84,15 +88,14 @@ public class DeviceBroadcastReceiver extends BroadcastReceiver {
 			} else {
 				ErrCode_E.showError(context, msgDelAck_S.getUsError());
 			}
-			break;
-		case 4:
-		case 5:
-			parseToList(msgId, msgOper, body);
-			break;
-		default:
-			break;
 		}
 
+		if ((msgId == MsgId_E.MSGID_APPL.getVal() && msgOper == MsgOper_E.MSGOPER_QRY
+				.getVal())
+				|| (msgId == MsgId_E.MSGID_APPL.getVal() && msgOper == MsgOper_E.MSGOPER_MAX
+						.getVal())) {
+			parseToList(msgId, msgOper, body);
+		}
 	}
 
 	public void parseToList(short msgId, byte msgOper, byte[] body) {

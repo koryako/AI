@@ -27,7 +27,7 @@ public class SocketService extends Service {
 	public static InputStream is;
 	public static OutputStream os;
 	public static String ip = null;
-	int port = 12345;
+	public static int port = 12345;
 	Thread readThread = null;
 	Thread messageQueueThread = null;
 	MessageQueueRunnable messageQueueRunnable = null;

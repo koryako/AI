@@ -17,6 +17,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.mac.smartcontrol.broadcast.ModifyCameraBroadcastReceiver;
+import com.mac.smartcontrol.util.DisconnectionUtil;
 import com.mac.smartcontrol.util.FormatTransfer;
 import com.mac.smartcontrol.util.RegularUtil;
 import com.mac.smartcontrol.util.WriteUtil;
@@ -69,8 +70,12 @@ public class ModifyCameraActivity extends Activity {
 		modifyCameraBroadcastReceiver = new ModifyCameraBroadcastReceiver(
 				ModifyCameraActivity.this);
 		IntentFilter filter = new IntentFilter();
-		filter.addAction("8_3");
-		filter.addAction("3_4");
+
+		filter.addAction(MsgId_E.MSGID_RGN.getVal() + "_"
+				+ MsgOper_E.MSGOPER_QRY.getVal());
+
+		filter.addAction(MsgId_E.MSGID_CAMA.getVal() + "_"
+				+ MsgOper_E.MSGOPER_MOD.getVal());
 		filter.addAction("IOException");
 		registerReceiver(modifyCameraBroadcastReceiver, filter);
 
@@ -83,6 +88,7 @@ public class ModifyCameraActivity extends Activity {
 			// TODO Auto-generated catch block
 			Toast.makeText(ModifyCameraActivity.this, "请确认网络是否开启,连接失败",
 					Toast.LENGTH_LONG).show();
+			DisconnectionUtil.restart(ModifyCameraActivity.this);
 		}
 
 		area_adapter = new ArrayAdapter<String>(this,
@@ -153,6 +159,7 @@ public class ModifyCameraActivity extends Activity {
 					// TODO Auto-generated catch block
 					Toast.makeText(ModifyCameraActivity.this, "请确认网络是否开启,连接失败",
 							Toast.LENGTH_LONG).show();
+					DisconnectionUtil.restart(ModifyCameraActivity.this);
 				}
 			}
 		});

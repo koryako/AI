@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mac.smartcontrol.broadcast.ModifyDeviceBroadcastReceiver;
+import com.mac.smartcontrol.util.DisconnectionUtil;
 import com.mac.smartcontrol.util.WriteUtil;
 
 import define.entity.Appl_S;
@@ -56,8 +57,12 @@ public class ModifyDeviceActivity extends Activity {
 		modifyDeviceBroadcastReceiver = new ModifyDeviceBroadcastReceiver(
 				ModifyDeviceActivity.this);
 		IntentFilter filter = new IntentFilter();
-		filter.addAction("4_3");
-		filter.addAction("3_4");
+		filter.addAction(MsgId_E.MSGID_APPL.getVal() + "_"
+				+ MsgOper_E.MSGOPER_MOD.getVal());
+
+		filter.addAction(MsgId_E.MSGID_RGN.getVal() + "_"
+				+ MsgOper_E.MSGOPER_QRY.getVal());
+
 		filter.addAction("IOException");
 		registerReceiver(modifyDeviceBroadcastReceiver, filter);
 
@@ -70,6 +75,7 @@ public class ModifyDeviceActivity extends Activity {
 			// TODO Auto-generated catch block
 			Toast.makeText(ModifyDeviceActivity.this, "请确认网络是否开启,连接失败",
 					Toast.LENGTH_LONG).show();
+			DisconnectionUtil.restart(ModifyDeviceActivity.this);
 		}
 
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
@@ -118,6 +124,7 @@ public class ModifyDeviceActivity extends Activity {
 					// TODO Auto-generated catch block
 					Toast.makeText(ModifyDeviceActivity.this, "请确认网络是否开启,连接失败",
 							Toast.LENGTH_LONG).show();
+					DisconnectionUtil.restart(ModifyDeviceActivity.this);
 				}
 			}
 		});

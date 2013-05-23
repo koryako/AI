@@ -13,6 +13,7 @@ import com.mac.smartcontrol.AddCameraActivity;
 import com.mac.smartcontrol.SocketService;
 
 import define.entity.Rgn_S;
+import define.oper.MsgOper_E;
 import define.oper.body.ack.MsgAddAck_S;
 import define.oper.body.ack.MsgQryAck_S;
 import define.type.ErrCode_E;
@@ -43,7 +44,8 @@ public class AddCameraBroadcastReceiver extends BroadcastReceiver {
 		byte msgOper = Byte.parseByte(action.split("_")[1]);
 		byte[] body = intent.getExtras().getByteArray("data");
 		AddCameraActivity addCameraActivity = (AddCameraActivity) activity;
-		if (msgId == 3 && msgOper == 4) {
+		if (msgId == MsgId_E.MSGID_RGN.getVal()
+				&& msgOper == MsgOper_E.MSGOPER_QRY.getVal()) {
 			MsgQryAck_S msgQryAck_S = new MsgQryAck_S();
 			msgQryAck_S.setMsgQryAck_S(body);
 			if (msgQryAck_S.getUsCnt() > 0) {
@@ -63,7 +65,8 @@ public class AddCameraBroadcastReceiver extends BroadcastReceiver {
 				}
 			}
 		}
-		if (msgId == MsgId_E.MSGID_CAMA.getVal() && msgOper == 1) {
+		if (msgId == MsgId_E.MSGID_CAMA.getVal()
+				&& msgOper == MsgOper_E.MSGOPER_ADD.getVal()) {
 			MsgAddAck_S msgAddAck_S = new MsgAddAck_S();
 			msgAddAck_S.setMsgAddAck_S(body);
 			if (msgAddAck_S.getUsError() == 0) {

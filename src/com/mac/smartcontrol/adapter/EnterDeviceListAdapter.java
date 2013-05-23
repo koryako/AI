@@ -19,6 +19,7 @@ import com.mac.smartcontrol.widget.MarqueeText;
 
 import define.entity.Appl_S;
 import define.entity.Rgn_S;
+import define.type.ApplType_E;
 import define.type.MsgId_E;
 
 public class EnterDeviceListAdapter extends BaseAdapter {
@@ -77,16 +78,22 @@ public class EnterDeviceListAdapter extends BaseAdapter {
 				area_name_Tv.setText(rgn_S.getSzName());
 			}
 			device_name_Tv.setText(appl_S.getSzName());
-			if (appl_S.getUcType() == 1) {
+			if (appl_S.getUcType() == ApplType_E.APPL_TYPE_LIGHT.getVal()) {
 				device_icon_Iv.setImageResource(R.drawable.light_icon);
-			} else if (appl_S.getUcType() == 2) {
+			} else if (appl_S.getUcType() == ApplType_E.APPL_TYPE_TVSET
+					.getVal()) {
 				device_icon_Iv.setImageResource(R.drawable.tv_icon);
-			} else if (appl_S.getUcType() == 3) {
+			} else if (appl_S.getUcType() == ApplType_E.APPL_TYPE_STB.getVal()) {
 				device_icon_Iv.setImageResource(R.drawable.tv_box_icon);
-			} else if (appl_S.getUcType() == 4) {
+			} else if (appl_S.getUcType() == ApplType_E.APPL_TYPE_AIRCOND
+					.getVal()) {
 				device_icon_Iv.setImageResource(R.drawable.ac_icon);
-			} else if (appl_S.getUcType() == 5) {
+			} else if (appl_S.getUcType() == ApplType_E.APPL_TYPE_CURTAIN
+					.getVal()) {
 				device_icon_Iv.setImageResource(R.drawable.curtain_icon);
+			} else if (appl_S.getUcType() == ApplType_E.APPL_TYPE_CUSTOM
+					.getVal()) {
+				device_icon_Iv.setImageResource(R.drawable.user_defined_icon);
 			}
 			enter_Iv.setOnClickListener(new OnClickListener() {
 

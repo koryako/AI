@@ -13,6 +13,7 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -20,12 +21,15 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.mac.smartcontrol.broadcast.ModifyCmdBroadcastReceiver;
+import com.mac.smartcontrol.util.DisconnectionUtil;
 import com.mac.smartcontrol.util.WriteUtil;
 
 import define.entity.Appl_S;
 import define.entity.Cmd_S;
 import define.entity.Ctrl_S;
+import define.oper.MsgOperCtrl_E;
 import define.oper.MsgOper_E;
+import define.oper.body.req.MsgCtrlTestReq_S;
 import define.oper.body.req.MsgQryReq_S;
 import define.type.MsgId_E;
 import define.type.MsgType_E;
@@ -46,6 +50,10 @@ public class ModifyCmdActivity extends Activity {
 	private String[] para = { "打开", "关闭" };
 	private String[] code = { "电源", "照明", "红外" };
 	private Appl_S appl_S;
+	LinearLayout para_ll;
+	LinearLayout infrared_ll;
+	Button test_Btn;
+	Button study_Btn;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +69,8 @@ public class ModifyCmdActivity extends Activity {
 			cmd_S.setCmd_S(bundle.getByteArray("cmd"));
 		}
 		ctrlList = new ArrayList<Ctrl_S>();
+		para_ll = (LinearLayout) findViewById(R.id.param_ll);
+		infrared_ll = (LinearLayout) findViewById(R.id.infrared_ll);
 
 		final EditText cmd_name_Et = (EditText) findViewById(R.id.cmdname_et);
 		cmd_name_Et.setText(cmd_S.getSzName());
@@ -78,9 +88,11 @@ public class ModifyCmdActivity extends Activity {
 					int arg2, long arg3) {
 				// TODO Auto-generated method stub
 				if (arg2 == 2) {
-					para_Layout.setVisibility(View.INVISIBLE);
+					para_ll.setVisibility(View.GONE);
+					infrared_ll.setVisibility(View.VISIBLE);
 				} else {
-					para_Layout.setVisibility(View.VISIBLE);
+					para_ll.setVisibility(View.VISIBLE);
+					infrared_ll.setVisibility(View.GONE);
 				}
 			}
 
@@ -93,8 +105,12 @@ public class ModifyCmdActivity extends Activity {
 		modifyCmdBroadcastReceiver = new ModifyCmdBroadcastReceiver(
 				ModifyCmdActivity.this);
 		IntentFilter filter = new IntentFilter();
-		filter.addAction("5_3");
-		filter.addAction("2_4");
+
+		filter.addAction(MsgId_E.MSGID_CMD.getVal() + "_"
+				+ MsgOper_E.MSGOPER_MOD.getVal());
+
+		filter.addAction(MsgId_E.MSGID_CTRL.getVal() + "_"
+				+ MsgOper_E.MSGOPER_QRY.getVal());
 		filter.addAction("IOException");
 		registerReceiver(modifyCmdBroadcastReceiver, filter);
 
@@ -107,6 +123,7 @@ public class ModifyCmdActivity extends Activity {
 			// TODO Auto-generated catch block
 			Toast.makeText(ModifyCmdActivity.this, "请确认网络是否开启,连接失败",
 					Toast.LENGTH_LONG).show();
+			DisconnectionUtil.restart(ModifyCmdActivity.this);
 		}
 
 		// ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
@@ -135,9 +152,61 @@ public class ModifyCmdActivity extends Activity {
 		code_sp.setSelection(cmd_S.getUcCode() - 1);
 		para_sp.setSelection(cmd_S.getUiPara() - 1);
 
-		ImageView modify_Iv = (ImageView) findViewById(R.id.modify);
+		study_Btn = (Button) findViewById(R.id.study_btn);
+		study_Btn.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				// try {
+				// WriteUtil.write(MsgId_E.MSGID_CTRL.getVal(), 1,
+				// MsgType_E.MSGTYPE_REQ.getVal(),
+				// MsgOperCtrl_E.MSGOPER_CTRL_TEST.getVal(),
+				// MsgCtrlTestReq_S.getSize(),
+				// ctrlTestReq_S.getMsgCtrlTestReq_S());
+				// } catch (IOException e) {
+				// // TODO Auto-generated catch block
+				// Toast.makeText(AddCmdActivity.this, "请确认网络是否开启,连接失败",
+				// Toast.LENGTH_LONG).show();
+				// DisconnectionUtil.restart(AddCmdActivity.this);
+				// }
+			}
+		});
+		test_Btn = (Button) findViewById(R.id.test_btn);
+		test_Btn.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				MsgCtrlTestReq_S ctrlTestReq_S = new MsgCtrlTestReq_S();
+				ctrlTestReq_S.setUsIdx(appl_S.getUsIdx());
+				ctrlTestReq_S.setUcCode((byte) (code_sp
+						.getSelectedItemPosition() + 1));
+				if (code_sp.getSelectedItemPosition() == 2) {
+					ctrlTestReq_S.setUiPara(0);
+				} else {
+					ctrlTestReq_S.setUiPara(para_sp.getSelectedItemPosition() + 1);
+				}
+
+				try {
+					WriteUtil.write(MsgId_E.MSGID_CTRL.getVal(), 1,
+							MsgType_E.MSGTYPE_REQ.getVal(),
+							MsgOperCtrl_E.MSGOPER_CTRL_TEST.getVal(),
+							MsgCtrlTestReq_S.getSize(),
+							ctrlTestReq_S.getMsgCtrlTestReq_S());
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					Toast.makeText(ModifyCmdActivity.this, "请确认网络是否开启,连接失败",
+							Toast.LENGTH_LONG).show();
+					DisconnectionUtil.restart(ModifyCmdActivity.this);
+				}
+
+			}
+		});
+
+		Button add_Btn = (Button) findViewById(R.id.modify_btn);
 		ImageView back_Iv = (ImageView) findViewById(R.id.back);
-		modify_Iv.setOnClickListener(new OnClickListener() {
+		add_Btn.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -181,6 +250,7 @@ public class ModifyCmdActivity extends Activity {
 					// TODO Auto-generated catch block
 					Toast.makeText(ModifyCmdActivity.this, "请确认网络是否开启,连接失败",
 							Toast.LENGTH_LONG).show();
+					DisconnectionUtil.restart(ModifyCmdActivity.this);
 				}
 			}
 		});

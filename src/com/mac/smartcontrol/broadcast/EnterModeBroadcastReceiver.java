@@ -15,6 +15,7 @@ import com.mac.smartcontrol.SocketService;
 
 import define.entity.Mode_S;
 import define.entity.Rgn_S;
+import define.oper.MsgOper_E;
 import define.oper.body.ack.MsgAddAck_S;
 import define.oper.body.ack.MsgDelAck_S;
 import define.oper.body.ack.MsgModeQryByRgnAck_S;
@@ -49,7 +50,8 @@ public class EnterModeBroadcastReceiver extends BroadcastReceiver {
 		byte[] body = intent.getExtras().getByteArray("data");
 		EnterModeListActivity modeListActivity = null;
 		AddModeActivity addModeActivity = null;
-		if (msgId == 3 && msgOper == 4) {
+		if (msgId == MsgId_E.MSGID_RGN.getVal()
+				&& msgOper == MsgOper_E.MSGOPER_QRY.getVal()) {
 			MsgQryAck_S msgQryAck_S = new MsgQryAck_S();
 			msgQryAck_S.setMsgQryAck_S(body);
 			addModeActivity = (AddModeActivity) activity;
@@ -69,54 +71,51 @@ public class EnterModeBroadcastReceiver extends BroadcastReceiver {
 			}
 		}
 
-		if (msgId == MsgId_E.MSGID_MODE.getVal()) {
-			switch (msgOper) {
-			case 1:
-				MsgAddAck_S msgAddAck_S = new MsgAddAck_S();
-				msgAddAck_S.setMsgAddAck_S(body);
-				if (msgAddAck_S.getUsError() == 0) {
-					Toast.makeText(activity, "添加成功", Toast.LENGTH_LONG).show();
-					addModeActivity = (AddModeActivity) activity;
-					addModeActivity.mode_S.setUsIdx(msgAddAck_S.getUsIdx());
-					Bundle bundle = new Bundle();
-					bundle.putByteArray("mode",
-							addModeActivity.mode_S.getMode_S());
-					Intent i = new Intent();
-					i.putExtras(bundle);
-					// 返回intent
-					addModeActivity.setResult(Activity.RESULT_OK, i);
-					addModeActivity.finish();
-				} else {
-					ErrCode_E.showError(context, msgAddAck_S.getUsError());
-				}
-				break;
-			case 2:
-				MsgDelAck_S msgDelAck_S = new MsgDelAck_S();
-				msgDelAck_S.setMsgDelAck_S(body);
-				modeListActivity = (EnterModeListActivity) activity;
-				if (msgDelAck_S.getUsError() == 0) {
-					for (int i = 0; i < modeListActivity.modeList.size(); i++) {
-
-						Mode_S mode_S = modeListActivity.modeList.get(i);
-						if (mode_S.getUsIdx() == msgDelAck_S.getUsIdx()) {
-							modeListActivity.modeList.remove(i);
-							modeListActivity.modeListAdapter
-									.notifyDataSetChanged();
-						}
-					}
-					Toast.makeText(activity, "删除成功", Toast.LENGTH_LONG).show();
-				} else {
-					ErrCode_E.showError(context, msgDelAck_S.getUsError());
-				}
-				break;
-			case 4:
-			case 5:
-				parseToList(body);
-				break;
-			default:
-				break;
+		if (msgId == MsgId_E.MSGID_MODE.getVal()
+				&& msgOper == MsgOper_E.MSGOPER_ADD.getVal()) {
+			MsgAddAck_S msgAddAck_S = new MsgAddAck_S();
+			msgAddAck_S.setMsgAddAck_S(body);
+			if (msgAddAck_S.getUsError() == 0) {
+				Toast.makeText(activity, "添加成功", Toast.LENGTH_LONG).show();
+				addModeActivity = (AddModeActivity) activity;
+				addModeActivity.mode_S.setUsIdx(msgAddAck_S.getUsIdx());
+				Bundle bundle = new Bundle();
+				bundle.putByteArray("mode", addModeActivity.mode_S.getMode_S());
+				Intent i = new Intent();
+				i.putExtras(bundle);
+				// 返回intent
+				addModeActivity.setResult(Activity.RESULT_OK, i);
+				addModeActivity.finish();
+			} else {
+				ErrCode_E.showError(context, msgAddAck_S.getUsError());
 			}
+		}
 
+		if (msgId == MsgId_E.MSGID_MODE.getVal()
+				&& msgOper == MsgOper_E.MSGOPER_DEL.getVal()) {
+			MsgDelAck_S msgDelAck_S = new MsgDelAck_S();
+			msgDelAck_S.setMsgDelAck_S(body);
+			modeListActivity = (EnterModeListActivity) activity;
+			if (msgDelAck_S.getUsError() == 0) {
+				for (int i = 0; i < modeListActivity.modeList.size(); i++) {
+
+					Mode_S mode_S = modeListActivity.modeList.get(i);
+					if (mode_S.getUsIdx() == msgDelAck_S.getUsIdx()) {
+						modeListActivity.modeList.remove(i);
+						modeListActivity.modeListAdapter.notifyDataSetChanged();
+					}
+				}
+				Toast.makeText(activity, "删除成功", Toast.LENGTH_LONG).show();
+			} else {
+				ErrCode_E.showError(context, msgDelAck_S.getUsError());
+			}
+		}
+
+		if ((msgId == MsgId_E.MSGID_MODE.getVal() && msgOper == MsgOper_E.MSGOPER_QRY
+				.getVal())
+				|| (msgId == MsgId_E.MSGID_MODE.getVal() && msgOper == MsgOper_E.MSGOPER_MAX
+						.getVal())) {
+			parseToList(body);
 		}
 	}
 

@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.mac.smartcontrol.adapter.SenseLogListAdapter;
 import com.mac.smartcontrol.broadcast.SenseBroadcastReceiver;
+import com.mac.smartcontrol.util.DisconnectionUtil;
 import com.mac.smartcontrol.util.WriteUtil;
 
 import define.entity.SensLog_S;
@@ -63,7 +64,9 @@ public class SenseLogListActivity extends Activity {
 		senseBroadcastReceiver = new SenseBroadcastReceiver(
 				SenseLogListActivity.this);
 		IntentFilter filter = new IntentFilter();
-		filter.addAction("7_4");
+		filter.addAction(MsgId_E.MSGID_SENSLOG.getVal() + "_"
+				+ MsgOper_E.MSGOPER_QRY.getVal());
+
 		filter.addAction("IOException");
 		registerReceiver(senseBroadcastReceiver, filter);
 
@@ -76,6 +79,8 @@ public class SenseLogListActivity extends Activity {
 			// TODO Auto-generated catch block
 			Toast.makeText(SenseLogListActivity.this, "获取列表失败",
 					Toast.LENGTH_LONG).show();
+			DisconnectionUtil.restart(SenseLogListActivity.this);
+
 		}
 
 	}

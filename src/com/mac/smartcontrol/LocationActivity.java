@@ -1,16 +1,33 @@
 package com.mac.smartcontrol;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.Activity;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.baidu.location.BDLocation;
+import com.mac.smartcontrol.broadcast.LocationBroadcastReceiver;
+import com.mac.smartcontrol.util.DisconnectionUtil;
 import com.mac.smartcontrol.util.SaveLocationUtil;
+import com.mac.smartcontrol.util.WriteUtil;
+
+import define.entity.Mode_S;
+import define.oper.MsgOper_E;
+import define.oper.body.req.MsgQryReq_S;
+import define.type.MsgId_E;
+import define.type.MsgType_E;
 
 public class LocationActivity extends Activity {
 
@@ -22,6 +39,11 @@ public class LocationActivity extends Activity {
 	String location_address = "";
 	BDLocation bdLocation = null;
 	boolean location_isOpen = false;
+	LocationBroadcastReceiver broadcastReceiver;
+	public List<Mode_S> modelist;
+	public List<String> modelistStr;
+	public ArrayAdapter<String> mode_adapter;
+	Spinner mode_Sp;
 
 	/*
 	 * (non-Javadoc)
@@ -35,8 +57,32 @@ public class LocationActivity extends Activity {
 		setContentView(R.layout.activity_location);
 		ImageView postion_Iv = (ImageView) findViewById(R.id.position_iv);
 		ImageView save_Iv = (ImageView) findViewById(R.id.save_iv);
+		modelist = new ArrayList<Mode_S>();
+		modelistStr = new ArrayList<String>();
+		mode_Sp = (Spinner) findViewById(R.id.mode_sp);
+		mode_adapter = new ArrayAdapter<String>(this,
+				R.layout.simple_spinner_item, modelistStr);
+		mode_adapter
+				.setDropDownViewResource(android.R.layout.simple_spinner_item);
+		mode_Sp.setAdapter(mode_adapter);
 		final TextView position_name_Tv = (TextView) findViewById(R.id.position_name_et);
 		final TextView position_distance_Et = (TextView) findViewById(R.id.distance_et);
+		broadcastReceiver = new LocationBroadcastReceiver(this);
+		IntentFilter filter = new IntentFilter();
+		filter.addAction(MsgId_E.MSGID_MODE.getVal() + "_"
+				+ MsgOper_E.MSGOPER_QRY.getVal());
+		registerReceiver(broadcastReceiver, filter);
+		try {
+			WriteUtil.write(MsgId_E.MSGID_MODE.getVal(), 0,
+					MsgType_E.MSGTYPE_REQ.getVal(), MsgOper_E.MSGOPER_QRY
+							.getVal(), (short) 2, new MsgQryReq_S((short) 0)
+							.getMsgQryReq_S());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			Toast.makeText(LocationActivity.this, "请确认网络是否开启,连接失败",
+					Toast.LENGTH_LONG).show();
+			DisconnectionUtil.restart(LocationActivity.this);
+		}
 		sharedPreferences = getSharedPreferences("location", 0);
 		if (sharedPreferences != null) {
 			editor = sharedPreferences.edit();
@@ -103,4 +149,10 @@ public class LocationActivity extends Activity {
 
 	}
 
+	@Override
+	public void finish() {
+		// TODO Auto-generated method stub
+		unregisterReceiver(broadcastReceiver);
+		super.finish();
+	}
 }

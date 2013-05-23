@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.mac.smartcontrol.adapter.ModeCmdListAdapter;
 import com.mac.smartcontrol.broadcast.ModeCmdBroadcastReceiver;
+import com.mac.smartcontrol.util.DisconnectionUtil;
 import com.mac.smartcontrol.util.WriteUtil;
 
 import define.entity.Appl_S;
@@ -47,6 +48,7 @@ public class ModeCmdListActivity extends Activity {
 	ModeCmdBroadcastReceiver modeCmdBroadcastReceiver;
 	TextView modecmd_title_tv;
 	Mode_S mode_S;
+	IntentFilter filter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -83,6 +85,7 @@ public class ModeCmdListActivity extends Activity {
 				newIntent.putExtra("mode", mode_S.getMode_S());
 				// 开始一个新的 Activity等候返回结果
 				startActivityForResult(newIntent, 0);
+				unregisterReceiver(modeCmdBroadcastReceiver);
 			}
 		});
 		ImageView back_Iv = (ImageView) findViewById(R.id.back);
@@ -96,29 +99,39 @@ public class ModeCmdListActivity extends Activity {
 		});
 		modeCmdBroadcastReceiver = new ModeCmdBroadcastReceiver(
 				ModeCmdListActivity.this);
-		IntentFilter filter = new IntentFilter();
-		filter.addAction("3_4");
-		filter.addAction("4_2");
-		filter.addAction("5_4");
-		filter.addAction("10_5");
+		filter = new IntentFilter();
+
+		filter.addAction(MsgId_E.MSGID_RGN.getVal() + "_"
+				+ MsgOper_E.MSGOPER_QRY.getVal());
+
+		filter.addAction(MsgId_E.MSGID_APPL.getVal() + "_"
+				+ MsgOper_E.MSGOPER_QRY.getVal());
+
+		filter.addAction(MsgId_E.MSGID_CMD.getVal() + "_"
+				+ MsgOper_E.MSGOPER_QRY.getVal());
+		filter.addAction(MsgId_E.MSGID_MODECMD.getVal() + "_"
+				+ MsgOper_E.MSGOPER_DEL.getVal());
+
+		filter.addAction(MsgId_E.MSGID_MODECMD.getVal() + "_"
+				+ MsgOper_E.MSGOPER_MAX.getVal());
 		filter.addAction("IOException");
 		registerReceiver(modeCmdBroadcastReceiver, filter);
 
 		try {
-			WriteUtil.write(MsgId_E.MSGID_MODECMD.getVal(), 0,
+			WriteUtil.write(MsgId_E.MSGID_MODECMD.getVal(), 3,
 					MsgType_E.MSGTYPE_REQ.getVal(), MsgOper_E.MSGOPER_MAX
 							.getVal(), MsgCmdQryByDevReq_S.getSize(),
 					new MsgModeCmdQryByModeReq_S(mode_S.getUsIdx())
 							.getMsgQryReq_S());
-			WriteUtil.write(MsgId_E.MSGID_CMD.getVal(), 1,
+			WriteUtil.write(MsgId_E.MSGID_CMD.getVal(), 2,
 					MsgType_E.MSGTYPE_REQ.getVal(), MsgOper_E.MSGOPER_QRY
 							.getVal(), (short) 2, new MsgQryReq_S((short) 0)
 							.getMsgQryReq_S());
-			WriteUtil.write(MsgId_E.MSGID_APPL.getVal(), 2,
+			WriteUtil.write(MsgId_E.MSGID_APPL.getVal(), 1,
 					MsgType_E.MSGTYPE_REQ.getVal(), MsgOper_E.MSGOPER_QRY
 							.getVal(), (short) 2, new MsgQryReq_S((short) 0)
 							.getMsgQryReq_S());
-			WriteUtil.write(MsgId_E.MSGID_RGN.getVal(), 3,
+			WriteUtil.write(MsgId_E.MSGID_RGN.getVal(), 0,
 					MsgType_E.MSGTYPE_REQ.getVal(), MsgOper_E.MSGOPER_QRY
 							.getVal(), (short) 2, new MsgQryReq_S((short) 0)
 							.getMsgQryReq_S());
@@ -126,6 +139,7 @@ public class ModeCmdListActivity extends Activity {
 			// TODO Auto-generated catch block
 			Toast.makeText(ModeCmdListActivity.this, "获取列表失败",
 					Toast.LENGTH_LONG).show();
+			DisconnectionUtil.restart(ModeCmdListActivity.this);
 		}
 
 	}
@@ -176,6 +190,13 @@ public class ModeCmdListActivity extends Activity {
 			finish();
 		}
 		return true;
+	}
+
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		registerReceiver(modeCmdBroadcastReceiver, filter);
+		super.onResume();
 	}
 
 }

@@ -17,13 +17,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.mac.smartcontrol.broadcast.AddCameraBroadcastReceiver;
 import com.mac.smartcontrol.broadcast.EnterModeBroadcastReceiver;
-import com.mac.smartcontrol.util.FormatTransfer;
-import com.mac.smartcontrol.util.RegularUtil;
+import com.mac.smartcontrol.util.DisconnectionUtil;
 import com.mac.smartcontrol.util.WriteUtil;
 
-import define.entity.Cama_S;
 import define.entity.Mode_S;
 import define.entity.Rgn_S;
 import define.oper.MsgOper_E;
@@ -53,8 +50,10 @@ public class AddModeActivity extends Activity {
 		modeBroadcastReceiver = new EnterModeBroadcastReceiver(
 				AddModeActivity.this);
 		IntentFilter filter = new IntentFilter();
-		filter.addAction("9_1");
-		filter.addAction("3_4");
+		filter.addAction(MsgId_E.MSGID_RGN.getVal() + "_"
+				+ MsgOper_E.MSGOPER_QRY.getVal());
+		filter.addAction(MsgId_E.MSGID_MODE.getVal() + "_"
+				+ MsgOper_E.MSGOPER_ADD.getVal());
 		filter.addAction("IOException");
 		registerReceiver(modeBroadcastReceiver, filter);
 
@@ -67,6 +66,7 @@ public class AddModeActivity extends Activity {
 			// TODO Auto-generated catch block
 			Toast.makeText(AddModeActivity.this, "请确认网络是否开启,连接失败",
 					Toast.LENGTH_LONG).show();
+			DisconnectionUtil.restart(AddModeActivity.this);
 		}
 
 		area_adapter = new ArrayAdapter<String>(this,
@@ -104,7 +104,7 @@ public class AddModeActivity extends Activity {
 					Toast.makeText(AddModeActivity.this, "名称太长",
 							Toast.LENGTH_LONG).show();
 					return;
-				}				
+				}
 				mode_S.setSzName(mode_name);
 				mode_S.setSzVoice(voice_name);
 				mode_S.setUsRgnIdx(areaList.get(
@@ -118,6 +118,7 @@ public class AddModeActivity extends Activity {
 					// TODO Auto-generated catch block
 					Toast.makeText(AddModeActivity.this, "请确认网络是否开启,连接失败",
 							Toast.LENGTH_LONG).show();
+					DisconnectionUtil.restart(AddModeActivity.this);
 				}
 			}
 		});

@@ -15,6 +15,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.mac.smartcontrol.broadcast.UserBroadcastReceiver;
+import com.mac.smartcontrol.util.DisconnectionUtil;
 import com.mac.smartcontrol.util.WriteUtil;
 
 import define.entity.User_S;
@@ -38,7 +39,8 @@ public class AddUserActivity extends Activity {
 
 		userBroadcastReceiver = new UserBroadcastReceiver(AddUserActivity.this);
 		IntentFilter filter = new IntentFilter();
-		filter.addAction("1_1");
+		filter.addAction(MsgId_E.MSGID_USER.getVal() + "_"
+				+ MsgOper_E.MSGOPER_ADD.getVal());
 		filter.addAction("UnknownHostException");
 		filter.addAction("IOException");
 		registerReceiver(userBroadcastReceiver, filter);
@@ -88,6 +90,7 @@ public class AddUserActivity extends Activity {
 					// TODO Auto-generated catch block
 					Toast.makeText(AddUserActivity.this, "请确认网络是否开启,连接失败",
 							Toast.LENGTH_LONG).show();
+					DisconnectionUtil.restart(AddUserActivity.this);
 				}
 			}
 		});

@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.mac.smartcontrol.adapter.EnterAreaListAdapter;
 import com.mac.smartcontrol.broadcast.SenseBroadcastReceiver;
+import com.mac.smartcontrol.util.DisconnectionUtil;
 import com.mac.smartcontrol.util.WriteUtil;
 
 import define.entity.Rgn_S;
@@ -37,6 +38,7 @@ public class EnterAreaActivity extends Activity {
 	TextView area_title_tv;
 	public Rgn_S rgn_S = null;
 	private int msgId;
+	IntentFilter filter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -84,8 +86,9 @@ public class EnterAreaActivity extends Activity {
 		}
 		senseBroadcastReceiver = new SenseBroadcastReceiver(
 				EnterAreaActivity.this);
-		IntentFilter filter = new IntentFilter();
-		filter.addAction("3_4");
+		filter = new IntentFilter();
+		filter.addAction(MsgId_E.MSGID_RGN.getVal() + "_"
+				+ MsgOper_E.MSGOPER_QRY.getVal());
 		filter.addAction("IOException");
 		registerReceiver(senseBroadcastReceiver, filter);
 
@@ -98,6 +101,8 @@ public class EnterAreaActivity extends Activity {
 			// TODO Auto-generated catch block
 			Toast.makeText(EnterAreaActivity.this, "获取列表失败", Toast.LENGTH_LONG)
 					.show();
+
+			DisconnectionUtil.restart(EnterAreaActivity.this);
 		}
 
 	}
@@ -117,4 +122,10 @@ public class EnterAreaActivity extends Activity {
 		return true;
 	}
 
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		registerReceiver(senseBroadcastReceiver, filter);
+		super.onResume();
+	}
 }

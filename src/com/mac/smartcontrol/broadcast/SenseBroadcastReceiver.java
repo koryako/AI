@@ -16,9 +16,11 @@ import com.mac.smartcontrol.SocketService;
 import define.entity.Rgn_S;
 import define.entity.SensLog_S;
 import define.entity.Sens_S;
+import define.oper.MsgOper_E;
 import define.oper.body.ack.MsgDelAck_S;
 import define.oper.body.ack.MsgQryAck_S;
 import define.type.ErrCode_E;
+import define.type.MsgId_E;
 
 public class SenseBroadcastReceiver extends BroadcastReceiver {
 
@@ -47,7 +49,8 @@ public class SenseBroadcastReceiver extends BroadcastReceiver {
 		SenseListActivity senseListActivity = null;
 		EnterAreaActivity enterAreaActivity = null;
 		SenseLogListActivity senseLogListActivity = null;
-		if (msgId == 7 && msgOper == 4) {
+		if (msgId == MsgId_E.MSGID_SENSLOG.getVal()
+				&& msgOper == MsgOper_E.MSGOPER_QRY.getVal()) {
 			MsgQryAck_S msgQryAck_S = new MsgQryAck_S();
 			msgQryAck_S.setMsgQryAck_S(body);
 			senseLogListActivity = (SenseLogListActivity) activity;
@@ -70,7 +73,8 @@ public class SenseBroadcastReceiver extends BroadcastReceiver {
 			}
 		}
 
-		if (msgId == 3 && msgOper == 4) {
+		if (msgId == MsgId_E.MSGID_RGN.getVal()
+				&& msgOper == MsgOper_E.MSGOPER_QRY.getVal()) {
 			MsgQryAck_S msgQryAck_S = new MsgQryAck_S();
 			msgQryAck_S.setMsgQryAck_S(body);
 			enterAreaActivity = (EnterAreaActivity) activity;
@@ -92,30 +96,26 @@ public class SenseBroadcastReceiver extends BroadcastReceiver {
 				}
 			}
 		}
-		if (msgId == 6) {
-
-			switch (msgOper) {
-			case 2:
-				MsgDelAck_S msgDelAck_S = new MsgDelAck_S();
-				msgDelAck_S.setMsgDelAck_S(body);
-				senseListActivity = (SenseListActivity) activity;
-				if (msgDelAck_S.getUsError() == 0) {
-					senseListActivity.senseList
-							.remove(senseListActivity.del_Idx);
-					senseListActivity.senseListView
-							.setAdapter(senseListActivity.senseListAdapter);
-					Toast.makeText(activity, "删除成功", Toast.LENGTH_LONG).show();
-				} else {
-					ErrCode_E.showError(context, msgDelAck_S.getUsError());
-				}
-				break;
-			case 4:
-			case 5:
-				parseToList(body);
-				break;
-			default:
-				break;
+		if (msgId == MsgId_E.MSGID_SENS.getVal()
+				&& msgOper == MsgOper_E.MSGOPER_DEL.getVal()) {
+			MsgDelAck_S msgDelAck_S = new MsgDelAck_S();
+			msgDelAck_S.setMsgDelAck_S(body);
+			senseListActivity = (SenseListActivity) activity;
+			if (msgDelAck_S.getUsError() == 0) {
+				senseListActivity.senseList.remove(senseListActivity.del_Idx);
+				senseListActivity.senseListView
+						.setAdapter(senseListActivity.senseListAdapter);
+				Toast.makeText(activity, "删除成功", Toast.LENGTH_LONG).show();
+			} else {
+				ErrCode_E.showError(context, msgDelAck_S.getUsError());
 			}
+		}
+
+		if ((msgId == MsgId_E.MSGID_SENS.getVal() && msgOper == MsgOper_E.MSGOPER_QRY
+				.getVal())
+				|| (msgId == MsgId_E.MSGID_SENS.getVal() && msgOper == MsgOper_E.MSGOPER_MAX
+						.getVal())) {
+			parseToList(body);
 		}
 
 	}

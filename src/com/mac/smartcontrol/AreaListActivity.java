@@ -120,6 +120,8 @@ public class AreaListActivity extends Activity {
 									// TODO Auto-generated catch block
 									Toast.makeText(AreaListActivity.this,
 											"ÃÌº” ß∞‹", Toast.LENGTH_LONG).show();
+									DisconnectionUtil
+											.restart(AreaListActivity.this);
 								}
 							}
 						});
@@ -127,10 +129,18 @@ public class AreaListActivity extends Activity {
 		});
 		areaBroadcastReceiver = new AreaBroadcastReceiver(AreaListActivity.this);
 		IntentFilter filter = new IntentFilter();
-		filter.addAction("3_1");
-		filter.addAction("3_2");
-		filter.addAction("3_3");
-		filter.addAction("3_4");
+		filter.addAction(MsgId_E.MSGID_RGN.getVal() + "_"
+				+ MsgOper_E.MSGOPER_ADD.getVal());
+
+		filter.addAction(MsgId_E.MSGID_RGN.getVal() + "_"
+				+ MsgOper_E.MSGOPER_DEL.getVal());
+
+		filter.addAction(MsgId_E.MSGID_RGN.getVal() + "_"
+				+ MsgOper_E.MSGOPER_MOD.getVal());
+
+		filter.addAction(MsgId_E.MSGID_RGN.getVal() + "_"
+				+ MsgOper_E.MSGOPER_QRY.getVal());
+
 		filter.addAction("IOException");
 		registerReceiver(areaBroadcastReceiver, filter);
 

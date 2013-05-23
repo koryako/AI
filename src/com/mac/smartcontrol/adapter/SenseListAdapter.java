@@ -24,6 +24,7 @@ import define.oper.MsgOper_E;
 import define.oper.body.req.MsgDelReq_S;
 import define.type.MsgId_E;
 import define.type.MsgType_E;
+import define.type.SensType_E;
 
 public class SenseListAdapter extends BaseAdapter {
 	private Context context;
@@ -73,9 +74,10 @@ public class SenseListAdapter extends BaseAdapter {
 					.findViewById(R.id.modify_btn);
 			final Sens_S sens_S = senseList.get(position);
 			sense_name_Tv.setText(sens_S.getSzName());
-			if (sens_S.getUcType() == 1) {
+			if (sens_S.getUcType() == SensType_E.SENS_TYPE_GAS.getVal()) {
 				sense_type_Tv.setText("ÃºÆø");
-			} else {
+			} else if (sens_S.getUcType() == SensType_E.SENS_TYPE_SMOKE
+					.getVal()) {
 				sense_type_Tv.setText("ÑÌÎí");
 			}
 

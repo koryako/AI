@@ -13,6 +13,8 @@ import com.mac.smartcontrol.AddCmdActivity;
 import com.mac.smartcontrol.SocketService;
 
 import define.entity.Ctrl_S;
+import define.oper.MsgOperCtrl_E;
+import define.oper.MsgOper_E;
 import define.oper.body.ack.MsgAddAck_S;
 import define.oper.body.ack.MsgCtrlTestAck_S;
 import define.oper.body.ack.MsgQryAck_S;
@@ -44,7 +46,8 @@ public class AddCmdBroadcastReceiver extends BroadcastReceiver {
 		byte msgOper = Byte.parseByte(action.split("_")[1]);
 		byte[] body = intent.getExtras().getByteArray("data");
 		AddCmdActivity addCmdActivity = (AddCmdActivity) activity;
-		if (msgId == 2 && msgOper == 4) {
+		if (msgId == MsgId_E.MSGID_CTRL.getVal()
+				&& msgOper == MsgOper_E.MSGOPER_QRY.getVal()) {
 			MsgQryAck_S msgQryAck_S = new MsgQryAck_S();
 			msgQryAck_S.setMsgQryAck_S(body);
 			if (msgQryAck_S.getUsCnt() > 0) {
@@ -65,7 +68,8 @@ public class AddCmdBroadcastReceiver extends BroadcastReceiver {
 			}
 		}
 
-		if (msgId == 2 && msgOper == 6) {
+		if (msgId == MsgId_E.MSGID_RGN.getVal()
+				&& msgOper == MsgOperCtrl_E.MSGOPER_CTRL_TEST.getVal()) {
 			MsgCtrlTestAck_S msgCtrlTestAck_S = new MsgCtrlTestAck_S();
 			msgCtrlTestAck_S.setMsgCtrlTestAck_S(body);
 			if (msgCtrlTestAck_S.getUsError() == 0) {
@@ -75,7 +79,8 @@ public class AddCmdBroadcastReceiver extends BroadcastReceiver {
 			}
 		}
 
-		if (msgId == MsgId_E.MSGID_CMD.getVal() && msgOper == 1) {
+		if (msgId == MsgId_E.MSGID_CMD.getVal()
+				&& msgOper == MsgOper_E.MSGOPER_ADD.getVal()) {
 			MsgAddAck_S msgAddAck_S = new MsgAddAck_S();
 			msgAddAck_S.setMsgAddAck_S(body);
 			if (msgAddAck_S.getUsError() == 0) {

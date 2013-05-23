@@ -13,9 +13,11 @@ import com.mac.smartcontrol.ModifySenseActivity;
 import com.mac.smartcontrol.SocketService;
 
 import define.entity.Rgn_S;
+import define.oper.MsgOper_E;
 import define.oper.body.ack.MsgModAck_S;
 import define.oper.body.ack.MsgQryAck_S;
 import define.type.ErrCode_E;
+import define.type.MsgId_E;
 
 public class ModifySenseBroadcastReceiver extends BroadcastReceiver {
 
@@ -42,7 +44,8 @@ public class ModifySenseBroadcastReceiver extends BroadcastReceiver {
 		byte msgOper = Byte.parseByte(action.split("_")[1]);
 		byte[] body = intent.getExtras().getByteArray("data");
 		ModifySenseActivity modifySenseActivity = (ModifySenseActivity) activity;
-		if (msgId == 3 && msgOper == 4) {
+		if (msgId == MsgId_E.MSGID_RGN.getVal()
+				&& msgOper == MsgOper_E.MSGOPER_QRY.getVal()) {
 			MsgQryAck_S msgQryAck_S = new MsgQryAck_S();
 			msgQryAck_S.setMsgQryAck_S(body);
 			modifySenseActivity = (ModifySenseActivity) activity;
@@ -69,7 +72,8 @@ public class ModifySenseBroadcastReceiver extends BroadcastReceiver {
 				}
 			}
 		}
-		if (msgId == 6 && msgOper == 3) {
+		if (msgId == MsgId_E.MSGID_SENS.getVal()
+				&& msgOper == MsgOper_E.MSGOPER_MOD.getVal()) {
 
 			MsgModAck_S msgModAck_S = new MsgModAck_S();
 			msgModAck_S.setMsgModAck_S(body);

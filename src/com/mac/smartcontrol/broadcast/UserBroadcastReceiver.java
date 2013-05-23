@@ -17,12 +17,14 @@ import com.mac.smartcontrol.SocketService;
 import com.mac.smartcontrol.UserListActivity;
 
 import define.entity.User_S;
+import define.oper.MsgOper_E;
 import define.oper.body.ack.MsgAddAck_S;
 import define.oper.body.ack.MsgDelAck_S;
 import define.oper.body.ack.MsgModAck_S;
 import define.oper.body.ack.MsgQryAck_S;
 import define.oper.body.ack.MsgUserLoginAck_S;
 import define.type.ErrCode_E;
+import define.type.MsgId_E;
 
 public class UserBroadcastReceiver extends BroadcastReceiver {
 
@@ -62,14 +64,15 @@ public class UserBroadcastReceiver extends BroadcastReceiver {
 		// "ÕýÔÚµÇÂ½¡­", true,true);
 		// return;
 		// }
+		byte msgId = Byte.parseByte(action.split("_")[0]);
 		byte msgOper = Byte.parseByte(action.split("_")[1]);
 		byte[] body = intent.getExtras().getByteArray("data");
 		UserListActivity userListActivity = null;
 		AddUserActivity addUserActivity = null;
 		ModifyUserActivity modifyUserActivity = null;
 		LoginActivity loginActivity = null;
-		switch (msgOper) {
-		case 1:
+		if (msgId == MsgId_E.MSGID_USER.getVal()
+				&& msgOper == MsgOper_E.MSGOPER_ADD.getVal()) {
 			MsgAddAck_S msgAddAck_S = new MsgAddAck_S();
 			msgAddAck_S.setMsgAddAck_S(body);
 			if (msgAddAck_S.getUsError() == 0) {
@@ -86,8 +89,10 @@ public class UserBroadcastReceiver extends BroadcastReceiver {
 			} else {
 				ErrCode_E.showError(context, msgAddAck_S.getUsError());
 			}
-			break;
-		case 2:
+		}
+
+		if (msgId == MsgId_E.MSGID_USER.getVal()
+				&& msgOper == MsgOper_E.MSGOPER_DEL.getVal()) {
 			MsgDelAck_S msgDelAck_S = new MsgDelAck_S();
 			msgDelAck_S.setMsgDelAck_S(body);
 			userListActivity = (UserListActivity) activity;
@@ -100,9 +105,10 @@ public class UserBroadcastReceiver extends BroadcastReceiver {
 			} else {
 				ErrCode_E.showError(context, msgDelAck_S.getUsError());
 			}
-			break;
+		}
 
-		case 3:
+		if (msgId == MsgId_E.MSGID_USER.getVal()
+				&& msgOper == MsgOper_E.MSGOPER_MOD.getVal()) {
 			MsgModAck_S msgModAck_S = new MsgModAck_S();
 			msgModAck_S.setMsgModAck_S(body);
 			if (msgModAck_S.getUsError() == 0) {
@@ -125,11 +131,15 @@ public class UserBroadcastReceiver extends BroadcastReceiver {
 			} else {
 				ErrCode_E.showError(context, msgModAck_S.getUsError());
 			}
-			break;
-		case 4:
+		}
+
+		if (msgId == MsgId_E.MSGID_USER.getVal()
+				&& msgOper == MsgOper_E.MSGOPER_QRY.getVal()) {
 			parseToList(body);
-			break;
-		case 5:
+		}
+
+		if (msgId == MsgId_E.MSGID_USER.getVal()
+				&& msgOper == MsgOper_E.MSGOPER_MAX.getVal()) {
 			MsgUserLoginAck_S msgUserLoginAck_S = new MsgUserLoginAck_S();
 			msgUserLoginAck_S.setMsgUserLoginAck_S(body);
 			loginActivity = (LoginActivity) activity;
@@ -160,10 +170,6 @@ public class UserBroadcastReceiver extends BroadcastReceiver {
 			} else {
 				ErrCode_E.showError(context, msgUserLoginAck_S.getUsError());
 			}
-
-			break;
-		default:
-			break;
 		}
 
 	}
@@ -172,8 +178,6 @@ public class UserBroadcastReceiver extends BroadcastReceiver {
 		MsgQryAck_S msgQryAck_S = new MsgQryAck_S();
 		msgQryAck_S.setMsgQryAck_S(body);
 		UserListActivity userListActivity = (UserListActivity) activity;
-		// switch (msgId) {
-		// case 1:
 		if (msgQryAck_S.getUsCnt() > 0) {
 			if (msgQryAck_S.getUsError() == 0) {
 				for (int i = 0; i < msgQryAck_S.getUsCnt(); i++) {
@@ -189,144 +193,5 @@ public class UserBroadcastReceiver extends BroadcastReceiver {
 				ErrCode_E.showError(activity, msgQryAck_S.getUsError());
 			}
 		}
-		// break;
-		// case 2:
-		// if(msgQryAck_S.getUsCnt()>0){
-		// if(msgQryAck_S.getUsError()==0){
-		// List<Ctrl_S>list = new ArrayList<Ctrl_S>();
-		// for (int i = 0; i < msgQryAck_S.getUsCnt(); i++) {
-		// byte[] ctrl_S_Byte=Arrays.copyOfRange(msgQryAck_S.getPucData(),
-		// i*Ctrl_S.getSize(), (i+1)*Ctrl_S.getSize());
-		// Ctrl_S ctrl_S=new Ctrl_S();
-		// ctrl_S.setCtrl_S(ctrl_S_Byte);
-		// list.add(ctrl_S);
-		// }
-		//
-		// }
-		// }
-		// break;
-		//
-		// case 3:
-		// if(msgQryAck_S.getUsError()==0){
-		// if(msgQryAck_S.getUsError()==0){
-		// List<Rgn_S>list = new ArrayList<Rgn_S>();
-		// for (int i = 0; i < msgQryAck_S.getUsCnt(); i++) {
-		// byte[] rgn_S_Byte=Arrays.copyOfRange(msgQryAck_S.getPucData(),
-		// i*Rgn_S.getSize(), (i+1)*Rgn_S.getSize());
-		// Rgn_S rgn_S=new Rgn_S();
-		// rgn_S.setRgn_S(rgn_S_Byte);
-		// list.add(rgn_S);
-		// }
-		// }
-		// }
-		// break;
-		//
-		// case 4:
-		// if(msgQryAck_S.getUsCnt()>0){
-		// if(msgQryAck_S.getUsError()==0){
-		// List<Appl_S>list = new ArrayList<Appl_S>();
-		// for (int i = 0; i < msgQryAck_S.getUsCnt(); i++) {
-		// byte[] appl_S_Byte=Arrays.copyOfRange(msgQryAck_S.getPucData(),
-		// i*Appl_S.getSize(), (i+1)*Appl_S.getSize());
-		// Appl_S appl_S=new Appl_S();
-		// appl_S.setAppl_S(appl_S_Byte);
-		// list.add(appl_S);
-		// }
-		// }
-		// }
-		// break;
-		//
-		// case 5:
-		// if(msgQryAck_S.getUsCnt()>0){
-		// if(msgQryAck_S.getUsError()==0){
-		// List<Cmd_S>list = new ArrayList<Cmd_S>();
-		// for (int i = 0; i < msgQryAck_S.getUsCnt(); i++) {
-		// byte[] cmd_S_Byte=Arrays.copyOfRange(msgQryAck_S.getPucData(),
-		// i*Cmd_S.getSize(), (i+1)*Cmd_S.getSize());
-		// Cmd_S cmd_S=new Cmd_S();
-		// cmd_S.setCmd_S(cmd_S_Byte);
-		// list.add(cmd_S);
-		// }
-		// }
-		// }
-		// break;
-		//
-		// case 6:
-		// if(msgQryAck_S.getUsCnt()>0){
-		// if(msgQryAck_S.getUsError()==0){
-		// List<Sens_S>list = new ArrayList<Sens_S>();
-		// for (int i = 0; i < msgQryAck_S.getUsCnt(); i++) {
-		// byte[] sens_S_Byte=Arrays.copyOfRange(msgQryAck_S.getPucData(),
-		// i*Sens_S.getSize(), (i+1)*Sens_S.getSize());
-		// Sens_S sens_S=new Sens_S();
-		// sens_S.setSens_S(sens_S_Byte);
-		// list.add(sens_S);
-		// }
-		// }
-		// }
-		// break;
-		//
-		// case 7:
-		// if(msgQryAck_S.getUsCnt()>0){
-		// if(msgQryAck_S.getUsError()==0){
-		// List<Cama_S>list = new ArrayList<Cama_S>();
-		// for (int i = 0; i < msgQryAck_S.getUsCnt(); i++) {
-		// byte[] cama_S_Byte=Arrays.copyOfRange(msgQryAck_S.getPucData(),
-		// i*Cama_S.getSize(), (i+1)*Cama_S.getSize());
-		// Cama_S cama_S=new Cama_S();
-		// cama_S.setCama_S(cama_S_Byte);
-		// list.add(cama_S);
-		// }
-		// }
-		// }
-		// break;
-		//
-		// case 8:
-		// if(msgQryAck_S.getUsCnt()>0){
-		// if(msgQryAck_S.getUsError()==0){
-		// List<Mode_S>list = new ArrayList<Mode_S>();
-		// for (int i = 0; i < msgQryAck_S.getUsCnt(); i++) {
-		// byte[] mode_S_Byte=Arrays.copyOfRange(msgQryAck_S.getPucData(),
-		// i*Mode_S.getSize(), (i+1)*Mode_S.getSize());
-		// Mode_S mode_S=new Mode_S();
-		// mode_S.setMode_S(mode_S_Byte);
-		// list.add(mode_S);
-		// }
-		// }
-		// }
-		// break;
-		//
-		// case 9:
-		// if(msgQryAck_S.getUsCnt()>0){
-		// if(msgQryAck_S.getUsError()==0){
-		// List<ModeCmd_S>list = new ArrayList<ModeCmd_S>();
-		// for (int i = 0; i < msgQryAck_S.getUsCnt(); i++) {
-		// byte[] modeCmd_S_Byte=Arrays.copyOfRange(msgQryAck_S.getPucData(),
-		// i*ModeCmd_S.getSize(), (i+1)*ModeCmd_S.getSize());
-		// ModeCmd_S modeCmd_S=new ModeCmd_S();
-		// modeCmd_S.setMode_S(modeCmd_S_Byte);
-		// list.add(modeCmd_S);
-		// }
-		// }
-		// }
-		// break;
-		//
-		// case 10:
-		// if(msgQryAck_S.getUsCnt()>0){
-		// if(msgQryAck_S.getUsError()==0){
-		// List<Appl_S>list = new ArrayList<Appl_S>();
-		// for (int i = 0; i < msgQryAck_S.getUsCnt(); i++) {
-		// byte[] user_S_Byte=Arrays.copyOfRange(msgQryAck_S.getPucData(),
-		// i*User_S.getSize(), (i+1)*User_S.getSize());
-		// User_S user_S=new User_S();
-		// user_S.setUser_S(user_S_Byte);
-		// }
-		// }
-		// }
-		// break;
-		//
-		// default:
-		// break;
-		// }
 	}
 }

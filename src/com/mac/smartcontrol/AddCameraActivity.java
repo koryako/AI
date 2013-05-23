@@ -17,6 +17,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.mac.smartcontrol.broadcast.AddCameraBroadcastReceiver;
+import com.mac.smartcontrol.util.DisconnectionUtil;
 import com.mac.smartcontrol.util.FormatTransfer;
 import com.mac.smartcontrol.util.RegularUtil;
 import com.mac.smartcontrol.util.WriteUtil;
@@ -48,8 +49,10 @@ public class AddCameraActivity extends Activity {
 		addCameraBroadcastReceiver = new AddCameraBroadcastReceiver(
 				AddCameraActivity.this);
 		IntentFilter filter = new IntentFilter();
-		filter.addAction("8_1");
-		filter.addAction("3_4");
+		filter.addAction(MsgId_E.MSGID_CAMA.getVal() + "_"
+				+ MsgOper_E.MSGOPER_ADD.getVal());
+		filter.addAction(MsgId_E.MSGID_RGN.getVal() + "_"
+				+ MsgOper_E.MSGOPER_QRY.getVal());
 		filter.addAction("IOException");
 		registerReceiver(addCameraBroadcastReceiver, filter);
 
@@ -62,6 +65,7 @@ public class AddCameraActivity extends Activity {
 			// TODO Auto-generated catch block
 			Toast.makeText(AddCameraActivity.this, "请确认网络是否开启,连接失败",
 					Toast.LENGTH_LONG).show();
+			DisconnectionUtil.restart(AddCameraActivity.this);
 		}
 
 		area_adapter = new ArrayAdapter<String>(this,
@@ -119,6 +123,7 @@ public class AddCameraActivity extends Activity {
 					// TODO Auto-generated catch block
 					Toast.makeText(AddCameraActivity.this, "请确认网络是否开启,连接失败",
 							Toast.LENGTH_LONG).show();
+					DisconnectionUtil.restart(AddCameraActivity.this);
 				}
 			}
 		});

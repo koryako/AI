@@ -19,7 +19,9 @@ import com.mac.smartcontrol.broadcast.UserBroadcastReceiver;
 import com.mac.smartcontrol.util.ConnectionDetector;
 import com.mac.smartcontrol.util.WriteUtil;
 
+import define.oper.MsgOperUser_E;
 import define.oper.body.req.MsgUserLoginReq_S;
+import define.type.MsgId_E;
 
 public class LoginActivity extends Activity {
 	UserBroadcastReceiver userBroadcastReceiver;
@@ -74,7 +76,9 @@ public class LoginActivity extends Activity {
 
 		userBroadcastReceiver = new UserBroadcastReceiver(LoginActivity.this);
 		IntentFilter filter = new IntentFilter();
-		filter.addAction("1_5");
+		filter.addAction(MsgId_E.MSGID_USER.getVal() + "_"
+				+ MsgOperUser_E.MSGOPER_USER_LOGIN.getVal());
+
 		filter.addAction("UnknownHostException");
 		filter.addAction("IOException");
 		registerReceiver(userBroadcastReceiver, filter);

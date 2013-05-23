@@ -78,7 +78,7 @@ public class ModeCmdListAdapter extends BaseAdapter {
 					.findViewById(R.id.cmd_name_tv);
 
 			TextView device_name_Tv = (TextView) convertView
-					.findViewById(R.id.mode_name_tv);
+					.findViewById(R.id.device_name_tv);
 
 			TextView area_name_Tv = (TextView) convertView
 					.findViewById(R.id.area_name_tv);

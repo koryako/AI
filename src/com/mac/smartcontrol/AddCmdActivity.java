@@ -21,6 +21,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.mac.smartcontrol.broadcast.AddCmdBroadcastReceiver;
+import com.mac.smartcontrol.util.DisconnectionUtil;
 import com.mac.smartcontrol.util.WriteUtil;
 
 import define.entity.Appl_S;
@@ -52,6 +53,7 @@ public class AddCmdActivity extends Activity {
 	LinearLayout para_ll;
 	LinearLayout infrared_ll;
 	Button test_Btn;
+	Button study_Btn;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +75,26 @@ public class AddCmdActivity extends Activity {
 		final Spinner ctrl_sp = (Spinner) findViewById(R.id.ctrl_sp);
 		final Spinner code_sp = (Spinner) findViewById(R.id.cmdcode_sp);
 		final Spinner para_sp = (Spinner) findViewById(R.id.param_sp);
+		study_Btn = (Button) findViewById(R.id.study_btn);
+		study_Btn.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				// try {
+				// WriteUtil.write(MsgId_E.MSGID_CTRL.getVal(), 1,
+				// MsgType_E.MSGTYPE_REQ.getVal(),
+				// MsgOperCtrl_E.MSGOPER_CTRL_TEST.getVal(),
+				// MsgCtrlTestReq_S.getSize(),
+				// ctrlTestReq_S.getMsgCtrlTestReq_S());
+				// } catch (IOException e) {
+				// // TODO Auto-generated catch block
+				// Toast.makeText(AddCmdActivity.this, "请确认网络是否开启,连接失败",
+				// Toast.LENGTH_LONG).show();
+				// DisconnectionUtil.restart(AddCmdActivity.this);
+				// }
+			}
+		});
 		test_Btn = (Button) findViewById(R.id.test_btn);
 		test_Btn.setOnClickListener(new OnClickListener() {
 
@@ -99,6 +121,7 @@ public class AddCmdActivity extends Activity {
 					// TODO Auto-generated catch block
 					Toast.makeText(AddCmdActivity.this, "请确认网络是否开启,连接失败",
 							Toast.LENGTH_LONG).show();
+					DisconnectionUtil.restart(AddCmdActivity.this);
 				}
 
 			}
@@ -129,9 +152,12 @@ public class AddCmdActivity extends Activity {
 		addCmdBroadcastReceiver = new AddCmdBroadcastReceiver(
 				AddCmdActivity.this);
 		IntentFilter filter = new IntentFilter();
-		filter.addAction("5_1");
-		filter.addAction("2_4");
-		filter.addAction("2_6");
+		filter.addAction(MsgId_E.MSGID_CMD.getVal() + "_"
+				+ MsgOper_E.MSGOPER_ADD.getVal());
+		filter.addAction(MsgId_E.MSGID_CTRL.getVal() + "_"
+				+ MsgOper_E.MSGOPER_QRY.getVal());
+		filter.addAction(MsgId_E.MSGID_CTRL.getVal() + "_"
+				+ MsgOperCtrl_E.MSGOPER_CTRL_TEST.getVal());
 		filter.addAction("IOException");
 		registerReceiver(addCmdBroadcastReceiver, filter);
 
@@ -144,6 +170,7 @@ public class AddCmdActivity extends Activity {
 			// TODO Auto-generated catch block
 			Toast.makeText(AddCmdActivity.this, "请确认网络是否开启,连接失败",
 					Toast.LENGTH_LONG).show();
+			DisconnectionUtil.restart(AddCmdActivity.this);
 		}
 
 		// ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
@@ -223,6 +250,7 @@ public class AddCmdActivity extends Activity {
 					// TODO Auto-generated catch block
 					Toast.makeText(AddCmdActivity.this, "请确认网络是否开启,连接失败",
 							Toast.LENGTH_LONG).show();
+					DisconnectionUtil.restart(AddCmdActivity.this);
 				}
 			}
 		});

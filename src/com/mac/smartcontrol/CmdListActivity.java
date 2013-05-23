@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.mac.smartcontrol.adapter.CmdListAdapter;
 import com.mac.smartcontrol.broadcast.CmdBroadcastReceiver;
+import com.mac.smartcontrol.util.DisconnectionUtil;
 import com.mac.smartcontrol.util.WriteUtil;
 
 import define.entity.Appl_S;
@@ -90,10 +91,18 @@ public class CmdListActivity extends Activity {
 		});
 		cmdBroadcastReceiver = new CmdBroadcastReceiver(CmdListActivity.this);
 		IntentFilter filter = new IntentFilter();
-		filter.addAction("2_4");
-		filter.addAction("5_2");
-		filter.addAction("5_4");
-		filter.addAction("5_5");
+		filter.addAction(MsgId_E.MSGID_CTRL.getVal() + "_"
+				+ MsgOper_E.MSGOPER_QRY.getVal());
+
+		filter.addAction(MsgId_E.MSGID_CMD.getVal() + "_"
+				+ MsgOper_E.MSGOPER_DEL.getVal());
+
+		filter.addAction(MsgId_E.MSGID_CMD.getVal() + "_"
+				+ MsgOper_E.MSGOPER_QRY.getVal());
+
+		filter.addAction(MsgId_E.MSGID_CMD.getVal() + "_"
+				+ MsgOper_E.MSGOPER_MAX.getVal());
+
 		filter.addAction("IOException");
 		registerReceiver(cmdBroadcastReceiver, filter);
 
@@ -114,6 +123,8 @@ public class CmdListActivity extends Activity {
 			// TODO Auto-generated catch block
 			Toast.makeText(CmdListActivity.this, "获取列表失败", Toast.LENGTH_LONG)
 					.show();
+			DisconnectionUtil.restart(CmdListActivity.this);
+
 		}
 
 	}

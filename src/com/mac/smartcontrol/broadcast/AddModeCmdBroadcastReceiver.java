@@ -15,10 +15,11 @@ import com.mac.smartcontrol.SocketService;
 import define.entity.Appl_S;
 import define.entity.Cmd_S;
 import define.entity.Rgn_S;
+import define.oper.MsgOper_E;
 import define.oper.body.ack.MsgAddAck_S;
-import define.oper.body.ack.MsgCmdQryByDevAck_S;
 import define.oper.body.ack.MsgQryAck_S;
 import define.type.ErrCode_E;
+import define.type.MsgId_E;
 
 public class AddModeCmdBroadcastReceiver extends BroadcastReceiver {
 
@@ -46,7 +47,8 @@ public class AddModeCmdBroadcastReceiver extends BroadcastReceiver {
 		byte msgOper = Byte.parseByte(action.split("_")[1]);
 		byte[] body = intent.getExtras().getByteArray("data");
 		AddModeCmdActivity addModeCmdActivity = (AddModeCmdActivity) activity;
-		if (msgId == 3 && msgOper == 4) {
+		if (msgId == MsgId_E.MSGID_RGN.getVal()
+				&& msgOper == MsgOper_E.MSGOPER_QRY.getVal()) {
 			MsgQryAck_S msgQryAck_S = new MsgQryAck_S();
 			msgQryAck_S.setMsgQryAck_S(body);
 			if (msgQryAck_S.getUsCnt() > 0) {
@@ -58,19 +60,21 @@ public class AddModeCmdBroadcastReceiver extends BroadcastReceiver {
 						Rgn_S rgn_S = new Rgn_S();
 						rgn_S.setRgn_S(rgn_S_Byte);
 						addModeCmdActivity.areaList.add(rgn_S);
+						addModeCmdActivity.areaListStr.add(rgn_S.getSzName());
 					}
+
 				} else {
 					ErrCode_E.showError(context, msgQryAck_S.getUsError());
 				}
 			}
 		}
 
-		if (msgId == 4 && msgOper == 4) {
+		if (msgId == MsgId_E.MSGID_APPL.getVal()
+				&& msgOper == MsgOper_E.MSGOPER_QRY.getVal()) {
 			MsgQryAck_S msgQryAck_S = new MsgQryAck_S();
 			msgQryAck_S.setMsgQryAck_S(body);
 			if (msgQryAck_S.getUsCnt() > 0) {
 				if (msgQryAck_S.getUsError() == 0) {
-					addModeCmdActivity.deviceList.clear();
 					for (int i = 0; i < msgQryAck_S.getUsCnt(); i++) {
 						byte[] appl_S_Byte = Arrays.copyOfRange(
 								msgQryAck_S.getPucData(), i * Appl_S.getSize(),
@@ -85,27 +89,30 @@ public class AddModeCmdBroadcastReceiver extends BroadcastReceiver {
 			}
 		}
 
-		if (msgId == 5 && msgOper == 4) {
-			MsgCmdQryByDevAck_S msgCmdQryByDevAck_S = new MsgCmdQryByDevAck_S();
-			msgCmdQryByDevAck_S.setMsgCmdQryByDevAck_S(body);
-			if (msgCmdQryByDevAck_S.getUsCnt() > 0) {
-				if (msgCmdQryByDevAck_S.getUcErr() == 0) {
-					addModeCmdActivity.cmdList.clear();
-					for (int i = 0; i < msgCmdQryByDevAck_S.getUsCnt(); i++) {
+		if (msgId == MsgId_E.MSGID_CMD.getVal()
+				&& msgOper == MsgOper_E.MSGOPER_QRY.getVal()) {
+			MsgQryAck_S msgQryAck_S = new MsgQryAck_S();
+			msgQryAck_S.setMsgQryAck_S(body);
+			if (msgQryAck_S.getUsCnt() > 0) {
+				if (msgQryAck_S.getUsError() == 0) {
+					for (int i = 0; i < msgQryAck_S.getUsCnt(); i++) {
 						byte[] cmd_S_Byte = Arrays.copyOfRange(
-								msgCmdQryByDevAck_S.getPucData(),
-								i * Cmd_S.getSize(), (i + 1) * Cmd_S.getSize());
+								msgQryAck_S.getPucData(), i * Cmd_S.getSize(),
+								(i + 1) * Cmd_S.getSize());
 						Cmd_S cmd_S = new Cmd_S();
 						cmd_S.setCmd_S(cmd_S_Byte);
 						addModeCmdActivity.cmdList.add(cmd_S);
 					}
+					addModeCmdActivity.area_adapter.notifyDataSetChanged();
+					addModeCmdActivity.device_adapter.notifyDataSetChanged();
+					addModeCmdActivity.cmd_adapter.notifyDataSetChanged();
 				} else {
-					ErrCode_E.showError(activity,
-							msgCmdQryByDevAck_S.getUcErr());
+					ErrCode_E.showError(activity, msgQryAck_S.getUsError());
 				}
 			}
 		}
-		if (msgId == 9 && msgOper == 1) {
+		if (msgId == MsgId_E.MSGID_MODECMD.getVal()
+				&& msgOper == MsgOper_E.MSGOPER_ADD.getVal()) {
 			MsgAddAck_S msgAddAck_S = new MsgAddAck_S();
 			msgAddAck_S.setMsgAddAck_S(body);
 			if (msgAddAck_S.getUsError() == 0) {

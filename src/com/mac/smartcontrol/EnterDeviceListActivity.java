@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.mac.smartcontrol.adapter.EnterDeviceListAdapter;
 import com.mac.smartcontrol.broadcast.CmdBroadcastReceiver;
+import com.mac.smartcontrol.util.DisconnectionUtil;
 import com.mac.smartcontrol.util.WriteUtil;
 
 import define.entity.Appl_S;
@@ -47,6 +48,7 @@ public class EnterDeviceListActivity extends Activity {
 	public Appl_S appl_S = null;
 	public Rgn_S rgn_S;
 	public int msgId = -1;
+	IntentFilter filter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -131,6 +133,8 @@ public class EnterDeviceListActivity extends Activity {
 														Intent i = new Intent(
 																"IOException");
 														sendBroadcast(i);
+														DisconnectionUtil
+																.restart(EnterDeviceListActivity.this);
 													}
 												}
 												dialog.dismiss();
@@ -156,11 +160,18 @@ public class EnterDeviceListActivity extends Activity {
 		}
 		cmdBroadcastReceiver = new CmdBroadcastReceiver(
 				EnterDeviceListActivity.this);
-		IntentFilter filter = new IntentFilter();
-		filter.addAction("3_4");
-		filter.addAction("4_2");
-		filter.addAction("4_4");
-		filter.addAction("4_5");
+		filter = new IntentFilter();
+		filter.addAction(MsgId_E.MSGID_RGN.getVal() + "_"
+				+ MsgOper_E.MSGOPER_QRY.getVal());
+
+		filter.addAction(MsgId_E.MSGID_APPL.getVal() + "_"
+				+ MsgOper_E.MSGOPER_DEL.getVal());
+
+		filter.addAction(MsgId_E.MSGID_APPL.getVal() + "_"
+				+ MsgOper_E.MSGOPER_QRY.getVal());
+
+		filter.addAction(MsgId_E.MSGID_APPL.getVal() + "_"
+				+ MsgOper_E.MSGOPER_MAX.getVal());
 		filter.addAction("IOException");
 		registerReceiver(cmdBroadcastReceiver, filter);
 
@@ -185,6 +196,7 @@ public class EnterDeviceListActivity extends Activity {
 			// TODO Auto-generated catch block
 			Toast.makeText(EnterDeviceListActivity.this, "获取列表失败",
 					Toast.LENGTH_LONG).show();
+			DisconnectionUtil.restart(EnterDeviceListActivity.this);
 		}
 
 	}
@@ -242,4 +254,10 @@ public class EnterDeviceListActivity extends Activity {
 		return true;
 	}
 
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		registerReceiver(cmdBroadcastReceiver, filter);
+		super.onResume();
+	}
 }

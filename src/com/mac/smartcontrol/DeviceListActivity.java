@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.mac.smartcontrol.adapter.DeviceListAdapter;
 import com.mac.smartcontrol.broadcast.DeviceBroadcastReceiver;
+import com.mac.smartcontrol.util.DisconnectionUtil;
 import com.mac.smartcontrol.util.WriteUtil;
 
 import define.entity.Appl_S;
@@ -85,9 +86,14 @@ public class DeviceListActivity extends Activity {
 		deviceBroadcastReceiver = new DeviceBroadcastReceiver(
 				DeviceListActivity.this);
 		IntentFilter filter = new IntentFilter();
-		filter.addAction("4_2");
-		filter.addAction("4_4");
-		filter.addAction("4_5");
+		filter.addAction(MsgId_E.MSGID_APPL.getVal() + "_"
+				+ MsgOper_E.MSGOPER_QRY.getVal());
+
+		filter.addAction(MsgId_E.MSGID_APPL.getVal() + "_"
+				+ MsgOper_E.MSGOPER_DEL.getVal());
+
+		filter.addAction(MsgId_E.MSGID_APPL.getVal() + "_"
+				+ MsgOper_E.MSGOPER_MAX.getVal());
 		filter.addAction("IOException");
 		registerReceiver(deviceBroadcastReceiver, filter);
 
@@ -100,6 +106,8 @@ public class DeviceListActivity extends Activity {
 			// TODO Auto-generated catch block
 			Toast.makeText(DeviceListActivity.this, "获取列表失败", Toast.LENGTH_LONG)
 					.show();
+
+			DisconnectionUtil.restart(DeviceListActivity.this);
 		}
 
 	}

@@ -63,5 +63,15 @@
 
     <string name="btn_add">添　加</string>
     <string name="btn_test">测　试</string>
+    <string name="btn_study">学　习</string>
+    <string name="btn_modify">修　改</string>
+    <string name="control_light">电灯</string>
+    <string name="control_ac">空调</string>
+    <string name="ac_time">定时</string>
+    <string name="ac_wind_direction">风向</string>
+    <string name="ac_temperature">温度</string>
+    <string name="ac_air_out">通风</string>
+    <string name="ac_heating">制热</string>
+    <string name="ac_witch">开/关</string>
 
 </resources>

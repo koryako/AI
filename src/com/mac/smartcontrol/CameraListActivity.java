@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.mac.smartcontrol.adapter.CameraListAdapter;
 import com.mac.smartcontrol.broadcast.CameraBroadcastReceiver;
+import com.mac.smartcontrol.util.DisconnectionUtil;
 import com.mac.smartcontrol.util.WriteUtil;
 
 import define.entity.Cama_S;
@@ -85,9 +86,15 @@ public class CameraListActivity extends Activity {
 		cameraBroadcastReceiver = new CameraBroadcastReceiver(
 				CameraListActivity.this);
 		IntentFilter filter = new IntentFilter();
-		filter.addAction("8_2");
-		filter.addAction("8_4");
-		filter.addAction("8_5");
+		filter.addAction(MsgId_E.MSGID_CAMA.getVal() + "_"
+				+ MsgOper_E.MSGOPER_DEL.getVal());
+
+		filter.addAction(MsgId_E.MSGID_CAMA.getVal() + "_"
+				+ MsgOper_E.MSGOPER_QRY.getVal());
+
+		filter.addAction(MsgId_E.MSGID_CAMA.getVal() + "_"
+				+ MsgOper_E.MSGOPER_MAX.getVal());
+
 		filter.addAction("IOException");
 		registerReceiver(cameraBroadcastReceiver, filter);
 
@@ -100,6 +107,7 @@ public class CameraListActivity extends Activity {
 			// TODO Auto-generated catch block
 			Toast.makeText(CameraListActivity.this, "获取列表失败", Toast.LENGTH_LONG)
 					.show();
+			DisconnectionUtil.restart(CameraListActivity.this);
 		}
 
 	}

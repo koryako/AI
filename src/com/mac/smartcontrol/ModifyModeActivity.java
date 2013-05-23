@@ -14,11 +14,10 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.mac.smartcontrol.broadcast.EnterModeBroadcastReceiver;
 import com.mac.smartcontrol.broadcast.ModifyModeBroadcastReceiver;
+import com.mac.smartcontrol.util.DisconnectionUtil;
 import com.mac.smartcontrol.util.WriteUtil;
 
 import define.entity.Mode_S;
@@ -44,19 +43,24 @@ public class ModifyModeActivity extends Activity {
 		final EditText mode_name_Et = (EditText) findViewById(R.id.mode_name_et);
 		final EditText voice_name_Et = (EditText) findViewById(R.id.voice_name_et);
 		area_sp = (Spinner) findViewById(R.id.area_sp);
-		mode_S=new Mode_S();
-		Bundle bundle=getIntent().getExtras();
-		if(bundle!=null){
+		mode_S = new Mode_S();
+		Bundle bundle = getIntent().getExtras();
+		if (bundle != null) {
 			mode_S.setMode_S(bundle.getByteArray("mode"));
 			mode_name_Et.setText(mode_S.getSzName());
 			voice_name_Et.setText(mode_S.getSzVoice());
 		}
-		
+
 		modifyModeBroadcastReceiver = new ModifyModeBroadcastReceiver(
 				ModifyModeActivity.this);
 		IntentFilter filter = new IntentFilter();
 		filter.addAction("9_3");
 		filter.addAction("3_4");
+		filter.addAction(MsgId_E.MSGID_MODE.getVal() + "_"
+				+ MsgOper_E.MSGOPER_MOD.getVal());
+
+		filter.addAction(MsgId_E.MSGID_RGN.getVal() + "_"
+				+ MsgOper_E.MSGOPER_QRY.getVal());
 		filter.addAction("IOException");
 		registerReceiver(modifyModeBroadcastReceiver, filter);
 
@@ -69,6 +73,8 @@ public class ModifyModeActivity extends Activity {
 			// TODO Auto-generated catch block
 			Toast.makeText(ModifyModeActivity.this, "请确认网络是否开启,连接失败",
 					Toast.LENGTH_LONG).show();
+
+			DisconnectionUtil.restart(ModifyModeActivity.this);
 		}
 
 		area_adapter = new ArrayAdapter<String>(this,
@@ -105,7 +111,7 @@ public class ModifyModeActivity extends Activity {
 					Toast.makeText(ModifyModeActivity.this, "名称太长",
 							Toast.LENGTH_LONG).show();
 					return;
-				}				
+				}
 				mode_S.setSzName(mode_name);
 				mode_S.setSzVoice(voice_name);
 				mode_S.setUsRgnIdx(areaList.get(
@@ -119,6 +125,8 @@ public class ModifyModeActivity extends Activity {
 					// TODO Auto-generated catch block
 					Toast.makeText(ModifyModeActivity.this, "请确认网络是否开启,连接失败",
 							Toast.LENGTH_LONG).show();
+
+					DisconnectionUtil.restart(ModifyModeActivity.this);
 				}
 			}
 		});

@@ -18,6 +18,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.mac.smartcontrol.broadcast.AddModeCmdBroadcastReceiver;
+import com.mac.smartcontrol.util.DisconnectionUtil;
 import com.mac.smartcontrol.util.WriteUtil;
 
 import define.entity.Appl_S;
@@ -52,11 +53,16 @@ public class AddModeCmdActivity extends Activity {
 
 	private String[] device_Type = { "家用电器", "感应器", "摄像头" };
 	Mode_S mode_S = null;
-	short typeId = -1;
+	short typeId = 1;
 	short areaId = -1;
 	short deviceId = -1;
 	short cmdId = -1;
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.Activity#onCreate(android.os.Bundle)
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -76,7 +82,7 @@ public class AddModeCmdActivity extends Activity {
 			mode_S.setMode_S(bundle.getByteArray("mode"));
 		}
 		modeCmd_S = new ModeCmd_S();
-		final Spinner device_type_sp = (Spinner) findViewById(R.id.device_type_sp);
+		Spinner device_type_sp = (Spinner) findViewById(R.id.device_type_sp);
 		final Spinner area_sp = (Spinner) findViewById(R.id.area_sp);
 		final Spinner device_sp = (Spinner) findViewById(R.id.device_sp);
 		final Spinner cmd_sp = (Spinner) findViewById(R.id.cmd_sp);
@@ -92,7 +98,7 @@ public class AddModeCmdActivity extends Activity {
 		area_adapter
 				.setDropDownViewResource(android.R.layout.simple_spinner_item);
 		area_sp.setAdapter(area_adapter);
-
+		area_sp.setSelection(0, false);
 		device_adapter = new ArrayAdapter<String>(this,
 				R.layout.simple_spinner_item, deviceListStr);
 		device_adapter
@@ -107,6 +113,21 @@ public class AddModeCmdActivity extends Activity {
 
 		// ImageView study_Iv = (ImageView) findViewById(R.id.study_iv);
 		// study_Iv.setVisibility(View.INVISIBLE);
+
+		addCmdBroadcastReceiver = new AddModeCmdBroadcastReceiver(
+				AddModeCmdActivity.this);
+		IntentFilter filter = new IntentFilter();
+		filter.addAction(MsgId_E.MSGID_RGN.getVal() + "_"
+				+ MsgOper_E.MSGOPER_QRY.getVal());
+		filter.addAction(MsgId_E.MSGID_APPL.getVal() + "_"
+				+ MsgOper_E.MSGOPER_QRY.getVal());
+		filter.addAction(MsgId_E.MSGID_CMD.getVal() + "_"
+				+ MsgOper_E.MSGOPER_QRY.getVal());
+		filter.addAction(MsgId_E.MSGID_MODECMD.getVal() + "_"
+				+ MsgOper_E.MSGOPER_ADD.getVal());
+		filter.addAction("IOException");
+		registerReceiver(addCmdBroadcastReceiver, filter);
+
 		device_type_sp.setOnItemSelectedListener(new OnItemSelectedListener() {
 
 			@Override
@@ -134,17 +155,19 @@ public class AddModeCmdActivity extends Activity {
 				deviceIDList.clear();
 				for (int i = 0; i < deviceList.size(); i++) {
 					Appl_S appl_S = deviceList.get(i);
-					if (areaId == appl_S.getUsRgnIdx()) {
+					if (areaId == appl_S.getUsRgnIdx()
+							&& appl_S.getUcType() == typeId) {
 						deviceIDList.add(appl_S.getUsIdx());
 						deviceListStr.add(appl_S.getSzName());
 					}
 				}
+				device_adapter.notifyDataSetChanged();
+				cmd_adapter.notifyDataSetChanged();
 			}
 
 			@Override
 			public void onNothingSelected(AdapterView<?> arg0) {
 				// TODO Auto-generated method stub
-
 			}
 		});
 
@@ -164,6 +187,7 @@ public class AddModeCmdActivity extends Activity {
 						cmdListStr.add(cmd_S.getSzName());
 					}
 				}
+				cmd_adapter.notifyDataSetChanged();
 			}
 
 			@Override
@@ -189,18 +213,8 @@ public class AddModeCmdActivity extends Activity {
 			}
 		});
 
-		addCmdBroadcastReceiver = new AddModeCmdBroadcastReceiver(
-				AddModeCmdActivity.this);
-		IntentFilter filter = new IntentFilter();
-		filter.addAction("3_4");
-		filter.addAction("4_4");
-		filter.addAction("5_4");
-		filter.addAction("10_1");
-		filter.addAction("IOException");
-		registerReceiver(addCmdBroadcastReceiver, filter);
-
 		try {
-			WriteUtil.write(MsgId_E.MSGID_CMD.getVal(), 0,
+			WriteUtil.write(MsgId_E.MSGID_RGN.getVal(), 0,
 					MsgType_E.MSGTYPE_REQ.getVal(), MsgOper_E.MSGOPER_QRY
 							.getVal(), (short) 2, new MsgQryReq_S((short) 0)
 							.getMsgQryReq_S());
@@ -208,14 +222,17 @@ public class AddModeCmdActivity extends Activity {
 					MsgType_E.MSGTYPE_REQ.getVal(), MsgOper_E.MSGOPER_QRY
 							.getVal(), (short) 2, new MsgQryReq_S((short) 0)
 							.getMsgQryReq_S());
-			WriteUtil.write(MsgId_E.MSGID_RGN.getVal(), 2,
+
+			WriteUtil.write(MsgId_E.MSGID_CMD.getVal(), 2,
 					MsgType_E.MSGTYPE_REQ.getVal(), MsgOper_E.MSGOPER_QRY
 							.getVal(), (short) 2, new MsgQryReq_S((short) 0)
 							.getMsgQryReq_S());
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			Toast.makeText(AddModeCmdActivity.this, "请确认网络是否开启,连接失败",
 					Toast.LENGTH_LONG).show();
+			DisconnectionUtil.restart(AddModeCmdActivity.this);
 		}
 
 		ImageView add_Iv = (ImageView) findViewById(R.id.add);
@@ -256,6 +273,7 @@ public class AddModeCmdActivity extends Activity {
 					// TODO Auto-generated catch block
 					Toast.makeText(AddModeCmdActivity.this, "请确认网络是否开启,连接失败",
 							Toast.LENGTH_LONG).show();
+					DisconnectionUtil.restart(AddModeCmdActivity.this);
 				}
 			}
 		});

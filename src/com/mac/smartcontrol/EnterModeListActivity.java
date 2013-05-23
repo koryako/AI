@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.mac.smartcontrol.adapter.EnterModeListAdapter;
 import com.mac.smartcontrol.broadcast.EnterModeBroadcastReceiver;
+import com.mac.smartcontrol.util.DisconnectionUtil;
 import com.mac.smartcontrol.util.WriteUtil;
 
 import define.entity.Mode_S;
@@ -43,6 +44,7 @@ public class EnterModeListActivity extends Activity {
 	TextView mode_title_tv;
 	public Rgn_S rgn_S = null;
 	public Mode_S mode_S = null;
+	IntentFilter filter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -124,6 +126,8 @@ public class EnterModeListActivity extends Activity {
 												Intent i = new Intent(
 														"IOException");
 												sendBroadcast(i);
+												DisconnectionUtil
+														.restart(EnterModeListActivity.this);
 											}
 										}
 										dialog.dismiss();
@@ -144,10 +148,13 @@ public class EnterModeListActivity extends Activity {
 		});
 		modeBroadcastReceiver = new EnterModeBroadcastReceiver(
 				EnterModeListActivity.this);
-		IntentFilter filter = new IntentFilter();
-		filter.addAction("9_2");
-		filter.addAction("9_4");
-		filter.addAction("9_5");
+		filter = new IntentFilter();
+		filter.addAction(MsgId_E.MSGID_MODE.getVal() + "_"
+				+ MsgOper_E.MSGOPER_DEL.getVal());
+		filter.addAction(MsgId_E.MSGID_MODE.getVal() + "_"
+				+ MsgOper_E.MSGOPER_QRY.getVal());
+		filter.addAction(MsgId_E.MSGID_MODE.getVal() + "_"
+				+ MsgOper_E.MSGOPER_MAX.getVal());
 		filter.addAction("IOException");
 		registerReceiver(modeBroadcastReceiver, filter);
 
@@ -160,6 +167,8 @@ public class EnterModeListActivity extends Activity {
 			// TODO Auto-generated catch block
 			Toast.makeText(EnterModeListActivity.this, "获取列表失败",
 					Toast.LENGTH_LONG).show();
+			DisconnectionUtil.restart(EnterModeListActivity.this);
+
 		}
 
 	}
@@ -213,4 +222,10 @@ public class EnterModeListActivity extends Activity {
 		return true;
 	}
 
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		registerReceiver(modeBroadcastReceiver, filter);
+		super.onResume();
+	}
 }
