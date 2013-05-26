@@ -7,6 +7,8 @@ import com.mac.smartcontrol.util.WriteUtil;
 
 import define.entity.Message;
 import define.entity.MessageQueue;
+import define.oper.MsgOperUser_E;
+import define.type.MsgId_E;
 import define.type.MsgType_E;
 
 public class MessageQueueRunnable implements Runnable {
@@ -34,8 +36,10 @@ public class MessageQueueRunnable implements Runnable {
 			}
 			for (int i = 0; i < MessageQueue.getList().size(); i++) {
 				Message message = MessageQueue.getList().get(i);
-				if (message.getMessage_Header().getUsMsgId() == 1
-						&& message.getMessage_Header().getUcMsgOper() == 5) {
+				if (message.getMessage_Header().getUsMsgId() == MsgId_E.MSGID_USER
+						.getVal()
+						&& message.getMessage_Header().getUcMsgOper() == MsgOperUser_E.MSGOPER_USER_LOGIN
+								.getVal()) {
 					WriteUtil.usSsnId = message.getMessage_Header()
 							.getUsSsnId();
 				}

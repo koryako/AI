@@ -12,9 +12,13 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
+import com.mac.smartcontrol.ACActivity;
 import com.mac.smartcontrol.CmdListActivity;
 import com.mac.smartcontrol.EnterDeviceListActivity;
+import com.mac.smartcontrol.HDPlayActivity;
 import com.mac.smartcontrol.R;
+import com.mac.smartcontrol.SwitchActivity;
+import com.mac.smartcontrol.TVActivity;
 import com.mac.smartcontrol.widget.MarqueeText;
 
 import define.entity.Appl_S;
@@ -77,31 +81,40 @@ public class EnterDeviceListAdapter extends BaseAdapter {
 			if (rgn_S != null) {
 				area_name_Tv.setText(rgn_S.getSzName());
 			}
+			final Intent intent = new Intent();
+			intent.putExtra("device", appl_S.getAppl_S());
+
 			device_name_Tv.setText(appl_S.getSzName());
-			if (appl_S.getUcType() == ApplType_E.APPL_TYPE_LIGHT.getVal()) {
+			if (appl_S.getUcType() == ApplType_E.APPL_TYPE_SWITCH.getVal()) {
 				device_icon_Iv.setImageResource(R.drawable.light_icon);
+				intent.setClass(context, SwitchActivity.class);
 			} else if (appl_S.getUcType() == ApplType_E.APPL_TYPE_TVSET
 					.getVal()) {
 				device_icon_Iv.setImageResource(R.drawable.tv_icon);
-			} else if (appl_S.getUcType() == ApplType_E.APPL_TYPE_STB.getVal()) {
+				intent.setClass(context, TVActivity.class);
+			} else if (appl_S.getUcType() == ApplType_E.APPL_TYPE_HDPLAY
+					.getVal()) {
 				device_icon_Iv.setImageResource(R.drawable.tv_box_icon);
+				intent.setClass(context, HDPlayActivity.class);
 			} else if (appl_S.getUcType() == ApplType_E.APPL_TYPE_AIRCOND
 					.getVal()) {
 				device_icon_Iv.setImageResource(R.drawable.ac_icon);
+				intent.setClass(context, ACActivity.class);
 			} else if (appl_S.getUcType() == ApplType_E.APPL_TYPE_CURTAIN
 					.getVal()) {
 				device_icon_Iv.setImageResource(R.drawable.curtain_icon);
+				intent.setClass(context, SwitchActivity.class);
 			} else if (appl_S.getUcType() == ApplType_E.APPL_TYPE_CUSTOM
 					.getVal()) {
 				device_icon_Iv.setImageResource(R.drawable.user_defined_icon);
+				intent.setClass(context, SwitchActivity.class);
 			}
 			enter_Iv.setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
-					Intent intent = new Intent();
-					intent.putExtra("device", appl_S.getAppl_S());
+
 					int msgId = ((EnterDeviceListActivity) context).msgId;
 					if (msgId == MsgId_E.MSGID_APPL.getVal()) {
 						intent.setClass(context, CmdListActivity.class);

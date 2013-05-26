@@ -41,7 +41,7 @@
                     android:id="@+id/textView2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/ac_time" />
+                    android:text="@string/control_ac_time" />
 
                 <ImageView
                     android:id="@+id/time_iv"
@@ -63,7 +63,7 @@
                     android:id="@+id/textView3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/ac_wind_direction" />
+                    android:text="@string/control_ac_wind_direction" />
 
                 <ImageView
                     android:id="@+id/wind_d_iv"
@@ -97,7 +97,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/ac_temperature"
+                        android:text="@string/control_ac_temperature"
                         android:textColor="@color/black" />
 
                     <ImageView
@@ -126,7 +126,7 @@
                         android:id="@+id/textView3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/ac_witch"
+                        android:text="@string/control_ac_witch"
                         android:textColor="@color/black" />
 
                     <ImageView
@@ -147,7 +147,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/ac_air_out"
+                        android:text="@string/control_ac_air_out"
                         android:textColor="@color/black" />
 
                     <ImageView
@@ -161,7 +161,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:text="@string/ac_heating"
+                        android:text="@string/control_ac_heating"
                         android:textColor="@color/black" />
 
                     <ImageView

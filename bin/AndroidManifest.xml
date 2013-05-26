@@ -33,6 +33,7 @@
         <activity android:name=".LoginActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -96,13 +97,20 @@
         </activity>
         <activity android:name=".AddModeActivity" >
         </activity>
-         <activity android:name=".ModifyModeActivity" >
+        <activity android:name=".ModifyModeActivity" >
         </activity>
         <activity android:name=".ModeCmdListActivity" >
         </activity>
         <activity android:name=".AddModeCmdActivity" >
         </activity>
-        
+        <activity android:name=".ACActivity" >
+        </activity>
+        <activity android:name=".SwitchActivity" >
+        </activity>
+        <activity android:name=".TVActivity" >
+        </activity>
+        <activity android:name=".HDPlayActivity" >
+        </activity>
     </application>
 
 </manifest>

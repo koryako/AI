@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.mac.smartcontrol.util.NotificationUtil;
@@ -17,10 +16,10 @@ import com.mac.smartcontrol.util.NotificationUtil;
 public class MainActivity extends ActivityGroup {
 	private LinearLayout container = null;
 	private int currentPage = 0;
-	ImageView manage_Iv = null;
-	ImageView control_Iv = null;
-	ImageView camera_Iv = null;
-	ImageView location_Iv = null;
+	LinearLayout manage_ll = null;
+	LinearLayout control_ll = null;
+	LinearLayout camera_ll = null;
+	LinearLayout location_ll = null;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -33,12 +32,12 @@ public class MainActivity extends ActivityGroup {
 		// 设置视图
 		container = (LinearLayout) findViewById(R.id.containerBody);
 		// 模块1
-		manage_Iv = (ImageView) findViewById(R.id.menu_manage_iv);
-		control_Iv = (ImageView) findViewById(R.id.menu_control_iv);
-		camera_Iv = (ImageView) findViewById(R.id.menu_camera_iv);
-		location_Iv = (ImageView) findViewById(R.id.menu_location_iv);
+		manage_ll = (LinearLayout) findViewById(R.id.menu_manage_ll);
+		control_ll = (LinearLayout) findViewById(R.id.menu_control_ll);
+		camera_ll = (LinearLayout) findViewById(R.id.menu_camera_ll);
+		location_ll = (LinearLayout) findViewById(R.id.menu_location_ll);
 
-		manage_Iv.setOnClickListener(new OnClickListener() {
+		manage_ll.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				initFocus();
@@ -49,13 +48,14 @@ public class MainActivity extends ActivityGroup {
 						new Intent(MainActivity.this, ManageActivity.class)
 								.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
 						.getDecorView());
-				manage_Iv.setImageResource(R.drawable.menu_manage_btn_focus);
+				manage_ll
+						.setBackgroundResource(R.drawable.menu_manage_btn_focus);
 			}
 		});
 
 		// 模块2
 
-		control_Iv.setOnClickListener(new OnClickListener() {
+		control_ll.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				initFocus();
@@ -67,13 +67,14 @@ public class MainActivity extends ActivityGroup {
 				container.removeAllViews();
 				container.addView(getLocalActivityManager().startActivity(
 						"control", intent).getDecorView());
-				control_Iv.setImageResource(R.drawable.menu_device_btn_focus);
+				control_ll
+						.setBackgroundResource(R.drawable.menu_device_btn_focus);
 			}
 		});
 
 		// 模块3
 
-		camera_Iv.setOnClickListener(new OnClickListener() {
+		camera_ll.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				initFocus();
@@ -84,13 +85,14 @@ public class MainActivity extends ActivityGroup {
 				// new Intent(MainActivity.this, CameraActivity.class)
 				// .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
 				// .getDecorView());
-				camera_Iv.setImageResource(R.drawable.menu_camera_btn_focus);
+				camera_ll
+						.setBackgroundResource(R.drawable.menu_camera_btn_focus);
 			}
 		});
 
 		// 模块4
 
-		location_Iv.setOnClickListener(new OnClickListener() {
+		location_ll.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				initFocus();
@@ -101,23 +103,23 @@ public class MainActivity extends ActivityGroup {
 						new Intent(MainActivity.this, LocationActivity.class)
 								.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
 						.getDecorView());
-				location_Iv
-						.setImageResource(R.drawable.menu_location_btn_focus);
+				location_ll
+						.setBackgroundResource(R.drawable.menu_location_btn_focus);
 			}
 		});
 
 		switch (currentPage) {
 		case 0:
-			manage_Iv.performClick();
+			manage_ll.performClick();
 			break;
 		case 1:
-			control_Iv.performClick();
+			control_ll.performClick();
 			break;
 		case 2:
-			camera_Iv.performClick();
+			camera_ll.performClick();
 			break;
 		case 3:
-			location_Iv.performClick();
+			location_ll.performClick();
 			break;
 		default:
 			break;
@@ -127,16 +129,16 @@ public class MainActivity extends ActivityGroup {
 	private void initFocus() {
 		switch (currentPage) {
 		case 0:
-			manage_Iv.setImageResource(R.drawable.menu_manage_btn);
+			manage_ll.setBackgroundResource(R.drawable.menu_manage_btn);
 			break;
 		case 1:
-			control_Iv.setImageResource(R.drawable.menu_device_btn);
+			control_ll.setBackgroundResource(R.drawable.menu_device_btn);
 			break;
 		case 2:
-			camera_Iv.setImageResource(R.drawable.menu_camera_btn);
+			camera_ll.setBackgroundResource(R.drawable.menu_camera_btn);
 			break;
 		case 3:
-			location_Iv.setImageResource(R.drawable.menu_location_btn);
+			location_ll.setBackgroundResource(R.drawable.menu_location_btn);
 			break;
 		default:
 			break;

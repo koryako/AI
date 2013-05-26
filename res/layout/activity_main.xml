@@ -1,71 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent" android:orientation="vertical"
-        android:background="@drawable/bg"
-    android:layout_height="fill_parent">
-        <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" 
-        android:background="@drawable/manage_bg_title"
-        >
-    </LinearLayout>
-    
-    
-    <!-- 中间动态加载View -->
-    <LinearLayout android:measureAllChildren="true" android:id="@+id/containerBody"
-        android:layout_weight="1" android:layout_height="fill_parent"
-        android:layout_width="fill_parent">
-    </LinearLayout>
-    
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/bg"
+    android:orientation="vertical" >
 
-    
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" 
+        android:layout_height="wrap_content"
+        android:background="@drawable/manage_bg_title" >
+    </LinearLayout>
+
+    <!-- 中间动态加载View -->
+
+    <LinearLayout
+        android:id="@+id/containerBody"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:measureAllChildren="true" >
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
         android:background="@drawable/menu_bg"
-android:weightSum="5"        
         android:gravity="center"
-        >
+        android:weightSum="5" >
 
-        <ImageView
-            android:id="@+id/menu_manage_iv"
+        <LinearLayout
+            android:id="@+id/menu_manage_ll"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/menu_manage_iv_selector" 
             android:layout_weight="1"
-            />
+            android:background="@drawable/menu_manage_iv_selector"
+            android:gravity="center|bottom" >
 
-        <ImageView
-            android:id="@+id/menu_control_iv"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="2dp"
+                android:text="@string/menu_manage"
+                android:textColor="@color/white"
+                android:textSize="@dimen/menu_text_size" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/menu_control_ll"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/menu_control_iv_selector" 
             android:layout_weight="1"
-            />
+            android:background="@drawable/menu_control_iv_selector"
+            android:gravity="center|bottom" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="2dp"
+                android:text="@string/menu_control"
+                android:textColor="@color/white"
+                android:textSize="@dimen/menu_text_size" />
+        </LinearLayout>
 
         <ImageView
             android:id="@+id/menu_main_iv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/menu_main_iv_selector" 
             android:layout_weight="1"
-            />
+            android:src="@drawable/menu_main_iv_selector" />
 
-        <ImageView
-            android:id="@+id/menu_camera_iv"
+        <LinearLayout
+            android:id="@+id/menu_camera_ll"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/menu_camera_iv_selector" 
             android:layout_weight="1"
-            />
+            android:background="@drawable/menu_camera_iv_selector"
+            android:gravity="center|bottom" >
 
-        <ImageView
-            android:id="@+id/menu_location_iv"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="2dp"
+                android:text="@string/menu_camera"
+                android:textColor="@color/white"
+                android:textSize="@dimen/menu_text_size" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/menu_location_ll"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/menu_location_iv_selector" 
             android:layout_weight="1"
-            />
-        
+            android:background="@drawable/menu_location_iv_selector"
+            android:gravity="center|bottom" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="2dp"
+                android:text="@string/menu_location"
+                android:textColor="@color/white"
+                android:textSize="@dimen/menu_text_size" />
+        </LinearLayout>
     </LinearLayout>
+
 </LinearLayout>

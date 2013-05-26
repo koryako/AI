@@ -11,11 +11,13 @@ public class Cmd_S {
 	String szName; // 名称
 	String szVoice; // 语音文本，用于匹配语音指令，仅支持汉字
 	short usCtrlIdx; // 指令执行的控制器
+	byte ucType;
 	byte ucCode; // 指令码
 	int uiPara; // 指令参数
 
 	public Cmd_S(short usIdx, byte ucDevType, short usDevIdx, String szName,
-			String szVoice, short usCtrlIdx, byte ucCode, int uiPara) {
+			String szVoice, short usCtrlIdx, byte ucType, byte ucCode,
+			int uiPara) {
 		super();
 		this.usIdx = usIdx;
 		this.ucDevType = ucDevType;
@@ -23,6 +25,7 @@ public class Cmd_S {
 		this.szName = szName;
 		this.szVoice = szVoice;
 		this.usCtrlIdx = usCtrlIdx;
+		this.ucType = ucType;
 		this.ucCode = ucCode;
 		this.uiPara = uiPara;
 	}
@@ -32,8 +35,16 @@ public class Cmd_S {
 		// TODO Auto-generated constructor stub
 	}
 
+	public byte getUcType() {
+		return ucType;
+	}
+
+	public void setUcType(byte ucType) {
+		this.ucType = ucType;
+	}
+
 	public static short getSize() {
-		return 108;
+		return 109;
 	}
 
 	public short getUsIdx() {
@@ -101,7 +112,7 @@ public class Cmd_S {
 	}
 
 	public byte[] getCmd_S() {
-		ByteBuffer bb_Msg = ByteBuffer.allocate(108);
+		ByteBuffer bb_Msg = ByteBuffer.allocate(109);
 		bb_Msg.put(FormatTransfer.toLH(usIdx));
 		bb_Msg.put(ucDevType);
 		bb_Msg.put(FormatTransfer.toLH(usDevIdx));
@@ -119,6 +130,7 @@ public class Cmd_S {
 		}
 
 		bb_Msg.put(FormatTransfer.toLH(usCtrlIdx));
+		bb_Msg.put(ucType);
 		bb_Msg.put(ucCode);
 		bb_Msg.put(FormatTransfer.toLH(uiPara));
 		return bb_Msg.array();
@@ -160,9 +172,10 @@ public class Cmd_S {
 		usCtrlIdx = FormatTransfer.lBytesToShort(usCtrlIdx_b);
 
 		ucCode = b[103];
+		ucCode = b[104];
 
 		byte[] uiPara_b = new byte[4];
-		System.arraycopy(b, 104, uiPara_b, 0, 4);
+		System.arraycopy(b, 105, uiPara_b, 0, 4);
 		uiPara = FormatTransfer.lBytesToInt(uiPara_b);
 
 	}
