@@ -12,9 +12,11 @@ import com.mac.smartcontrol.ModeCmdListActivity;
 import com.mac.smartcontrol.SocketService;
 
 import define.entity.Appl_S;
+import define.entity.Cama_S;
 import define.entity.Cmd_S;
 import define.entity.ModeCmd_S;
 import define.entity.Rgn_S;
+import define.entity.Sens_S;
 import define.oper.MsgOper_E;
 import define.oper.body.ack.MsgDelAck_S;
 import define.oper.body.ack.MsgQryAck_S;
@@ -64,6 +66,8 @@ public class ModeCmdBroadcastReceiver extends BroadcastReceiver {
 					}
 					modeCmdListActivity.modecmdListAdapter
 							.notifyDataSetChanged();
+					modeCmdListActivity.modecmdListAdapter
+							.notifyDataSetInvalidated();
 				} else {
 					ErrCode_E.showError(context, msgQryAck_S.getUsError());
 				}
@@ -87,10 +91,76 @@ public class ModeCmdBroadcastReceiver extends BroadcastReceiver {
 					}
 					modeCmdListActivity.modecmdListAdapter
 							.notifyDataSetChanged();
+					modeCmdListActivity.modecmdListAdapter
+							.notifyDataSetInvalidated();
 				} else {
 					ErrCode_E.showError(context, msgQryAck_S.getUsError());
 				}
 			}
+		}
+		if ((msgId == MsgId_E.MSGID_SENS.getVal() && msgOper == MsgOper_E.MSGOPER_QRY
+				.getVal())
+				|| (msgId == MsgId_E.MSGID_SENS.getVal() && msgOper == MsgOper_E.MSGOPER_MAX
+						.getVal())) {
+			MsgQryAck_S msgQryAck_S = new MsgQryAck_S();
+			msgQryAck_S.setMsgQryAck_S(body);
+			if (msgQryAck_S.getUsCnt() > 0) {
+				if (msgQryAck_S.getUsError() == 0) {
+					for (int i = 0; i < msgQryAck_S.getUsCnt(); i++) {
+						byte[] sens_S_Byte = Arrays.copyOfRange(
+								msgQryAck_S.getPucData(), i * Sens_S.getSize(),
+								(i + 1) * Sens_S.getSize());
+						Sens_S sens_S = new Sens_S();
+						sens_S.setSens_S(sens_S_Byte);
+						modeCmdListActivity.senseMap.put(sens_S.getUsIdx(),
+								sens_S);
+					}
+					// flag++;
+					// if (flag == 5) {
+					// addModeCmdActivity.area_sp
+					// .setAdapter(addModeCmdActivity.area_adapter);
+					// addModeCmdActivity.area_adapter.notifyDataSetChanged();
+					// addModeCmdActivity.device_adapter.notifyDataSetChanged();
+					// addModeCmdActivity.cmd_adapter.notifyDataSetChanged();
+					// flag = 0;
+					// }
+				} else {
+					ErrCode_E.showError(activity, msgQryAck_S.getUsError());
+				}
+			}
+		}
+
+		if ((msgId == MsgId_E.MSGID_CAMA.getVal() && msgOper == MsgOper_E.MSGOPER_QRY
+				.getVal())
+				|| (msgId == MsgId_E.MSGID_CAMA.getVal() && msgOper == MsgOper_E.MSGOPER_MAX
+						.getVal())) {
+			MsgQryAck_S msgQryAck_S = new MsgQryAck_S();
+			msgQryAck_S.setMsgQryAck_S(body);
+			if (msgQryAck_S.getUsCnt() > 0) {
+				if (msgQryAck_S.getUsError() == 0) {
+					for (int i = 0; i < msgQryAck_S.getUsCnt(); i++) {
+						byte[] cama_S_Byte = Arrays.copyOfRange(
+								msgQryAck_S.getPucData(), i * Cama_S.getSize(),
+								(i + 1) * Cama_S.getSize());
+						Cama_S cama_S = new Cama_S();
+						cama_S.setCama_S(cama_S_Byte);
+						modeCmdListActivity.cameraMap.put(cama_S.getUsIdx(),
+								cama_S);
+					}
+					// flag++;
+					// if (flag == 5) {
+					// addModeCmdActivity.area_sp
+					// .setAdapter(addModeCmdActivity.area_adapter);
+					// addModeCmdActivity.area_adapter.notifyDataSetChanged();
+					// addModeCmdActivity.device_adapter.notifyDataSetChanged();
+					// addModeCmdActivity.cmd_adapter.notifyDataSetChanged();
+					// flag = 0;
+					// }
+				} else {
+					ErrCode_E.showError(activity, msgQryAck_S.getUsError());
+				}
+			}
+
 		}
 
 		if (msgId == MsgId_E.MSGID_CMD.getVal()
@@ -109,6 +179,8 @@ public class ModeCmdBroadcastReceiver extends BroadcastReceiver {
 					}
 					modeCmdListActivity.modecmdListAdapter
 							.notifyDataSetChanged();
+					modeCmdListActivity.modecmdListAdapter
+							.notifyDataSetInvalidated();
 				} else {
 					ErrCode_E.showError(activity, msgQryAck_S.getUsError());
 				}
@@ -147,6 +219,8 @@ public class ModeCmdBroadcastReceiver extends BroadcastReceiver {
 					}
 					modeCmdListActivity.modecmdListAdapter
 							.notifyDataSetChanged();
+					modeCmdListActivity.modecmdListAdapter
+							.notifyDataSetInvalidated();
 				}
 			} else {
 				ErrCode_E.showError(context, msgQryAck_S.getUsError());

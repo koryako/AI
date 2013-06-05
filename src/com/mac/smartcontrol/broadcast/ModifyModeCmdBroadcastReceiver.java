@@ -32,6 +32,8 @@ public class ModifyModeCmdBroadcastReceiver extends BroadcastReceiver {
 		this.activity = activity;
 	}
 
+	int flag = 0;
+
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		// TODO Auto-generated method stub
@@ -65,11 +67,15 @@ public class ModifyModeCmdBroadcastReceiver extends BroadcastReceiver {
 						addModeCmdActivity.areaList.add(rgn_S);
 						addModeCmdActivity.areaListStr.add(rgn_S.getSzName());
 					}
-					addModeCmdActivity.area_adapter.notifyDataSetChanged();
+					// addModeCmdActivity.area_adapter.notifyDataSetChanged();
 
 				} else {
 					ErrCode_E.showError(context, msgQryAck_S.getUsError());
 				}
+			}
+			flag++;
+			if (flag == 5) {
+				addModeCmdActivity.init_Info();
 			}
 		}
 
@@ -87,10 +93,15 @@ public class ModifyModeCmdBroadcastReceiver extends BroadcastReceiver {
 						appl_S.setAppl_S(appl_S_Byte);
 						addModeCmdActivity.deviceList.add(appl_S);
 					}
-					addModeCmdActivity.device_adapter.notifyDataSetChanged();
+					// addModeCmdActivity.device_adapter.notifyDataSetChanged();
+
 				} else {
 					ErrCode_E.showError(context, msgQryAck_S.getUsError());
 				}
+			}
+			flag++;
+			if (flag == 5) {
+				addModeCmdActivity.init_Info();
 			}
 		}
 
@@ -110,18 +121,23 @@ public class ModifyModeCmdBroadcastReceiver extends BroadcastReceiver {
 						sens_S.setSens_S(sens_S_Byte);
 						addModeCmdActivity.senseList.add(sens_S);
 					}
+
 					// flag++;
 					// if (flag == 5) {
 					// addModeCmdActivity.area_sp
 					// .setAdapter(addModeCmdActivity.area_adapter);
 					// addModeCmdActivity.area_adapter.notifyDataSetChanged();
-					addModeCmdActivity.device_adapter.notifyDataSetChanged();
+					// addModeCmdActivity.device_adapter.notifyDataSetChanged();
 					// addModeCmdActivity.cmd_adapter.notifyDataSetChanged();
 					// flag = 0;
 					// }
 				} else {
 					ErrCode_E.showError(activity, msgQryAck_S.getUsError());
 				}
+			}
+			flag++;
+			if (flag == 5) {
+				addModeCmdActivity.init_Info();
 			}
 		}
 
@@ -146,13 +162,17 @@ public class ModifyModeCmdBroadcastReceiver extends BroadcastReceiver {
 					// addModeCmdActivity.area_sp
 					// .setAdapter(addModeCmdActivity.area_adapter);
 					// addModeCmdActivity.area_adapter.notifyDataSetChanged();
-					addModeCmdActivity.device_adapter.notifyDataSetChanged();
+					// addModeCmdActivity.device_adapter.notifyDataSetChanged();
 					// addModeCmdActivity.cmd_adapter.notifyDataSetChanged();
 					// flag = 0;
 					// }
 				} else {
 					ErrCode_E.showError(activity, msgQryAck_S.getUsError());
 				}
+			}
+			flag++;
+			if (flag == 5) {
+				addModeCmdActivity.init_Info();
 			}
 
 		}
@@ -171,13 +191,18 @@ public class ModifyModeCmdBroadcastReceiver extends BroadcastReceiver {
 						cmd_S.setCmd_S(cmd_S_Byte);
 						addModeCmdActivity.cmdList.add(cmd_S);
 					}
+
 					// addModeCmdActivity.area_adapter.notifyDataSetChanged();
 					// addModeCmdActivity.device_adapter.notifyDataSetChanged();
-					addModeCmdActivity.cmd_adapter.notifyDataSetChanged();
-					addModeCmdActivity.init_Info();
+					// addModeCmdActivity.cmd_adapter.notifyDataSetChanged();
+
 				} else {
 					ErrCode_E.showError(activity, msgQryAck_S.getUsError());
 				}
+			}
+			flag++;
+			if (flag == 5) {
+				addModeCmdActivity.init_Info();
 			}
 		}
 

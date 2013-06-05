@@ -50,36 +50,59 @@ public class EnterModeListAdapter extends BaseAdapter {
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		// TODO Auto-generated method stub
+		ViewHolder holder = null;
 		if (convertView == null) {
 			LayoutInflater localinflater = (LayoutInflater) context
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			convertView = localinflater.inflate(R.layout.enter_mode_list_item,
 					null);
-			TextView mode_name_Tv = (TextView) convertView
+			holder = new ViewHolder();
+			convertView.setTag(holder);
+			holder.mode_name_Tv = (TextView) convertView
 					.findViewById(R.id.mode_name_tv);
-			MarqueeText voice_name_Tv = (MarqueeText) convertView
+			holder.voice_name_Tv = (MarqueeText) convertView
 					.findViewById(R.id.voice_name_tv);
-			MarqueeText area_name_Tv = (MarqueeText) convertView
+			holder.area_name_Tv = (MarqueeText) convertView
 					.findViewById(R.id.area_name_tv);
-			ImageView enter_Iv = (ImageView) convertView
+			holder.enter_Iv = (ImageView) convertView
 					.findViewById(R.id.enter_btn);
-			final Mode_S mode_S = modeList.get(position);
-			mode_name_Tv.setText(mode_S.getSzName());
-			voice_name_Tv.setText(mode_S.getSzVoice());
-			area_name_Tv.setText(((EnterModeListActivity) context).rgn_S
-					.getSzName());
-			enter_Iv.setOnClickListener(new OnClickListener() {
 
-				@Override
-				public void onClick(View v) {
-					// TODO Auto-generated method stub
-					Intent intent = new Intent();
-					intent.putExtra("mode", mode_S.getMode_S());
-					intent.setClass(context, ModeCmdListActivity.class);
-					context.startActivity(intent);
-				}
-			});
+		} else {
+			holder = (ViewHolder) convertView.getTag();
+			resetViewHolder(holder);
 		}
+
+		final Mode_S mode_S = modeList.get(position);
+		holder.mode_name_Tv.setText(mode_S.getSzName());
+		holder.voice_name_Tv.setText(mode_S.getSzVoice());
+		holder.area_name_Tv.setText(((EnterModeListActivity) context).rgn_S
+				.getSzName());
+		holder.enter_Iv.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent();
+				intent.putExtra("mode", mode_S.getMode_S());
+				intent.setClass(context, ModeCmdListActivity.class);
+				context.startActivity(intent);
+			}
+		});
 		return convertView;
+	}
+
+	class ViewHolder {
+
+		TextView mode_name_Tv;
+		MarqueeText voice_name_Tv;
+		MarqueeText area_name_Tv;
+		ImageView enter_Iv;
+
+	}
+
+	void resetViewHolder(ViewHolder viewHolder) {
+		viewHolder.mode_name_Tv.setText(null);
+		viewHolder.voice_name_Tv.setText(null);
+		viewHolder.area_name_Tv.setText(null);
 	}
 }

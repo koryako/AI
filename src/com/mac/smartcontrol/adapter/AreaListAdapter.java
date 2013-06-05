@@ -29,7 +29,7 @@ import define.type.MsgType_E;
 public class AreaListAdapter extends BaseAdapter {
 	private Context context;
 	private List<Rgn_S> areaList;
-	
+
 	public AreaListAdapter(Context context, List<Rgn_S> areaList) {
 		super();
 		this.context = context;
@@ -57,90 +57,132 @@ public class AreaListAdapter extends BaseAdapter {
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		// TODO Auto-generated method stub
-		if(convertView==null){
-			LayoutInflater localinflater =(LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			convertView=localinflater.inflate(R.layout.area_list_item, null);
-			TextView areaName_Tv=(TextView) convertView.findViewById(R.id.areaName);
-			ImageView delete_Iv=(ImageView) convertView.findViewById(R.id.delete_btn);
-			ImageView modify_Iv=(ImageView) convertView.findViewById(R.id.modify_btn);
-			final Rgn_S rgn_S=areaList.get(position);
-			areaName_Tv.setText(rgn_S.getSzName());
+		ViewHolder holder = null;
+		if (convertView == null) {
+			LayoutInflater localinflater = (LayoutInflater) context
+					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			convertView = localinflater.inflate(R.layout.area_list_item, null);
 
-				delete_Iv.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					// TODO Auto-generated method stub
-					try {
-						WriteUtil.write(MsgId_E.MSGID_RGN.getVal(),0,MsgType_E.MSGTYPE_REQ.getVal(),MsgOper_E.MSGOPER_DEL.getVal(),MsgDelReq_S.getSize(), new MsgDelReq_S(rgn_S.getUsIdx()).getMsgDelReq_S());
-						((AreaListActivity)context).del_Idx=position;
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						Intent i=new Intent("IOException");
-						context.sendBroadcast(i);	
-					}
-				}
-			});
-			modify_Iv.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					// TODO Auto-generated method stub
-					 final Dialog dialog = new Dialog(context,R.style.MyDialog);
-		                //设置它的ContentView
-		            dialog.setContentView(R.layout.area_add_dialog);
-		            TextView dialog_title_tv=(TextView) dialog.findViewById(R.id.dialog_title);
-		            dialog_title_tv.setText(R.string.modify_area);
-		            dialog.show();	
-		            ImageView submit_Iv=(ImageView) dialog.findViewById(R.id.submit_iv);
-		     		ImageView cancel_Iv=(ImageView)dialog. findViewById(R.id.cancel_iv);
-		            final EditText name_et=(EditText) dialog.findViewById(R.id.name_et);
-		            name_et.setText(rgn_S.getSzName());
-		           
-		     	  cancel_Iv.setOnClickListener(new android.view.View.OnClickListener() {
-		    			
-		    			@Override
-		    			public void onClick(View v) {
-		    				// TODO Auto-generated method stub
-		    				dialog.dismiss();	
-		    			}
-		    		});
-		    		submit_Iv.setOnClickListener(new android.view.View.OnClickListener() {
-		    			
-		    			@Override
-		    			public void onClick(View v) {
-		    				// TODO Auto-generated method stub
-		    				String name=name_et.getText().toString().trim();
-		    				if(name==null||"".equals(name)){
-		    					Toast.makeText(context, "名字不能为空", Toast.LENGTH_LONG).show();
-		    					return;
-		    				}
-		    				if(name.length()>32){
-		    					Toast.makeText(context, "名字太长了", Toast.LENGTH_LONG).show();
-		    					return;
-		    				}
-		    				if(rgn_S.getSzName().equals(name)){
-		    					Toast.makeText(context, "名字不能一样", Toast.LENGTH_LONG).show();
-		    					return;
-		    				}
-		    				  try {
-		    					  rgn_S.setSzName(name);
-		    					  WriteUtil.write(MsgId_E.MSGID_RGN.getVal(),0,MsgType_E.MSGTYPE_REQ.getVal(),MsgOper_E.MSGOPER_MOD.getVal(),Rgn_S.getSize(), rgn_S.getRgn_S());
-		    					  ((AreaListActivity)context).mod_Idx=position;
-		    					  ((AreaListActivity)context).rgn_S=rgn_S;
-		    					dialog.dismiss();	
-		    					} catch (IOException e) {
-		    						// TODO Auto-generated catch block
-		    						Toast.makeText(context, "修改失败", Toast.LENGTH_LONG).show();
-		    					}	
-		    			}
-		    		});
-		             
-				}
-			});
-			
+			holder = new ViewHolder();
+			convertView.setTag(holder);
+
+			holder.areaName_Tv = (TextView) convertView
+					.findViewById(R.id.areaName);
+			holder.delete_Iv = (ImageView) convertView
+					.findViewById(R.id.delete_btn);
+			holder.modify_Iv = (ImageView) convertView
+					.findViewById(R.id.modify_btn);
+		} else {
+			holder = (ViewHolder) convertView.getTag();
+			resetViewHolder(holder);
 		}
+		final Rgn_S rgn_S = areaList.get(position);
+		holder.areaName_Tv.setText(rgn_S.getSzName());
+
+		holder.delete_Iv.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				try {
+					WriteUtil.write(MsgId_E.MSGID_RGN.getVal(), 0,
+							MsgType_E.MSGTYPE_REQ.getVal(),
+							MsgOper_E.MSGOPER_DEL.getVal(),
+							MsgDelReq_S.getSize(),
+							new MsgDelReq_S(rgn_S.getUsIdx()).getMsgDelReq_S());
+					((AreaListActivity) context).del_Idx = position;
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					Intent i = new Intent("IOException");
+					context.sendBroadcast(i);
+				}
+			}
+		});
+		holder.modify_Iv.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				final Dialog dialog = new Dialog(context, R.style.MyDialog);
+				// 设置它的ContentView
+				dialog.setContentView(R.layout.area_add_dialog);
+				TextView dialog_title_tv = (TextView) dialog
+						.findViewById(R.id.dialog_title);
+				dialog_title_tv.setText(R.string.modify_area);
+				dialog.show();
+				ImageView submit_Iv = (ImageView) dialog
+						.findViewById(R.id.submit_iv);
+				ImageView cancel_Iv = (ImageView) dialog
+						.findViewById(R.id.cancel_iv);
+				final EditText name_et = (EditText) dialog
+						.findViewById(R.id.name_et);
+				name_et.setText(rgn_S.getSzName());
+
+				cancel_Iv
+						.setOnClickListener(new android.view.View.OnClickListener() {
+
+							@Override
+							public void onClick(View v) {
+								// TODO Auto-generated method stub
+								dialog.dismiss();
+							}
+						});
+				submit_Iv
+						.setOnClickListener(new android.view.View.OnClickListener() {
+
+							@Override
+							public void onClick(View v) {
+								// TODO Auto-generated method stub
+								String name = name_et.getText().toString()
+										.trim();
+								if (name == null || "".equals(name)) {
+									Toast.makeText(context, "名字不能为空",
+											Toast.LENGTH_LONG).show();
+									return;
+								}
+								if (name.length() > 32) {
+									Toast.makeText(context, "名字太长了",
+											Toast.LENGTH_LONG).show();
+									return;
+								}
+								if (rgn_S.getSzName().equals(name)) {
+									Toast.makeText(context, "名字不能一样",
+											Toast.LENGTH_LONG).show();
+									return;
+								}
+								try {
+									rgn_S.setSzName(name);
+									WriteUtil.write(MsgId_E.MSGID_RGN.getVal(),
+											0, MsgType_E.MSGTYPE_REQ.getVal(),
+											MsgOper_E.MSGOPER_MOD.getVal(),
+											Rgn_S.getSize(), rgn_S.getRgn_S());
+									((AreaListActivity) context).mod_Idx = position;
+									((AreaListActivity) context).rgn_S = rgn_S;
+									dialog.dismiss();
+								} catch (IOException e) {
+									// TODO Auto-generated catch block
+									Toast.makeText(context, "修改失败",
+											Toast.LENGTH_LONG).show();
+								}
+							}
+						});
+
+			}
+		});
+
 		return convertView;
 	}
 
+	class ViewHolder {
+
+		TextView areaName_Tv;
+
+		ImageView delete_Iv;
+
+		ImageView modify_Iv;
+	}
+
+	void resetViewHolder(ViewHolder viewHolder) {
+		viewHolder.areaName_Tv.setText(null);
+	}
 }

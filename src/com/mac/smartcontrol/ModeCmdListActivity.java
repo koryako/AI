@@ -24,10 +24,12 @@ import com.mac.smartcontrol.util.DisconnectionUtil;
 import com.mac.smartcontrol.util.WriteUtil;
 
 import define.entity.Appl_S;
+import define.entity.Cama_S;
 import define.entity.Cmd_S;
 import define.entity.ModeCmd_S;
 import define.entity.Mode_S;
 import define.entity.Rgn_S;
+import define.entity.Sens_S;
 import define.oper.MsgOper_E;
 import define.oper.body.req.MsgCmdQryByDevReq_S;
 import define.oper.body.req.MsgModeCmdQryByModeReq_S;
@@ -40,6 +42,8 @@ public class ModeCmdListActivity extends Activity {
 	public List<ModeCmd_S> modecmdList = null;
 	public Map<Short, Cmd_S> cmdMap = null;
 	public Map<Short, Rgn_S> areaMap = null;
+	public Map<Short, Sens_S> senseMap = null;
+	public Map<Short, Cama_S> cameraMap = null;
 	public Map<Short, Appl_S> deviceMap = null;
 	public ModeCmdListAdapter modecmdListAdapter = null;
 	public ListView modecmdListView = null;
@@ -61,6 +65,8 @@ public class ModeCmdListActivity extends Activity {
 		cmdMap = new HashMap<Short, Cmd_S>();
 		areaMap = new HashMap<Short, Rgn_S>();
 		deviceMap = new HashMap<Short, Appl_S>();
+		senseMap = new HashMap<Short, Sens_S>();
+		cameraMap = new HashMap<Short, Cama_S>();
 
 		if (bundle != null) {
 			mode_S.setMode_S(bundle.getByteArray("mode"));
@@ -69,11 +75,6 @@ public class ModeCmdListActivity extends Activity {
 		modecmd_title_tv = (TextView) findViewById(R.id.userlist_title);
 		modecmd_title_tv.setText(R.string.mode_cmd_list);
 
-		modecmdListView = (ListView) findViewById(R.id.userlist);
-		modecmdList = new ArrayList<ModeCmd_S>();
-		modecmdListAdapter = new ModeCmdListAdapter(this, modecmdList, cmdMap,
-				deviceMap, areaMap);
-		modecmdListView.setAdapter(modecmdListAdapter);
 		ImageView add_Iv = (ImageView) findViewById(R.id.add);
 		add_Iv.setOnClickListener(new OnClickListener() {
 
@@ -106,7 +107,10 @@ public class ModeCmdListActivity extends Activity {
 
 		filter.addAction(MsgId_E.MSGID_APPL.getVal() + "_"
 				+ MsgOper_E.MSGOPER_QRY.getVal());
-
+		filter.addAction(MsgId_E.MSGID_SENS.getVal() + "_"
+				+ MsgOper_E.MSGOPER_QRY.getVal());
+		filter.addAction(MsgId_E.MSGID_CAMA.getVal() + "_"
+				+ MsgOper_E.MSGOPER_QRY.getVal());
 		filter.addAction(MsgId_E.MSGID_CMD.getVal() + "_"
 				+ MsgOper_E.MSGOPER_QRY.getVal());
 		filter.addAction(MsgId_E.MSGID_MODECMD.getVal() + "_"
@@ -118,12 +122,20 @@ public class ModeCmdListActivity extends Activity {
 		registerReceiver(modeCmdBroadcastReceiver, filter);
 
 		try {
-			WriteUtil.write(MsgId_E.MSGID_MODECMD.getVal(), 3,
+			WriteUtil.write(MsgId_E.MSGID_MODECMD.getVal(), 5,
 					MsgType_E.MSGTYPE_REQ.getVal(), MsgOper_E.MSGOPER_MAX
 							.getVal(), MsgCmdQryByDevReq_S.getSize(),
 					new MsgModeCmdQryByModeReq_S(mode_S.getUsIdx())
 							.getMsgQryReq_S());
-			WriteUtil.write(MsgId_E.MSGID_CMD.getVal(), 2,
+			WriteUtil.write(MsgId_E.MSGID_CMD.getVal(), 4,
+					MsgType_E.MSGTYPE_REQ.getVal(), MsgOper_E.MSGOPER_QRY
+							.getVal(), (short) 2, new MsgQryReq_S((short) 0)
+							.getMsgQryReq_S());
+			WriteUtil.write(MsgId_E.MSGID_CAMA.getVal(), 3,
+					MsgType_E.MSGTYPE_REQ.getVal(), MsgOper_E.MSGOPER_QRY
+							.getVal(), (short) 2, new MsgQryReq_S((short) 0)
+							.getMsgQryReq_S());
+			WriteUtil.write(MsgId_E.MSGID_SENS.getVal(), 2,
 					MsgType_E.MSGTYPE_REQ.getVal(), MsgOper_E.MSGOPER_QRY
 							.getVal(), (short) 2, new MsgQryReq_S((short) 0)
 							.getMsgQryReq_S());
@@ -142,6 +154,12 @@ public class ModeCmdListActivity extends Activity {
 			DisconnectionUtil.restart(ModeCmdListActivity.this);
 		}
 
+		modecmdListView = (ListView) findViewById(R.id.userlist);
+		modecmdList = new ArrayList<ModeCmd_S>();
+		modecmdListAdapter = new ModeCmdListAdapter(this, modecmdList, cmdMap,
+				deviceMap, senseMap, cameraMap, areaMap);
+
+		modecmdListView.setAdapter(modecmdListAdapter);
 	}
 
 	@Override

@@ -92,36 +92,20 @@ public class AddModeCmdActivity extends Activity {
 		}
 		modeCmd_S = new ModeCmd_S();
 		Spinner device_type_sp = (Spinner) findViewById(R.id.device_type_sp);
-		area_sp = (Spinner) findViewById(R.id.area_sp);
+
 		final Spinner device_sp = (Spinner) findViewById(R.id.device_sp);
 		final Spinner cmd_sp = (Spinner) findViewById(R.id.cmd_sp);
 
 		device_type_adapter = new ArrayAdapter<String>(this,
 				R.layout.simple_spinner_item, device_Type);
 		device_type_adapter
-				.setDropDownViewResource(android.R.layout.simple_spinner_item);
+				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		device_type_sp.setAdapter(device_type_adapter);
 
-		area_adapter = new ArrayAdapter<String>(this,
-				R.layout.simple_spinner_item, areaListStr);
-		area_adapter
-				.setDropDownViewResource(android.R.layout.simple_spinner_item);
-		area_sp.setAdapter(area_adapter);
-		device_type_sp.setSelection(0, true);
-		area_sp.setSelection(0, true);
-		cmd_sp.setSelection(0, true);
-		device_sp.setSelection(0, true);
-		device_adapter = new ArrayAdapter<String>(this,
-				R.layout.simple_spinner_item, deviceListStr);
-		device_adapter
-				.setDropDownViewResource(android.R.layout.simple_spinner_item);
-		device_sp.setAdapter(device_adapter);
-
-		cmd_adapter = new ArrayAdapter<String>(this,
-				R.layout.simple_spinner_item, cmdListStr);
-		cmd_adapter
-				.setDropDownViewResource(android.R.layout.simple_spinner_item);
-		cmd_sp.setAdapter(cmd_adapter);
+		// device_type_sp.setSelection(0, true);
+		// area_sp.setSelection(0, true);
+		// cmd_sp.setSelection(0, true);
+		// device_sp.setSelection(0, true);
 
 		// ImageView study_Iv = (ImageView) findViewById(R.id.study_iv);
 		// study_Iv.setVisibility(View.INVISIBLE);
@@ -156,150 +140,161 @@ public class AddModeCmdActivity extends Activity {
 				deviceIDList.clear();
 				cmdIDList.clear();
 				cmdListStr.clear();
-				area_adapter.notifyDataSetChanged();
-				device_adapter.notifyDataSetChanged();
-				cmd_adapter.notifyDataSetChanged();
+				if (cmd_adapter != null) {
+					cmd_adapter.notifyDataSetChanged();
+				}
+				if (device_type_adapter != null) {
+					device_type_adapter.notifyDataSetChanged();
+				}
+
+				if (area_adapter != null) {
+					area_adapter.notifyDataSetChanged();
+				}
 				areaId = -1;
 				deviceId = -1;
 				cmdId = -1;
-				// if (areaId != -1) {
-				// if (typeId == CmdDevType_E.CMD_DEV_APPL.getVal()) {
-				// for (int i = 0; i < deviceList.size(); i++) {
-				// Appl_S appl_S = deviceList.get(i);
-				// if (areaId == appl_S.getUsRgnIdx()) {
-				// deviceIDList.add(appl_S.getUsIdx());
-				// deviceListStr.add(appl_S.getSzName());
-				// }
-				// }
-				// } else if (typeId == CmdDevType_E.CMD_DEV_SENS.getVal()) {
-				// for (int i = 0; i < senseList.size(); i++) {
-				// Sens_S sens_S = senseList.get(i);
-				// if (areaId == sens_S.getUsRgnIdx()) {
-				// deviceIDList.add(sens_S.getUsIdx());
-				// deviceListStr.add(sens_S.getSzName());
-				// }
-				// }
-				// } else if (typeId == CmdDevType_E.CMD_DEV_CAMA.getVal()) {
-				// for (int i = 0; i < cameraList.size(); i++) {
-				// Cama_S cama_S = cameraList.get(i);
-				// if (areaId == cama_S.getUsRgnIdx()) {
-				// deviceIDList.add(cama_S.getUsIdx());
-				// deviceListStr.add(cama_S.getSzName());
-				// }
-				// }
-				// }
-				//
-				// }
 
 				for (int i = 0; i < areaList.size(); i++) {
 					areaListStr.add(areaList.get(i).getSzName());
 				}
-				area_adapter.notifyDataSetChanged();
-				device_adapter.notifyDataSetChanged();
-				cmd_adapter.notifyDataSetChanged();
 
-			}
+				area_sp = (Spinner) findViewById(R.id.area_sp);
+				area_adapter = new ArrayAdapter<String>(
+						AddModeCmdActivity.this, R.layout.simple_spinner_item,
+						areaListStr);
+				area_adapter
+						.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+				area_sp.setAdapter(area_adapter);
 
-			@Override
-			public void onNothingSelected(AdapterView<?> arg0) {
-				// TODO Auto-generated method stub
+				area_sp.setOnItemSelectedListener(new OnItemSelectedListener() {
 
-			}
-		});
+					@Override
+					public void onItemSelected(AdapterView<?> arg0, View arg1,
+							int arg2, long arg3) {
+						// TODO Auto-generated method stub
+						areaId = areaList.get(arg2).getUsIdx();
+						deviceListStr.clear();
+						deviceIDList.clear();
 
-		area_sp.setOnItemSelectedListener(new OnItemSelectedListener() {
-
-			@Override
-			public void onItemSelected(AdapterView<?> arg0, View arg1,
-					int arg2, long arg3) {
-				// TODO Auto-generated method stub
-				areaId = areaList.get(arg2).getUsIdx();
-				deviceListStr.clear();
-				deviceIDList.clear();
-
-				cmdIDList.clear();
-				cmdListStr.clear();
-
-				device_adapter.notifyDataSetChanged();
-				cmd_adapter.notifyDataSetChanged();
-				deviceId = -1;
-				cmdId = -1;
-				if (typeId == CmdDevType_E.CMD_DEV_APPL.getVal()) {
-					for (int i = 0; i < deviceList.size(); i++) {
-						Appl_S appl_S = deviceList.get(i);
-						if (areaId == appl_S.getUsRgnIdx()) {
-							deviceIDList.add(appl_S.getUsIdx());
-							deviceListStr.add(appl_S.getSzName());
+						cmdIDList.clear();
+						cmdListStr.clear();
+						if (cmd_adapter != null) {
+							cmd_adapter.notifyDataSetChanged();
 						}
-					}
-				} else if (typeId == CmdDevType_E.CMD_DEV_SENS.getVal()) {
-					for (int i = 0; i < senseList.size(); i++) {
-						Sens_S sens_S = senseList.get(i);
-						if (areaId == sens_S.getUsRgnIdx()) {
-							deviceIDList.add(sens_S.getUsIdx());
-							deviceListStr.add(sens_S.getSzName());
+						if (device_type_adapter != null) {
+							device_type_adapter.notifyDataSetChanged();
 						}
-					}
-				} else if (typeId == CmdDevType_E.CMD_DEV_CAMA.getVal()) {
-					for (int i = 0; i < cameraList.size(); i++) {
-						Cama_S cama_S = cameraList.get(i);
-						if (areaId == cama_S.getUsRgnIdx()) {
-							deviceIDList.add(cama_S.getUsIdx());
-							deviceListStr.add(cama_S.getSzName());
+
+						deviceId = -1;
+						cmdId = -1;
+
+						if (typeId == CmdDevType_E.CMD_DEV_APPL.getVal()) {
+							for (int i = 0; i < deviceList.size(); i++) {
+								Appl_S appl_S = deviceList.get(i);
+								if (areaId == appl_S.getUsRgnIdx()) {
+									deviceIDList.add(appl_S.getUsIdx());
+									deviceListStr.add(appl_S.getSzName());
+								}
+							}
+						} else if (typeId == CmdDevType_E.CMD_DEV_SENS.getVal()) {
+							for (int i = 0; i < senseList.size(); i++) {
+								Sens_S sens_S = senseList.get(i);
+								if (areaId == sens_S.getUsRgnIdx()) {
+									deviceIDList.add(sens_S.getUsIdx());
+									deviceListStr.add(sens_S.getSzName());
+								}
+							}
+						} else if (typeId == CmdDevType_E.CMD_DEV_CAMA.getVal()) {
+							for (int i = 0; i < cameraList.size(); i++) {
+								Cama_S cama_S = cameraList.get(i);
+								if (areaId == cama_S.getUsRgnIdx()) {
+									deviceIDList.add(cama_S.getUsIdx());
+									deviceListStr.add(cama_S.getSzName());
+								}
+							}
 						}
+
+						device_adapter = new ArrayAdapter<String>(
+								AddModeCmdActivity.this,
+								R.layout.simple_spinner_item, deviceListStr);
+						device_adapter
+								.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+						device_sp.setAdapter(device_adapter);
+
+						device_sp
+								.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+									@Override
+									public void onItemSelected(
+											AdapterView<?> arg0, View arg1,
+											int arg2, long arg3) {
+										// TODO Auto-generated method stub
+										deviceId = deviceIDList.get(arg2);
+										cmdListStr.clear();
+										cmdIDList.clear();
+										if (cmd_adapter != null) {
+											cmd_adapter.notifyDataSetChanged();
+										}
+										cmdId = -1;
+
+										for (int i = 0; i < cmdList.size(); i++) {
+											Cmd_S cmd_S = cmdList.get(i);
+											if (typeId == cmd_S.getUcDevType()) {
+												if (deviceId == cmd_S
+														.getUsDevIdx()) {
+													cmdIDList.add(cmd_S
+															.getUsIdx());
+													cmdListStr.add(cmd_S
+															.getSzName());
+												}
+											}
+										}
+
+										cmd_adapter = new ArrayAdapter<String>(
+												AddModeCmdActivity.this,
+												R.layout.simple_spinner_item,
+												cmdListStr);
+										cmd_adapter
+												.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+										cmd_sp.setAdapter(cmd_adapter);
+
+										cmd_sp.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+											@Override
+											public void onItemSelected(
+													AdapterView<?> arg0,
+													View arg1, int arg2,
+													long arg3) {
+												// TODO Auto-generated method
+												// stub
+												cmdId = cmdIDList.get(arg2);
+											}
+
+											@Override
+											public void onNothingSelected(
+													AdapterView<?> arg0) {
+												// TODO Auto-generated method
+												// stub
+
+											}
+										});
+
+									}
+
+									@Override
+									public void onNothingSelected(
+											AdapterView<?> arg0) {
+										// TODO Auto-generated method stub
+
+									}
+								});
 					}
-				}
-				if (deviceIDList.size() > 0) {
-					deviceId = deviceIDList.get(0);
-				}
-				device_adapter.notifyDataSetChanged();
-				cmd_adapter.notifyDataSetChanged();
-			}
 
-			@Override
-			public void onNothingSelected(AdapterView<?> arg0) {
-				// TODO Auto-generated method stub
-			}
-		});
-
-		device_sp.setOnItemSelectedListener(new OnItemSelectedListener() {
-
-			@Override
-			public void onItemSelected(AdapterView<?> arg0, View arg1,
-					int arg2, long arg3) {
-				// TODO Auto-generated method stub
-				deviceId = deviceIDList.get(arg2);
-				cmdListStr.clear();
-				cmdIDList.clear();
-				cmd_adapter.notifyDataSetChanged();
-				cmdId = -1;
-				for (int i = 0; i < cmdList.size(); i++) {
-					Cmd_S cmd_S = cmdList.get(i);
-					if (deviceId == cmd_S.getUsDevIdx()) {
-						cmdIDList.add(cmd_S.getUsIdx());
-						cmdListStr.add(cmd_S.getSzName());
+					@Override
+					public void onNothingSelected(AdapterView<?> arg0) {
+						// TODO Auto-generated method stub
 					}
-				}
-				if (cmdIDList.size() > 0) {
-					cmdId = cmdIDList.get(0);
-				}
-				cmd_adapter.notifyDataSetChanged();
-			}
-
-			@Override
-			public void onNothingSelected(AdapterView<?> arg0) {
-				// TODO Auto-generated method stub
-
-			}
-		});
-
-		cmd_sp.setOnItemSelectedListener(new OnItemSelectedListener() {
-
-			@Override
-			public void onItemSelected(AdapterView<?> arg0, View arg1,
-					int arg2, long arg3) {
-				// TODO Auto-generated method stub
-				cmdId = cmdIDList.get(arg2);
+				});
 			}
 
 			@Override

@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="2"
-            android:text="@string/add_mode_cmd"
+            android:text="@string/modify_mode_cmd"
             android:textSize="@dimen/list_title_size" />
     </LinearLayout>
 

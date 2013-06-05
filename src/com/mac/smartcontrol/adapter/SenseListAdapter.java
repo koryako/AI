@@ -51,50 +51,23 @@ public class SenseListAdapter extends BaseAdapter {
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		// TODO Auto-generated method stub
+		ViewHolder holder = null;
 		if (convertView == null) {
 			LayoutInflater localinflater = (LayoutInflater) context
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			convertView = localinflater.inflate(R.layout.sense_list_item, null);
-			ImageView icon_Iv = (ImageView) convertView
-					.findViewById(R.id.icon_iv);
-			TextView sense_name_Tv = (TextView) convertView
+			holder = new ViewHolder();
+			convertView.setTag(holder);
+			holder.icon_Iv = (ImageView) convertView.findViewById(R.id.icon_iv);
+			holder.sense_name_Tv = (TextView) convertView
 					.findViewById(R.id.sense_name);
-			TextView area_name_Tv = (TextView) convertView
+			holder.area_name_Tv = (TextView) convertView
 					.findViewById(R.id.area_name);
-			TextView sense_type_Tv = (TextView) convertView
+			holder.sense_type_Tv = (TextView) convertView
 					.findViewById(R.id.sense_type);
-			ImageView enter_Iv = (ImageView) convertView
+			holder.enter_Iv = (ImageView) convertView
 					.findViewById(R.id.enter_btn);
-			area_name_Tv.setText(((SenseListActivity) context).areaName);
-			final Sens_S sens_S = senseList.get(position);
-			sense_name_Tv.setText(sens_S.getSzName());
-			if (sens_S.getUcType() == SensType_E.SENS_TYPE_GAS.getVal()) {
-				sense_type_Tv.setText("ÃºÆø");
-				// icon_Iv.setImageResource(R.drawable.)
-			} else if (sens_S.getUcType() == SensType_E.SENS_TYPE_SMOKE
-					.getVal()) {
-				sense_type_Tv.setText("ÑÌÎí");
-			} else if (sens_S.getUcType() == SensType_E.SENS_TYPE_TEMP.getVal()) {
-				sense_type_Tv.setText("ÎÂ¶È");
-				icon_Iv.setImageResource(R.drawable.temp_icon);
-			} else if (sens_S.getUcType() == SensType_E.SENS_TYPE_MOIS.getVal()) {
-				sense_type_Tv.setText("Êª¶È");
-				icon_Iv.setImageResource(R.drawable.mois_icon);
-			}
 
-			enter_Iv.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-					// TODO Auto-generated method stub
-					Intent intent = new Intent();
-					intent.putExtra("cmdType",
-							CmdDevType_E.CMD_DEV_SENS.getVal());
-					intent.putExtra("sense", sens_S.getSens_S());
-					intent.setClass(context, CmdListActivity.class);
-					context.startActivity(intent);
-				}
-			});
 			// delete_Iv.setOnClickListener(new OnClickListener() {
 			//
 			// @Override
@@ -129,8 +102,55 @@ public class SenseListAdapter extends BaseAdapter {
 			// }
 			// });
 
+		} else {
+			holder = (ViewHolder) convertView.getTag();
+			resetViewHolder(holder);
 		}
+
+		holder.area_name_Tv.setText(((SenseListActivity) context).areaName);
+		final Sens_S sens_S = senseList.get(position);
+		holder.sense_name_Tv.setText(sens_S.getSzName());
+		if (sens_S.getUcType() == SensType_E.SENS_TYPE_GAS.getVal()) {
+			holder.sense_type_Tv.setText("ÃºÆø");
+			// icon_Iv.setImageResource(R.drawable.)
+		} else if (sens_S.getUcType() == SensType_E.SENS_TYPE_SMOKE.getVal()) {
+			holder.sense_type_Tv.setText("ÑÌÎí");
+		} else if (sens_S.getUcType() == SensType_E.SENS_TYPE_TEMP.getVal()) {
+			holder.sense_type_Tv.setText("ÎÂ¶È");
+			holder.icon_Iv.setImageResource(R.drawable.temp_icon);
+		} else if (sens_S.getUcType() == SensType_E.SENS_TYPE_MOIS.getVal()) {
+			holder.sense_type_Tv.setText("Êª¶È");
+			holder.icon_Iv.setImageResource(R.drawable.mois_icon);
+		}
+
+		holder.enter_Iv.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent();
+				intent.putExtra("cmdType", CmdDevType_E.CMD_DEV_SENS.getVal());
+				intent.putExtra("sense", sens_S.getSens_S());
+				intent.setClass(context, CmdListActivity.class);
+				context.startActivity(intent);
+			}
+		});
 		return convertView;
 	}
 
+	class ViewHolder {
+
+		ImageView icon_Iv;
+		TextView sense_name_Tv;
+		TextView area_name_Tv;
+		TextView sense_type_Tv;
+		ImageView enter_Iv;
+
+	}
+
+	void resetViewHolder(ViewHolder viewHolder) {
+		viewHolder.sense_name_Tv.setText(null);
+		viewHolder.area_name_Tv.setText(null);
+		viewHolder.sense_type_Tv.setText(null);
+	}
 }

@@ -61,85 +61,101 @@ public class EnterDeviceListAdapter extends BaseAdapter {
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		// TODO Auto-generated method stub
+		ViewHolder holder = null;
 		if (convertView == null) {
 			LayoutInflater localinflater = (LayoutInflater) context
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			convertView = localinflater.inflate(
 					R.layout.enter_device_list_item, null);
+			holder = new ViewHolder();
+			convertView.setTag(holder);
 
-			ImageView device_icon_Iv = (ImageView) convertView
+			holder.device_icon_Iv = (ImageView) convertView
 					.findViewById(R.id.device_icon_iv);
-			MarqueeText device_name_Tv = (MarqueeText) convertView
+			holder.device_name_Tv = (MarqueeText) convertView
 					.findViewById(R.id.device_name_tv);
-			MarqueeText area_name_Tv = (MarqueeText) convertView
+			holder.area_name_Tv = (MarqueeText) convertView
 					.findViewById(R.id.area_name);
 
-			ImageView enter_Iv = (ImageView) convertView
+			holder.enter_Iv = (ImageView) convertView
 					.findViewById(R.id.enter_btn);
-			final Appl_S appl_S = deviceList.get(position);
-			device_name_Tv.setText(appl_S.getSzName());
-			Rgn_S rgn_S = areaMap.get(appl_S.getUsRgnIdx());
-			if (rgn_S != null) {
-				area_name_Tv.setText(rgn_S.getSzName());
-			}
-			final Intent intent = new Intent();
-			device_name_Tv.setText(appl_S.getSzName());
-			if (appl_S.getUcType() == ApplType_E.APPL_TYPE_SWITCH.getVal()) {
-				device_icon_Iv.setImageResource(R.drawable.light_icon);
-			} else if (appl_S.getUcType() == ApplType_E.APPL_TYPE_TVSET
-					.getVal()) {
-				device_icon_Iv.setImageResource(R.drawable.tv_icon);
-			} else if (appl_S.getUcType() == ApplType_E.APPL_TYPE_HDPLAY
-					.getVal()) {
-				device_icon_Iv.setImageResource(R.drawable.tv_box_icon);
-			} else if (appl_S.getUcType() == ApplType_E.APPL_TYPE_AIRCOND
-					.getVal()) {
-				device_icon_Iv.setImageResource(R.drawable.ac_icon);
-			} else if (appl_S.getUcType() == ApplType_E.APPL_TYPE_CURTAIN
-					.getVal()) {
-				device_icon_Iv.setImageResource(R.drawable.curtain_icon);
-			} else if (appl_S.getUcType() == ApplType_E.APPL_TYPE_CUSTOM
-					.getVal()) {
-				device_icon_Iv.setImageResource(R.drawable.user_defined_icon);
-			}
-			intent.putExtra("device", appl_S.getAppl_S());
-			intent.putExtra("cmdType", CmdDevType_E.CMD_DEV_APPL.getVal());
-			enter_Iv.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-					// TODO Auto-generated method stub
-
-					int msgId = ((EnterDeviceListActivity) context).msgId;
-					if (msgId == MsgId_E.MSGID_APPL.getVal()) {
-						intent.setClass(context, CmdListActivity.class);
-					} else if (msgId == 34) {
-						// intent.setClass(context, CmdListActivity.class);
-						if (appl_S.getUcType() == ApplType_E.APPL_TYPE_SWITCH
-								.getVal()) {
-							intent.setClass(context, SwitchActivity.class);
-						} else if (appl_S.getUcType() == ApplType_E.APPL_TYPE_TVSET
-								.getVal()) {
-							intent.setClass(context, TVActivity.class);
-						} else if (appl_S.getUcType() == ApplType_E.APPL_TYPE_HDPLAY
-								.getVal()) {
-							intent.setClass(context, HDPlayActivity.class);
-						} else if (appl_S.getUcType() == ApplType_E.APPL_TYPE_AIRCOND
-								.getVal()) {
-							intent.setClass(context, ACActivity.class);
-						} else if (appl_S.getUcType() == ApplType_E.APPL_TYPE_CURTAIN
-								.getVal()) {
-							intent.setClass(context, SwitchActivity.class);
-						} else if (appl_S.getUcType() == ApplType_E.APPL_TYPE_CUSTOM
-								.getVal()) {
-							intent.setClass(context, SwitchActivity.class);
-						}
-					}
-					context.startActivity(intent);
-				}
-			});
-
+		} else {
+			holder = (ViewHolder) convertView.getTag();
+			resetViewHolder(holder);
 		}
+
+		final Appl_S appl_S = deviceList.get(position);
+		holder.device_name_Tv.setText(appl_S.getSzName());
+		Rgn_S rgn_S = areaMap.get(appl_S.getUsRgnIdx());
+		if (rgn_S != null) {
+			holder.area_name_Tv.setText(rgn_S.getSzName());
+		}
+		final Intent intent = new Intent();
+		holder.device_name_Tv.setText(appl_S.getSzName());
+		if (appl_S.getUcType() == ApplType_E.APPL_TYPE_SWITCH.getVal()) {
+			holder.device_icon_Iv.setImageResource(R.drawable.light_icon);
+		} else if (appl_S.getUcType() == ApplType_E.APPL_TYPE_TVSET.getVal()) {
+			holder.device_icon_Iv.setImageResource(R.drawable.tv_icon);
+		} else if (appl_S.getUcType() == ApplType_E.APPL_TYPE_HDPLAY.getVal()) {
+			holder.device_icon_Iv.setImageResource(R.drawable.tv_box_icon);
+		} else if (appl_S.getUcType() == ApplType_E.APPL_TYPE_AIRCOND.getVal()) {
+			holder.device_icon_Iv.setImageResource(R.drawable.ac_icon);
+		} else if (appl_S.getUcType() == ApplType_E.APPL_TYPE_CURTAIN.getVal()) {
+			holder.device_icon_Iv.setImageResource(R.drawable.curtain_icon);
+		} else if (appl_S.getUcType() == ApplType_E.APPL_TYPE_CUSTOM.getVal()) {
+			holder.device_icon_Iv
+					.setImageResource(R.drawable.user_defined_icon);
+		}
+		intent.putExtra("device", appl_S.getAppl_S());
+		intent.putExtra("cmdType", CmdDevType_E.CMD_DEV_APPL.getVal());
+		holder.enter_Iv.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+
+				int msgId = ((EnterDeviceListActivity) context).msgId;
+				if (msgId == MsgId_E.MSGID_APPL.getVal()) {
+					intent.setClass(context, CmdListActivity.class);
+				} else if (msgId == 34) {
+					// intent.setClass(context, CmdListActivity.class);
+					if (appl_S.getUcType() == ApplType_E.APPL_TYPE_SWITCH
+							.getVal()) {
+						intent.setClass(context, SwitchActivity.class);
+					} else if (appl_S.getUcType() == ApplType_E.APPL_TYPE_TVSET
+							.getVal()) {
+						intent.setClass(context, TVActivity.class);
+					} else if (appl_S.getUcType() == ApplType_E.APPL_TYPE_HDPLAY
+							.getVal()) {
+						intent.setClass(context, HDPlayActivity.class);
+					} else if (appl_S.getUcType() == ApplType_E.APPL_TYPE_AIRCOND
+							.getVal()) {
+						intent.setClass(context, ACActivity.class);
+					} else if (appl_S.getUcType() == ApplType_E.APPL_TYPE_CURTAIN
+							.getVal()) {
+						intent.setClass(context, SwitchActivity.class);
+					} else if (appl_S.getUcType() == ApplType_E.APPL_TYPE_CUSTOM
+							.getVal()) {
+						intent.setClass(context, SwitchActivity.class);
+					}
+				}
+				context.startActivity(intent);
+			}
+		});
+
 		return convertView;
+	}
+
+	class ViewHolder {
+
+		ImageView device_icon_Iv;
+		MarqueeText device_name_Tv;
+		MarqueeText area_name_Tv;
+		ImageView enter_Iv;
+	}
+
+	void resetViewHolder(ViewHolder viewHolder) {
+		viewHolder.area_name_Tv.setText(null);
+		viewHolder.device_name_Tv.setText(null);
 	}
 }

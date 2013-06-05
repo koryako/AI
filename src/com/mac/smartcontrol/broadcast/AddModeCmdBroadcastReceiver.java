@@ -71,7 +71,7 @@ public class AddModeCmdBroadcastReceiver extends BroadcastReceiver {
 					// if (flag == 5) {
 					// addModeCmdActivity.area_sp
 					// .setAdapter(addModeCmdActivity.area_adapter);
-					addModeCmdActivity.area_adapter.notifyDataSetChanged();
+					// addModeCmdActivity.area_adapter.notifyDataSetChanged();
 					// addModeCmdActivity.device_adapter
 					// .notifyDataSetChanged();
 					// addModeCmdActivity.cmd_adapter.notifyDataSetChanged();
@@ -103,7 +103,7 @@ public class AddModeCmdBroadcastReceiver extends BroadcastReceiver {
 					// addModeCmdActivity.area_sp
 					// .setAdapter(addModeCmdActivity.area_adapter);
 					// addModeCmdActivity.area_adapter.notifyDataSetChanged();
-					addModeCmdActivity.device_adapter.notifyDataSetChanged();
+					// addModeCmdActivity.device_adapter.notifyDataSetChanged();
 					// addModeCmdActivity.cmd_adapter.notifyDataSetChanged();
 					// flag = 0;
 					// }
@@ -134,7 +134,7 @@ public class AddModeCmdBroadcastReceiver extends BroadcastReceiver {
 					// addModeCmdActivity.area_sp
 					// .setAdapter(addModeCmdActivity.area_adapter);
 					// addModeCmdActivity.area_adapter.notifyDataSetChanged();
-					addModeCmdActivity.device_adapter.notifyDataSetChanged();
+					// addModeCmdActivity.device_adapter.notifyDataSetChanged();
 					// addModeCmdActivity.cmd_adapter.notifyDataSetChanged();
 					// flag = 0;
 					// }
@@ -165,7 +165,7 @@ public class AddModeCmdBroadcastReceiver extends BroadcastReceiver {
 					// addModeCmdActivity.area_sp
 					// .setAdapter(addModeCmdActivity.area_adapter);
 					// addModeCmdActivity.area_adapter.notifyDataSetChanged();
-					addModeCmdActivity.device_adapter.notifyDataSetChanged();
+					// addModeCmdActivity.device_adapter.notifyDataSetChanged();
 					// addModeCmdActivity.cmd_adapter.notifyDataSetChanged();
 					// flag = 0;
 					// }
@@ -197,7 +197,7 @@ public class AddModeCmdBroadcastReceiver extends BroadcastReceiver {
 					// addModeCmdActivity.area_adapter.notifyDataSetChanged();
 					// addModeCmdActivity.device_adapter
 					// .notifyDataSetChanged();
-					addModeCmdActivity.cmd_adapter.notifyDataSetChanged();
+					// addModeCmdActivity.cmd_adapter.notifyDataSetChanged();
 					// flag = 0;
 					// }
 					// } else {

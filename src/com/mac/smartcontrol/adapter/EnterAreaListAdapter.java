@@ -55,45 +55,62 @@ public class EnterAreaListAdapter extends BaseAdapter {
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		// TODO Auto-generated method stub
+		ViewHolder holder = null;
 		if (convertView == null) {
 			LayoutInflater localinflater = (LayoutInflater) context
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			convertView = localinflater.inflate(R.layout.enter_area_list_item,
 					null);
-			TextView areaName_Tv = (TextView) convertView
+			holder = new ViewHolder();
+			convertView.setTag(holder);
+			holder.areaName_Tv = (TextView) convertView
 					.findViewById(R.id.areaName);
-			ImageView enter_Iv = (ImageView) convertView
+			holder.enter_Iv = (ImageView) convertView
 					.findViewById(R.id.enter_btn);
-			final Rgn_S rgn_S = areaList.get(position);
-			areaName_Tv.setText(rgn_S.getSzName());
 
-			enter_Iv.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-					// TODO Auto-generated method stub
-					Intent intent = new Intent();
-					intent.putExtra("area", rgn_S.getRgn_S());
-					intent.putExtra("areaName", rgn_S.getSzName());
-
-					if (msgId == MsgId_E.MSGID_APPL.getVal()) {
-						intent.putExtra("msgId", MsgId_E.MSGID_APPL.getVal());
-						intent.setClass(context, EnterDeviceListActivity.class);
-					} else if (msgId == MsgId_E.MSGID_SENS.getVal()) {
-						intent.setClass(context, SenseListActivity.class);
-					} else if (msgId == MsgId_E.MSGID_CAMA.getVal()) {
-						intent.setClass(context, CameraListActivity.class);
-					} else if (msgId == 34) {
-						intent.putExtra("msgId", (short) 34);
-						intent.setClass(context, EnterDeviceListActivity.class);
-					} else if (msgId == MsgId_E.MSGID_MODE.getVal()) {
-						intent.setClass(context, EnterModeListActivity.class);
-					}
-					context.startActivity(intent);
-				}
-			});
-
+		} else {
+			holder = (ViewHolder) convertView.getTag();
+			resetViewHolder(holder);
 		}
+
+		final Rgn_S rgn_S = areaList.get(position);
+		holder.areaName_Tv.setText(rgn_S.getSzName());
+
+		holder.enter_Iv.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent();
+				intent.putExtra("area", rgn_S.getRgn_S());
+				intent.putExtra("areaName", rgn_S.getSzName());
+
+				if (msgId == MsgId_E.MSGID_APPL.getVal()) {
+					intent.putExtra("msgId", MsgId_E.MSGID_APPL.getVal());
+					intent.setClass(context, EnterDeviceListActivity.class);
+				} else if (msgId == MsgId_E.MSGID_SENS.getVal()) {
+					intent.setClass(context, SenseListActivity.class);
+				} else if (msgId == MsgId_E.MSGID_CAMA.getVal()) {
+					intent.setClass(context, CameraListActivity.class);
+				} else if (msgId == 34) {
+					intent.putExtra("msgId", (short) 34);
+					intent.setClass(context, EnterDeviceListActivity.class);
+				} else if (msgId == MsgId_E.MSGID_MODE.getVal()) {
+					intent.setClass(context, EnterModeListActivity.class);
+				}
+				context.startActivity(intent);
+			}
+		});
 		return convertView;
+	}
+
+	class ViewHolder {
+		TextView areaName_Tv;
+		ImageView enter_Iv;
+	}
+
+	void resetViewHolder(ViewHolder viewHolder) {
+		viewHolder.areaName_Tv.setText(null);
+
 	}
 }

@@ -45,31 +45,55 @@ public class SenseLogListAdapter extends BaseAdapter {
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		// TODO Auto-generated method stub
+		ViewHolder holder = null;
 		if (convertView == null) {
 			LayoutInflater localinflater = (LayoutInflater) context
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			convertView = localinflater.inflate(R.layout.sense_log_list_item,
 					null);
-			MarqueeText sense_name_Tv = (MarqueeText) convertView
-					.findViewById(R.id.log_name);
-			MarqueeText area_name_Tv = (MarqueeText) convertView
-					.findViewById(R.id.area_name);
-			MarqueeText log_content_Tv = (MarqueeText) convertView
-					.findViewById(R.id.log_content);
-			MarqueeText log_time_Tv = (MarqueeText) convertView
-					.findViewById(R.id.log_time);
-			final SensLog_S sensLog_S = senseLogList.get(position);
+			holder = new ViewHolder();
+			convertView.setTag(holder);
 
-			sense_name_Tv.setText(sensLog_S.getSzName());
-			area_name_Tv.setText(sensLog_S.getSzRgnName());
-			if (sensLog_S.getUcType() == SensType_E.SENS_TYPE_GAS.getVal()) {
-				log_content_Tv.setText("煤气感应");
-			} else if (sensLog_S.getUcType() == SensType_E.SENS_TYPE_SMOKE
-					.getVal()) {
-				log_content_Tv.setText("烟雾感应");
-			}
-			log_time_Tv.setText(sensLog_S.getUiTime() + "");
+			holder.sense_name_Tv = (MarqueeText) convertView
+					.findViewById(R.id.log_name);
+			holder.area_name_Tv = (MarqueeText) convertView
+					.findViewById(R.id.area_name);
+			holder.log_content_Tv = (MarqueeText) convertView
+					.findViewById(R.id.log_content);
+			holder.log_time_Tv = (MarqueeText) convertView
+					.findViewById(R.id.log_time);
+
+		} else {
+			holder = (ViewHolder) convertView.getTag();
+			resetViewHolder(holder);
 		}
+
+		final SensLog_S sensLog_S = senseLogList.get(position);
+
+		holder.sense_name_Tv.setText(sensLog_S.getSzName());
+		holder.area_name_Tv.setText(sensLog_S.getSzRgnName());
+		if (sensLog_S.getUcType() == SensType_E.SENS_TYPE_GAS.getVal()) {
+			holder.log_content_Tv.setText("煤气感应");
+		} else if (sensLog_S.getUcType() == SensType_E.SENS_TYPE_SMOKE.getVal()) {
+			holder.log_content_Tv.setText("烟雾感应");
+		}
+		holder.log_time_Tv.setText(sensLog_S.getUiTime() + "");
 		return convertView;
+	}
+
+	class ViewHolder {
+
+		MarqueeText sense_name_Tv;
+		MarqueeText area_name_Tv;
+		MarqueeText log_content_Tv;
+		MarqueeText log_time_Tv;
+
+	}
+
+	void resetViewHolder(ViewHolder viewHolder) {
+		viewHolder.sense_name_Tv.setText(null);
+		viewHolder.area_name_Tv.setText(null);
+		viewHolder.log_content_Tv.setText(null);
+		viewHolder.log_time_Tv.setText(null);
 	}
 }
