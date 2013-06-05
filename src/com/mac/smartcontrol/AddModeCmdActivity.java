@@ -22,12 +22,15 @@ import com.mac.smartcontrol.util.DisconnectionUtil;
 import com.mac.smartcontrol.util.WriteUtil;
 
 import define.entity.Appl_S;
+import define.entity.Cama_S;
 import define.entity.Cmd_S;
 import define.entity.ModeCmd_S;
 import define.entity.Mode_S;
 import define.entity.Rgn_S;
+import define.entity.Sens_S;
 import define.oper.MsgOper_E;
 import define.oper.body.req.MsgQryReq_S;
+import define.type.CmdDevType_E;
 import define.type.MsgId_E;
 import define.type.MsgType_E;
 
@@ -38,6 +41,9 @@ public class AddModeCmdActivity extends Activity {
 	public List<Rgn_S> areaList = null;
 	public List<Appl_S> deviceList = null;
 	public List<Cmd_S> cmdList = null;
+
+	public List<Sens_S> senseList = null;
+	public List<Cama_S> cameraList = null;
 
 	public List<String> areaListStr = null;
 	public List<String> deviceListStr = null;
@@ -57,6 +63,7 @@ public class AddModeCmdActivity extends Activity {
 	short areaId = -1;
 	short deviceId = -1;
 	short cmdId = -1;
+	public Spinner area_sp;
 
 	/*
 	 * (non-Javadoc)
@@ -76,6 +83,8 @@ public class AddModeCmdActivity extends Activity {
 		cmdListStr = new ArrayList<String>();
 		cmdIDList = new ArrayList<Short>();
 		deviceIDList = new ArrayList<Short>();
+		cameraList = new ArrayList<Cama_S>();
+		senseList = new ArrayList<Sens_S>();
 		Bundle bundle = getIntent().getExtras();
 		mode_S = new Mode_S();
 		if (bundle != null) {
@@ -83,7 +92,7 @@ public class AddModeCmdActivity extends Activity {
 		}
 		modeCmd_S = new ModeCmd_S();
 		Spinner device_type_sp = (Spinner) findViewById(R.id.device_type_sp);
-		final Spinner area_sp = (Spinner) findViewById(R.id.area_sp);
+		area_sp = (Spinner) findViewById(R.id.area_sp);
 		final Spinner device_sp = (Spinner) findViewById(R.id.device_sp);
 		final Spinner cmd_sp = (Spinner) findViewById(R.id.cmd_sp);
 
@@ -98,7 +107,10 @@ public class AddModeCmdActivity extends Activity {
 		area_adapter
 				.setDropDownViewResource(android.R.layout.simple_spinner_item);
 		area_sp.setAdapter(area_adapter);
-		area_sp.setSelection(0, false);
+		device_type_sp.setSelection(0, true);
+		area_sp.setSelection(0, true);
+		cmd_sp.setSelection(0, true);
+		device_sp.setSelection(0, true);
 		device_adapter = new ArrayAdapter<String>(this,
 				R.layout.simple_spinner_item, deviceListStr);
 		device_adapter
@@ -121,6 +133,10 @@ public class AddModeCmdActivity extends Activity {
 				+ MsgOper_E.MSGOPER_QRY.getVal());
 		filter.addAction(MsgId_E.MSGID_APPL.getVal() + "_"
 				+ MsgOper_E.MSGOPER_QRY.getVal());
+		filter.addAction(MsgId_E.MSGID_SENS.getVal() + "_"
+				+ MsgOper_E.MSGOPER_QRY.getVal());
+		filter.addAction(MsgId_E.MSGID_CAMA.getVal() + "_"
+				+ MsgOper_E.MSGOPER_QRY.getVal());
 		filter.addAction(MsgId_E.MSGID_CMD.getVal() + "_"
 				+ MsgOper_E.MSGOPER_QRY.getVal());
 		filter.addAction(MsgId_E.MSGID_MODECMD.getVal() + "_"
@@ -135,6 +151,53 @@ public class AddModeCmdActivity extends Activity {
 					int arg2, long arg3) {
 				// TODO Auto-generated method stub
 				typeId = (short) (arg2 + 1);
+				areaListStr.clear();
+				deviceListStr.clear();
+				deviceIDList.clear();
+				cmdIDList.clear();
+				cmdListStr.clear();
+				area_adapter.notifyDataSetChanged();
+				device_adapter.notifyDataSetChanged();
+				cmd_adapter.notifyDataSetChanged();
+				areaId = -1;
+				deviceId = -1;
+				cmdId = -1;
+				// if (areaId != -1) {
+				// if (typeId == CmdDevType_E.CMD_DEV_APPL.getVal()) {
+				// for (int i = 0; i < deviceList.size(); i++) {
+				// Appl_S appl_S = deviceList.get(i);
+				// if (areaId == appl_S.getUsRgnIdx()) {
+				// deviceIDList.add(appl_S.getUsIdx());
+				// deviceListStr.add(appl_S.getSzName());
+				// }
+				// }
+				// } else if (typeId == CmdDevType_E.CMD_DEV_SENS.getVal()) {
+				// for (int i = 0; i < senseList.size(); i++) {
+				// Sens_S sens_S = senseList.get(i);
+				// if (areaId == sens_S.getUsRgnIdx()) {
+				// deviceIDList.add(sens_S.getUsIdx());
+				// deviceListStr.add(sens_S.getSzName());
+				// }
+				// }
+				// } else if (typeId == CmdDevType_E.CMD_DEV_CAMA.getVal()) {
+				// for (int i = 0; i < cameraList.size(); i++) {
+				// Cama_S cama_S = cameraList.get(i);
+				// if (areaId == cama_S.getUsRgnIdx()) {
+				// deviceIDList.add(cama_S.getUsIdx());
+				// deviceListStr.add(cama_S.getSzName());
+				// }
+				// }
+				// }
+				//
+				// }
+
+				for (int i = 0; i < areaList.size(); i++) {
+					areaListStr.add(areaList.get(i).getSzName());
+				}
+				area_adapter.notifyDataSetChanged();
+				device_adapter.notifyDataSetChanged();
+				cmd_adapter.notifyDataSetChanged();
+
 			}
 
 			@Override
@@ -153,13 +216,41 @@ public class AddModeCmdActivity extends Activity {
 				areaId = areaList.get(arg2).getUsIdx();
 				deviceListStr.clear();
 				deviceIDList.clear();
-				for (int i = 0; i < deviceList.size(); i++) {
-					Appl_S appl_S = deviceList.get(i);
-					if (areaId == appl_S.getUsRgnIdx()
-							&& appl_S.getUcType() == typeId) {
-						deviceIDList.add(appl_S.getUsIdx());
-						deviceListStr.add(appl_S.getSzName());
+
+				cmdIDList.clear();
+				cmdListStr.clear();
+
+				device_adapter.notifyDataSetChanged();
+				cmd_adapter.notifyDataSetChanged();
+				deviceId = -1;
+				cmdId = -1;
+				if (typeId == CmdDevType_E.CMD_DEV_APPL.getVal()) {
+					for (int i = 0; i < deviceList.size(); i++) {
+						Appl_S appl_S = deviceList.get(i);
+						if (areaId == appl_S.getUsRgnIdx()) {
+							deviceIDList.add(appl_S.getUsIdx());
+							deviceListStr.add(appl_S.getSzName());
+						}
 					}
+				} else if (typeId == CmdDevType_E.CMD_DEV_SENS.getVal()) {
+					for (int i = 0; i < senseList.size(); i++) {
+						Sens_S sens_S = senseList.get(i);
+						if (areaId == sens_S.getUsRgnIdx()) {
+							deviceIDList.add(sens_S.getUsIdx());
+							deviceListStr.add(sens_S.getSzName());
+						}
+					}
+				} else if (typeId == CmdDevType_E.CMD_DEV_CAMA.getVal()) {
+					for (int i = 0; i < cameraList.size(); i++) {
+						Cama_S cama_S = cameraList.get(i);
+						if (areaId == cama_S.getUsRgnIdx()) {
+							deviceIDList.add(cama_S.getUsIdx());
+							deviceListStr.add(cama_S.getSzName());
+						}
+					}
+				}
+				if (deviceIDList.size() > 0) {
+					deviceId = deviceIDList.get(0);
 				}
 				device_adapter.notifyDataSetChanged();
 				cmd_adapter.notifyDataSetChanged();
@@ -180,12 +271,17 @@ public class AddModeCmdActivity extends Activity {
 				deviceId = deviceIDList.get(arg2);
 				cmdListStr.clear();
 				cmdIDList.clear();
+				cmd_adapter.notifyDataSetChanged();
+				cmdId = -1;
 				for (int i = 0; i < cmdList.size(); i++) {
 					Cmd_S cmd_S = cmdList.get(i);
 					if (deviceId == cmd_S.getUsDevIdx()) {
 						cmdIDList.add(cmd_S.getUsIdx());
 						cmdListStr.add(cmd_S.getSzName());
 					}
+				}
+				if (cmdIDList.size() > 0) {
+					cmdId = cmdIDList.get(0);
 				}
 				cmd_adapter.notifyDataSetChanged();
 			}
@@ -223,7 +319,17 @@ public class AddModeCmdActivity extends Activity {
 							.getVal(), (short) 2, new MsgQryReq_S((short) 0)
 							.getMsgQryReq_S());
 
-			WriteUtil.write(MsgId_E.MSGID_CMD.getVal(), 2,
+			WriteUtil.write(MsgId_E.MSGID_SENS.getVal(), 2,
+					MsgType_E.MSGTYPE_REQ.getVal(), MsgOper_E.MSGOPER_QRY
+							.getVal(), (short) 2, new MsgQryReq_S((short) 0)
+							.getMsgQryReq_S());
+
+			WriteUtil.write(MsgId_E.MSGID_CAMA.getVal(), 3,
+					MsgType_E.MSGTYPE_REQ.getVal(), MsgOper_E.MSGOPER_QRY
+							.getVal(), (short) 2, new MsgQryReq_S((short) 0)
+							.getMsgQryReq_S());
+
+			WriteUtil.write(MsgId_E.MSGID_CMD.getVal(), 4,
 					MsgType_E.MSGTYPE_REQ.getVal(), MsgOper_E.MSGOPER_QRY
 							.getVal(), (short) 2, new MsgQryReq_S((short) 0)
 							.getMsgQryReq_S());

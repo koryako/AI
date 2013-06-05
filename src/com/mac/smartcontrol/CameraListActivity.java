@@ -5,12 +5,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -24,6 +28,7 @@ import com.mac.smartcontrol.util.WriteUtil;
 import define.entity.Cama_S;
 import define.entity.Rgn_S;
 import define.oper.MsgOper_E;
+import define.oper.body.req.MsgDelReq_S;
 import define.oper.body.req.MsgQryReq_S;
 import define.type.MsgId_E;
 import define.type.MsgType_E;
@@ -62,6 +67,69 @@ public class CameraListActivity extends Activity {
 		cameraListAdapter = new CameraListAdapter(CameraListActivity.this,
 				cameraList);
 		deviceListView.setAdapter(cameraListAdapter);
+
+		deviceListView
+				.setOnItemLongClickListener(new OnItemLongClickListener() {
+
+					@Override
+					public boolean onItemLongClick(AdapterView<?> arg0,
+							View arg1, final int arg2, long arg3) {
+						// TODO Auto-generated method stub
+						cama_S = cameraList.get(arg2);
+						new AlertDialog.Builder(CameraListActivity.this)
+								.setTitle("请选择")
+								.setIcon(android.R.drawable.ic_dialog_info)
+								.setSingleChoiceItems(
+										new String[] { "修改", "删除" }, 0,
+										new DialogInterface.OnClickListener() {
+
+											public void onClick(
+													DialogInterface dialog,
+													int which) {
+												if (which == 0) {
+													Intent intent = new Intent();
+													intent.setClass(
+															CameraListActivity.this,
+															ModifyCameraActivity.class);
+													intent.putExtra("camera",
+															cama_S.getCama_S());
+													mod_Idx = arg2;
+													// 开始一个新的 Activity等候返回结果
+													startActivityForResult(
+															intent, 1);
+												} else if (which == 1) {
+													try {
+														WriteUtil
+																.write(MsgId_E.MSGID_CAMA
+																		.getVal(),
+																		0,
+																		MsgType_E.MSGTYPE_REQ
+																				.getVal(),
+																		MsgOper_E.MSGOPER_DEL
+																				.getVal(),
+																		MsgDelReq_S
+																				.getSize(),
+																		new MsgDelReq_S(
+																				cama_S.getUsIdx())
+																				.getMsgDelReq_S());
+														del_Idx = arg2;
+													} catch (IOException e) {
+														// TODO Auto-generated
+														// catch block
+														Intent i = new Intent(
+																"IOException");
+														sendBroadcast(i);
+														DisconnectionUtil
+																.restart(CameraListActivity.this);
+													}
+												}
+												dialog.dismiss();
+											}
+										}).setNegativeButton("取消", null).show();
+						return false;
+					}
+				});
+
 		ImageView add_Iv = (ImageView) findViewById(R.id.add);
 		add_Iv.setOnClickListener(new OnClickListener() {
 

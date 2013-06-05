@@ -8,10 +8,15 @@ public class MsgCtrlStudyReq_S {
 	short usIdx; // 对象索引
 	short usCmdIdx; // 控制器对应的指令索引
 
-	private MsgCtrlStudyReq_S(short usIdx, short usCmdIdx) {
+	public MsgCtrlStudyReq_S(short usIdx, short usCmdIdx) {
 		super();
 		this.usIdx = usIdx;
 		this.usCmdIdx = usCmdIdx;
+	}
+
+	public MsgCtrlStudyReq_S() {
+		super();
+		// TODO Auto-generated constructor stub
 	}
 
 	public short getUsIdx() {

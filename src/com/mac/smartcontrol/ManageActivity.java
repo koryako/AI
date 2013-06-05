@@ -7,6 +7,8 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
+import android.widget.Toast;
+import define.type.MsgId_E;
 
 public class ManageActivity extends Activity {
 
@@ -50,14 +52,14 @@ public class ManageActivity extends Activity {
 			}
 		});
 
-		ImageView sense_Iv = (ImageView) findViewById(R.id.manage_sensor_iv);
+		ImageView sense_Iv = (ImageView) findViewById(R.id.manage_sense_iv);
 		sense_Iv.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent();
-				intent.putExtra("msgId", 6);
+				intent.putExtra("msgId", MsgId_E.MSGID_SENS.getVal());
 				intent.setClass(ManageActivity.this, EnterAreaActivity.class);
 				startActivity(intent);
 			}
@@ -70,24 +72,22 @@ public class ManageActivity extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent();
-				intent.putExtra("msgId", 4);
+				intent.putExtra("msgId", MsgId_E.MSGID_APPL.getVal());
 				intent.setClass(ManageActivity.this, EnterAreaActivity.class);
 				startActivity(intent);
 			}
 		});
 
-		// ImageView cmd_Iv = (ImageView) findViewById(R.id.manage_cmd_iv);
-		// cmd_Iv.setOnClickListener(new OnClickListener() {
-		//
-		// @Override
-		// public void onClick(View v) {
-		// // TODO Auto-generated method stub
-		// Intent intent = new Intent();
-		// intent.setClass(ManageActivity.this,
-		// EnterDeviceListActivity.class);
-		// startActivity(intent);
-		// }
-		// });
+		ImageView music_Iv = (ImageView) findViewById(R.id.manage_music_iv);
+		music_Iv.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Toast.makeText(ManageActivity.this, "Music", Toast.LENGTH_SHORT)
+						.show();
+			}
+		});
 
 		ImageView camera_Iv = (ImageView) findViewById(R.id.manage_camera_iv);
 		camera_Iv.setOnClickListener(new OnClickListener() {
@@ -96,7 +96,7 @@ public class ManageActivity extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent();
-				intent.putExtra("msgId", 8);
+				intent.putExtra("msgId", MsgId_E.MSGID_CAMA.getVal());
 				intent.setClass(ManageActivity.this, EnterAreaActivity.class);
 				startActivity(intent);
 			}
@@ -109,7 +109,7 @@ public class ManageActivity extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent();
-				intent.putExtra("msgId", 9);
+				intent.putExtra("msgId", MsgId_E.MSGID_MODE.getVal());
 				intent.setClass(ManageActivity.this, EnterAreaActivity.class);
 				startActivity(intent);
 			}

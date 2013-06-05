@@ -70,7 +70,7 @@ public class EnterDeviceListActivity extends Activity {
 		if (bundle != null) {
 			rgn_S = new Rgn_S();
 			byte[] b = bundle.getByteArray("area");
-			msgId = bundle.getInt("msgId");
+			msgId = bundle.getShort("msgId");
 			rgn_S.setRgn_S(b);
 		}
 		back_Iv.setOnClickListener(new OnClickListener() {
@@ -143,7 +143,7 @@ public class EnterDeviceListActivity extends Activity {
 						return false;
 					}
 				});
-		if (msgId == 4) {
+		if (msgId == MsgId_E.MSGID_APPL.getVal()) {
 			add_Iv.setOnClickListener(new OnClickListener() {
 
 				@Override

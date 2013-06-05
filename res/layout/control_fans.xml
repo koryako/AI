@@ -5,14 +5,39 @@
     android:background="@drawable/control_bg"
     android:gravity="center"
     android:orientation="vertical" >
-
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
+    
+    
+    <LinearLayout
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="@string/control_ac"
-        android:textSize="@dimen/control_title_size" />
+        android:layout_marginTop="15dp"
+        android:gravity="center"
+         >
+
+        <ImageView
+            android:id="@+id/back_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/control_back_iv_selector" />
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/control_fans"
+            android:textSize="@dimen/control_title_size" />
+
+        <ImageView
+            android:id="@+id/user_defined_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/control_user_defined_iv_selector" />
+    </LinearLayout>
+
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -57,7 +82,7 @@
                         android:textColor="@color/black" />
 
                     <ImageView
-                        android:id="@+id/wind_t_add_iv"
+                        android:id="@+id/time_iv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
@@ -71,7 +96,7 @@
                         android:textColor="@color/black" />
 
                     <ImageView
-                        android:id="@+id/wind_t_sub_iv"
+                        android:id="@+id/wind_type_iv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
@@ -93,7 +118,7 @@
                         android:textColor="@color/black" />
 
                     <ImageView
-                        android:id="@+id/witch_iv"
+                        android:id="@+id/switch_iv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
@@ -114,7 +139,7 @@
                         android:textColor="@color/black" />
 
                     <ImageView
-                        android:id="@+id/air_out_iv"
+                        android:id="@+id/shift_iv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
@@ -128,7 +153,7 @@
                         android:textColor="@color/black" />
 
                     <ImageView
-                        android:id="@+id/heating_iv"
+                        android:id="@+id/shake_head_iv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"

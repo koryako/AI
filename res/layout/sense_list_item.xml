@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content" >
+    android:layout_height="wrap_content"
+    android:descendantFocusability="blocksDescendants" >
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -10,7 +11,7 @@
         android:gravity="center" >
 
         <ImageView
-            android:id="@+id/imageView1"
+            android:id="@+id/icon_iv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/sense_icon" />
@@ -35,9 +36,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:gravity="center"
             android:layout_marginLeft="@dimen/padding_small"
             android:layout_weight="1"
+            android:gravity="center"
             android:text="客厅" />
 
         <TextView
@@ -45,31 +46,25 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:gravity="center"
             android:layout_marginLeft="@dimen/padding_small"
             android:layout_weight="1"
+            android:gravity="center"
             android:text="烟感" />
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/operate_ll"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:gravity="center"
-        android:orientation="vertical" >
+        android:gravity="center" >
 
         <ImageView
-            android:id="@+id/modify_btn"
+            android:id="@+id/enter_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/list_modify_iv_selector" />
-
-        <ImageView
-            android:id="@+id/delete_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/padding_small"
-            android:src="@drawable/list_delete_iv_selector" />
+            android:layout_marginLeft="@dimen/padding_medium"
+            android:src="@drawable/list_enter_iv_selector" />
     </LinearLayout>
 
 </LinearLayout>

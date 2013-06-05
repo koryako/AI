@@ -63,7 +63,7 @@ public class MainActivity extends ActivityGroup {
 				Intent intent = new Intent(MainActivity.this,
 						EnterAreaActivity.class)
 						.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				intent.putExtra("msgId", 34);
+				intent.putExtra("msgId", (short) 34);
 				container.removeAllViews();
 				container.addView(getLocalActivityManager().startActivity(
 						"control", intent).getDecorView());

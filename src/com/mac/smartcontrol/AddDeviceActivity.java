@@ -30,7 +30,8 @@ import define.type.MsgType_E;
 
 public class AddDeviceActivity extends Activity {
 	public Appl_S appl_S;
-	String[] types = new String[] { "灯", "电视", "机顶盒", "空调", "窗帘" };
+	String[] types = new String[] { "电源开关", "电视和机顶盒", "高清播放器", "空调", "窗帘",
+			"电风扇", "热水器", "用户自定义" };
 	public Spinner area_sp;
 	AddDeviceBroadcastReceiver addDeviceBroadcastReceiver;
 	public List<Rgn_S> areaList = new ArrayList<Rgn_S>();

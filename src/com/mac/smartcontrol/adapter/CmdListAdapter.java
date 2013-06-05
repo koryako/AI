@@ -21,11 +21,11 @@ import com.mac.smartcontrol.R;
 import com.mac.smartcontrol.util.WriteUtil;
 import com.mac.smartcontrol.widget.MarqueeText;
 
-import define.entity.Appl_S;
 import define.entity.Cmd_S;
 import define.entity.Ctrl_S;
 import define.oper.MsgOper_E;
 import define.oper.body.req.MsgDelReq_S;
+import define.type.CmdDevType_E;
 import define.type.MsgId_E;
 import define.type.MsgType_E;
 
@@ -33,15 +33,16 @@ public class CmdListAdapter extends BaseAdapter {
 	private Context context;
 	private List<Cmd_S> cmdList;
 	private Map<Short, Ctrl_S> ctrlMap;
-	private Appl_S appl_S;
+
+	private byte cmdType;
 
 	public CmdListAdapter(Context context, List<Cmd_S> cmdList,
-			Map<Short, Ctrl_S> ctrlMap, Appl_S appl_S) {
+			Map<Short, Ctrl_S> ctrlMap, byte cmdType) {
 		super();
 		this.context = context;
 		this.cmdList = cmdList;
 		this.ctrlMap = ctrlMap;
-		this.appl_S = appl_S;
+		this.cmdType = cmdType;
 	}
 
 	@Override
@@ -125,10 +126,22 @@ public class CmdListAdapter extends BaseAdapter {
 					Intent intent = new Intent();
 					intent.setClass(context, ModifyCmdActivity.class);
 					intent.putExtra("cmd", cmd_S.getCmd_S());
-					intent.putExtra("device", appl_S.getAppl_S());
+					if (cmdType == CmdDevType_E.CMD_DEV_APPL.getVal()) {
+						intent.putExtra("device",
+								((CmdListActivity) context).appl_S.getAppl_S());
+					} else if (cmdType == CmdDevType_E.CMD_DEV_CAMA.getVal()) {
+						intent.putExtra("camare",
+								((CmdListActivity) context).cama_S.getCama_S());
+					} else if (cmdType == CmdDevType_E.CMD_DEV_SENS.getVal()) {
+						intent.putExtra("sense",
+								((CmdListActivity) context).sens_S.getSens_S());
+					}
+
+					intent.putExtra("cmdType", cmdType);
 					((CmdListActivity) context).mod_Idx = position;
 					// 开始一个新的 Activity等候返回结果
 					((Activity) context).startActivityForResult(intent, 1);
+					((CmdListActivity) context).unreg_receiver();
 				}
 			});
 

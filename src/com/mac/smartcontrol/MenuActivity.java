@@ -19,6 +19,7 @@ public class MenuActivity extends Activity {
 		setContentView(R.layout.activity_menu);
 		ImageView manage_Iv = (ImageView) findViewById(R.id.main_manage_iv);
 		ImageView location_Iv = (ImageView) findViewById(R.id.main_location_iv);
+		ImageView control_Iv = (ImageView) findViewById(R.id.main_control_iv);
 		final Intent intent = new Intent();
 		manage_Iv.setOnClickListener(new OnClickListener() {
 
@@ -31,13 +32,25 @@ public class MenuActivity extends Activity {
 				finish();
 			}
 		});
-
 		location_Iv.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				intent.putExtra("currentPage", 3);
+				intent.setClass(MenuActivity.this, MainActivity.class);
+				startActivity(intent);
+				stopService(intent);
+				finish();
+			}
+		});
+
+		control_Iv.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				intent.putExtra("currentPage", 2);
 				intent.setClass(MenuActivity.this, MainActivity.class);
 				startActivity(intent);
 				stopService(intent);

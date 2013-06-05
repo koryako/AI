@@ -7,11 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.TextView;
 
 import com.mac.smartcontrol.R;
+import com.mac.smartcontrol.widget.MarqueeText;
 
 import define.entity.SensLog_S;
+import define.type.SensType_E;
 
 public class SenseLogListAdapter extends BaseAdapter {
 	private Context context;
@@ -49,19 +50,24 @@ public class SenseLogListAdapter extends BaseAdapter {
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			convertView = localinflater.inflate(R.layout.sense_log_list_item,
 					null);
-			TextView sense_name_Tv = (TextView) convertView
+			MarqueeText sense_name_Tv = (MarqueeText) convertView
 					.findViewById(R.id.log_name);
-			TextView area_name_Tv = (TextView) convertView
+			MarqueeText area_name_Tv = (MarqueeText) convertView
 					.findViewById(R.id.area_name);
-			TextView log_content_Tv = (TextView) convertView
+			MarqueeText log_content_Tv = (MarqueeText) convertView
 					.findViewById(R.id.log_content);
-			TextView log_time_Tv = (TextView) convertView
+			MarqueeText log_time_Tv = (MarqueeText) convertView
 					.findViewById(R.id.log_time);
 			final SensLog_S sensLog_S = senseLogList.get(position);
 
 			sense_name_Tv.setText(sensLog_S.getSzName());
 			area_name_Tv.setText(sensLog_S.getSzRgnName());
-			log_content_Tv.setText(sensLog_S.getUcType() + "");
+			if (sensLog_S.getUcType() == SensType_E.SENS_TYPE_GAS.getVal()) {
+				log_content_Tv.setText("煤气感应");
+			} else if (sensLog_S.getUcType() == SensType_E.SENS_TYPE_SMOKE
+					.getVal()) {
+				log_content_Tv.setText("烟雾感应");
+			}
 			log_time_Tv.setText(sensLog_S.getUiTime() + "");
 		}
 		return convertView;

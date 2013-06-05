@@ -29,7 +29,7 @@ import define.type.MsgType_E;
 
 public class AddSenseActivity extends Activity {
 	public Sens_S sens_S;
-	String[] types = new String[] { "ÃºÆø", "ÑÌÎí" };
+	String[] types = new String[] { "ÃºÆø", "ÑÌÎí", "ÎÂ¶È", "Êª¶È" };
 	public Spinner area_sp;
 	AddSenseBroadcastReceiver addSenseBroadcastReceiver;
 	public List<Rgn_S> areaList = new ArrayList<Rgn_S>();

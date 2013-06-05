@@ -13,8 +13,10 @@ import com.mac.smartcontrol.AddModeCmdActivity;
 import com.mac.smartcontrol.SocketService;
 
 import define.entity.Appl_S;
+import define.entity.Cama_S;
 import define.entity.Cmd_S;
 import define.entity.Rgn_S;
+import define.entity.Sens_S;
 import define.oper.MsgOper_E;
 import define.oper.body.ack.MsgAddAck_S;
 import define.oper.body.ack.MsgQryAck_S;
@@ -29,6 +31,8 @@ public class AddModeCmdBroadcastReceiver extends BroadcastReceiver {
 		super();
 		this.activity = activity;
 	}
+
+	// int flag = 0;
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
@@ -47,6 +51,7 @@ public class AddModeCmdBroadcastReceiver extends BroadcastReceiver {
 		byte msgOper = Byte.parseByte(action.split("_")[1]);
 		byte[] body = intent.getExtras().getByteArray("data");
 		AddModeCmdActivity addModeCmdActivity = (AddModeCmdActivity) activity;
+
 		if (msgId == MsgId_E.MSGID_RGN.getVal()
 				&& msgOper == MsgOper_E.MSGOPER_QRY.getVal()) {
 			MsgQryAck_S msgQryAck_S = new MsgQryAck_S();
@@ -60,8 +65,18 @@ public class AddModeCmdBroadcastReceiver extends BroadcastReceiver {
 						Rgn_S rgn_S = new Rgn_S();
 						rgn_S.setRgn_S(rgn_S_Byte);
 						addModeCmdActivity.areaList.add(rgn_S);
-						addModeCmdActivity.areaListStr.add(rgn_S.getSzName());
+						// addModeCmdActivity.areaListStr.add(rgn_S.getSzName());
 					}
+					// flag++;
+					// if (flag == 5) {
+					// addModeCmdActivity.area_sp
+					// .setAdapter(addModeCmdActivity.area_adapter);
+					addModeCmdActivity.area_adapter.notifyDataSetChanged();
+					// addModeCmdActivity.device_adapter
+					// .notifyDataSetChanged();
+					// addModeCmdActivity.cmd_adapter.notifyDataSetChanged();
+					// flag = 0;
+					// }
 
 				} else {
 					ErrCode_E.showError(context, msgQryAck_S.getUsError());
@@ -83,10 +98,82 @@ public class AddModeCmdBroadcastReceiver extends BroadcastReceiver {
 						appl_S.setAppl_S(appl_S_Byte);
 						addModeCmdActivity.deviceList.add(appl_S);
 					}
+					// flag++;
+					// if (flag == 5) {
+					// addModeCmdActivity.area_sp
+					// .setAdapter(addModeCmdActivity.area_adapter);
+					// addModeCmdActivity.area_adapter.notifyDataSetChanged();
+					addModeCmdActivity.device_adapter.notifyDataSetChanged();
+					// addModeCmdActivity.cmd_adapter.notifyDataSetChanged();
+					// flag = 0;
+					// }
 				} else {
 					ErrCode_E.showError(context, msgQryAck_S.getUsError());
 				}
 			}
+		}
+
+		if ((msgId == MsgId_E.MSGID_SENS.getVal() && msgOper == MsgOper_E.MSGOPER_QRY
+				.getVal())
+				|| (msgId == MsgId_E.MSGID_SENS.getVal() && msgOper == MsgOper_E.MSGOPER_MAX
+						.getVal())) {
+			MsgQryAck_S msgQryAck_S = new MsgQryAck_S();
+			msgQryAck_S.setMsgQryAck_S(body);
+			if (msgQryAck_S.getUsCnt() > 0) {
+				if (msgQryAck_S.getUsError() == 0) {
+					for (int i = 0; i < msgQryAck_S.getUsCnt(); i++) {
+						byte[] sens_S_Byte = Arrays.copyOfRange(
+								msgQryAck_S.getPucData(), i * Sens_S.getSize(),
+								(i + 1) * Sens_S.getSize());
+						Sens_S sens_S = new Sens_S();
+						sens_S.setSens_S(sens_S_Byte);
+						addModeCmdActivity.senseList.add(sens_S);
+					}
+					// flag++;
+					// if (flag == 5) {
+					// addModeCmdActivity.area_sp
+					// .setAdapter(addModeCmdActivity.area_adapter);
+					// addModeCmdActivity.area_adapter.notifyDataSetChanged();
+					addModeCmdActivity.device_adapter.notifyDataSetChanged();
+					// addModeCmdActivity.cmd_adapter.notifyDataSetChanged();
+					// flag = 0;
+					// }
+				} else {
+					ErrCode_E.showError(activity, msgQryAck_S.getUsError());
+				}
+			}
+		}
+
+		if ((msgId == MsgId_E.MSGID_CAMA.getVal() && msgOper == MsgOper_E.MSGOPER_QRY
+				.getVal())
+				|| (msgId == MsgId_E.MSGID_CAMA.getVal() && msgOper == MsgOper_E.MSGOPER_MAX
+						.getVal())) {
+			MsgQryAck_S msgQryAck_S = new MsgQryAck_S();
+			msgQryAck_S.setMsgQryAck_S(body);
+			if (msgQryAck_S.getUsCnt() > 0) {
+				if (msgQryAck_S.getUsError() == 0) {
+					for (int i = 0; i < msgQryAck_S.getUsCnt(); i++) {
+						byte[] cama_S_Byte = Arrays.copyOfRange(
+								msgQryAck_S.getPucData(), i * Cama_S.getSize(),
+								(i + 1) * Cama_S.getSize());
+						Cama_S cama_S = new Cama_S();
+						cama_S.setCama_S(cama_S_Byte);
+						addModeCmdActivity.cameraList.add(cama_S);
+					}
+					// flag++;
+					// if (flag == 5) {
+					// addModeCmdActivity.area_sp
+					// .setAdapter(addModeCmdActivity.area_adapter);
+					// addModeCmdActivity.area_adapter.notifyDataSetChanged();
+					addModeCmdActivity.device_adapter.notifyDataSetChanged();
+					// addModeCmdActivity.cmd_adapter.notifyDataSetChanged();
+					// flag = 0;
+					// }
+				} else {
+					ErrCode_E.showError(activity, msgQryAck_S.getUsError());
+				}
+			}
+
 		}
 
 		if (msgId == MsgId_E.MSGID_CMD.getVal()
@@ -103,10 +190,17 @@ public class AddModeCmdBroadcastReceiver extends BroadcastReceiver {
 						cmd_S.setCmd_S(cmd_S_Byte);
 						addModeCmdActivity.cmdList.add(cmd_S);
 					}
-					addModeCmdActivity.area_adapter.notifyDataSetChanged();
-					addModeCmdActivity.device_adapter.notifyDataSetChanged();
+					// flag++;
+					// if (flag == 3) {
+					// addModeCmdActivity.area_sp
+					// .setAdapter(addModeCmdActivity.area_adapter);
+					// addModeCmdActivity.area_adapter.notifyDataSetChanged();
+					// addModeCmdActivity.device_adapter
+					// .notifyDataSetChanged();
 					addModeCmdActivity.cmd_adapter.notifyDataSetChanged();
-				} else {
+					// flag = 0;
+					// }
+					// } else {
 					ErrCode_E.showError(activity, msgQryAck_S.getUsError());
 				}
 			}

@@ -1,5 +1,7 @@
 package define.entity;
 
+import java.io.UnsupportedEncodingException;
+
 import com.mac.smartcontrol.util.FormatTransfer;
 
 public class Sql_S {
@@ -54,6 +56,11 @@ public class Sql_S {
 
 		byte[] szField_b = new byte[usLen];
 		System.arraycopy(b, 2, szField_b, 0, usLen);
-		szField = new String(szField_b).trim();
+		try {
+			szField = new String(szField_b, "gbk").trim();
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

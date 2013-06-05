@@ -1,5 +1,6 @@
 package define.entity;
 
+import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 
 import com.mac.smartcontrol.util.FormatTransfer;
@@ -62,18 +63,23 @@ public class User_S {
 	public byte[] getUser_S() {
 		ByteBuffer bb_Msg = ByteBuffer.allocate(getSize());
 		bb_Msg.put(FormatTransfer.toLH(usIdx));
-		int szName_Len = szName.getBytes().length;
-		bb_Msg.put(szName.getBytes());
-		if (szName_Len < 32) {
-			byte[] szName_Sub = new byte[32 - szName_Len];
-			bb_Msg.put(szName_Sub);
-		}
+		try {
+			int szName_Len = szName.getBytes("gbk").length;
+			bb_Msg.put(szName.getBytes("gbk"));
+			if (szName_Len < 32) {
+				byte[] szName_Sub = new byte[32 - szName_Len];
+				bb_Msg.put(new String(szName_Sub, "gbk").getBytes());
+			}
 
-		int szPass_Len = szPass.getBytes().length;
-		bb_Msg.put(szPass.getBytes());
-		if (szPass_Len < 32) {
-			byte[] szPass_Sub = new byte[32 - szPass_Len];
-			bb_Msg.put(szPass_Sub);
+			int szPass_Len = szPass.getBytes("gbk").length;
+			bb_Msg.put(szPass.getBytes("gbk"));
+			if (szPass_Len < 32) {
+				byte[] szPass_Sub = new byte[32 - szPass_Len];
+				bb_Msg.put(new String(szPass_Sub, "gbk").getBytes());
+			}
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
 		bb_Msg.put(ucType);
@@ -87,13 +93,13 @@ public class User_S {
 
 		byte[] szName_b = new byte[32];
 		System.arraycopy(b, 2, szName_b, 0, 32);
-		szName = new String(szName_b).trim();
-		// try {
-		// szName=new String(szName_b,"gbk").trim();
-		// } catch (UnsupportedEncodingException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
+		// szName = new String(szName_b).trim();
+		try {
+			szName = new String(szName_b, "gbk").trim();
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		byte[] szPass_b = new byte[32];
 		System.arraycopy(b, 34, szPass_b, 0, 32);

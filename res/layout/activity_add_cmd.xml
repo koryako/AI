@@ -183,6 +183,54 @@
                 android:text="@string/btn_study"
                  />
         </LinearLayout>
+        
+        
+        <LinearLayout
+            android:id="@+id/cmd_ll"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/add_margin_size"
+            android:gravity="center" >
+
+            <TextView
+                android:id="@+id/cmd_tv"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:text="@string/add_cmd_cmd" />
+
+            <Spinner
+                android:id="@+id/cmd_sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/edittext_bg"
+                android:paddingLeft="@dimen/padding_large"
+                android:textColor="@color/white" />
+        </LinearLayout>
+        
+        
+        <LinearLayout
+            android:id="@+id/mode_ll"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/add_margin_size"
+            android:gravity="center" >
+
+            <TextView
+                android:id="@+id/mode_tv"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:text="@string/add_cmd_mode" />
+
+            <Spinner
+                android:id="@+id/mode_sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/edittext_bg"
+                android:paddingLeft="@dimen/padding_large"
+                android:textColor="@color/white" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="fill_parent"

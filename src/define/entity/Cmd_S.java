@@ -1,5 +1,6 @@
 package define.entity;
 
+import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 
 import com.mac.smartcontrol.util.FormatTransfer;
@@ -116,17 +117,23 @@ public class Cmd_S {
 		bb_Msg.put(FormatTransfer.toLH(usIdx));
 		bb_Msg.put(ucDevType);
 		bb_Msg.put(FormatTransfer.toLH(usDevIdx));
-		int szName_Len = szName.getBytes().length;
-		bb_Msg.put(szName.getBytes());
-		if (szName_Len < 32) {
-			byte[] szName_Sub = new byte[32 - szName_Len];
-			bb_Msg.put(szName_Sub);
-		}
-		int szVoice_Len = szVoice.getBytes().length;
-		bb_Msg.put(szVoice.getBytes());
-		if (szVoice_Len < 64) {
-			byte[] szVoice_Sub = new byte[64 - szVoice_Len];
-			bb_Msg.put(szVoice_Sub);
+
+		try {
+			int szName_Len = szName.getBytes("gbk").length;
+			bb_Msg.put(szName.getBytes("gbk"));
+			if (szName_Len < 32) {
+				byte[] szName_Sub = new byte[32 - szName_Len];
+				bb_Msg.put(new String(szName_Sub).getBytes("gbk"));
+			}
+			int szVoice_Len = szVoice.getBytes("gbk").length;
+			bb_Msg.put(szVoice.getBytes("gbk"));
+			if (szVoice_Len < 64) {
+				byte[] szVoice_Sub = new byte[64 - szVoice_Len];
+				bb_Msg.put(new String(szVoice_Sub).getBytes("gbk"));
+			}
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
 		bb_Msg.put(FormatTransfer.toLH(usCtrlIdx));
@@ -149,29 +156,29 @@ public class Cmd_S {
 
 		byte[] szName_b = new byte[32];
 		System.arraycopy(b, 5, szName_b, 0, 32);
-		szName = new String(szName_b).trim();
-		// try {
-		// szName = new String(szName_b, "gbk").trim();
-		// } catch (UnsupportedEncodingException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
+		// szName = new String(szName_b).trim();
+		try {
+			szName = new String(szName_b, "gbk").trim();
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		byte[] szVoice_b = new byte[64];
 		System.arraycopy(b, 37, szVoice_b, 0, 64);
-		szVoice = new String(szVoice_b).trim();
-		// try {
-		// szVoice = new String(szVoice_b, "gbk").trim();
-		// } catch (UnsupportedEncodingException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
+		// szVoice = new String(szVoice_b).trim();
+		try {
+			szVoice = new String(szVoice_b, "gbk").trim();
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		byte[] usCtrlIdx_b = new byte[2];
 		System.arraycopy(b, 101, usCtrlIdx_b, 0, 2);
 		usCtrlIdx = FormatTransfer.lBytesToShort(usCtrlIdx_b);
 
-		ucCode = b[103];
+		ucType = b[103];
 		ucCode = b[104];
 
 		byte[] uiPara_b = new byte[4];

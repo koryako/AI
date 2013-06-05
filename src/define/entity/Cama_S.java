@@ -1,5 +1,6 @@
 package define.entity;
 
+import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 
 import com.mac.smartcontrol.util.FormatTransfer;
@@ -74,12 +75,18 @@ public class Cama_S {
 		ByteBuffer bb_Msg = ByteBuffer.allocate(42);
 		bb_Msg.put(FormatTransfer.toLH(usIdx));
 		bb_Msg.put(FormatTransfer.toLH(usRgnIdx));
-		int szName_Len = szName.getBytes().length;
-		bb_Msg.put(szName.getBytes());
-		if (szName_Len < 32) {
-			byte[] szName_Sub = new byte[32 - szName_Len];
-			bb_Msg.put(szName_Sub);
+		try {
+			int szName_Len = szName.getBytes("gbk").length;
+			bb_Msg.put(szName.getBytes("gbk"));
+			if (szName_Len < 32) {
+				byte[] szName_Sub = new byte[32 - szName_Len];
+				bb_Msg.put(new String(szName_Sub).getBytes("gbk"));
+			}
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+
 		bb_Msg.put(FormatTransfer.toLH(uiIpAddr));
 		bb_Msg.put(FormatTransfer.toLH(usPort));
 		return bb_Msg.array();
@@ -97,13 +104,13 @@ public class Cama_S {
 
 		byte[] szName_b = new byte[32];
 		System.arraycopy(b, 4, szName_b, 0, 32);
-		szName = new String(szName_b).trim();
-		// try {
-		// szName = new String(szName_b, "gbk").trim();
-		// } catch (UnsupportedEncodingException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
+		// szName = new String(szName_b).trim();
+		try {
+			szName = new String(szName_b, "gbk").trim();
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		byte[] uiIpAddr_b = new byte[4];
 		System.arraycopy(b, 36, uiIpAddr_b, 0, 4);

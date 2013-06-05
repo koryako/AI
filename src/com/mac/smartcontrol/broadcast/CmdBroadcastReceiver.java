@@ -16,6 +16,7 @@ import define.entity.Appl_S;
 import define.entity.Cmd_S;
 import define.entity.Ctrl_S;
 import define.entity.Rgn_S;
+import define.oper.MsgOperCmd_E;
 import define.oper.MsgOper_E;
 import define.oper.body.ack.MsgCmdQryByDevAck_S;
 import define.oper.body.ack.MsgDelAck_S;
@@ -137,7 +138,7 @@ public class CmdBroadcastReceiver extends BroadcastReceiver {
 		}
 
 		if (msgId == MsgId_E.MSGID_APPL.getVal()
-				&& msgOper == MsgOper_E.MSGOPER_MAX.getVal()) {
+				&& msgOper == MsgOperCmd_E.MSGOPER_CMD_QRY_BYDEV.getVal()) {
 			MsgQryAck_S msgQryAck_S = new MsgQryAck_S();
 			msgQryAck_S.setMsgQryAck_S(body);
 			enterDeviceListActivity = (EnterDeviceListActivity) activity;

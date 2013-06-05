@@ -16,7 +16,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mac.smartcontrol.CmdListActivity;
-import com.mac.smartcontrol.ModifyCmdActivity;
+import com.mac.smartcontrol.ModeCmdListActivity;
+import com.mac.smartcontrol.ModifyModeCmdActivity;
 import com.mac.smartcontrol.R;
 import com.mac.smartcontrol.util.WriteUtil;
 import com.mac.smartcontrol.widget.MarqueeText;
@@ -96,7 +97,8 @@ public class ModeCmdListAdapter extends BaseAdapter {
 				if (appl_S != null) {
 					Rgn_S rgn_S = areaMap.get(appl_S.getUsRgnIdx());
 					device_name_Tv.setText(appl_S.getSzName());
-					area_name_Tv.setText(rgn_S.getSzName());
+					if (rgn_S != null)
+						area_name_Tv.setText(rgn_S.getSzName());
 				}
 			}
 			delete_Iv.setOnClickListener(new OnClickListener() {
@@ -125,9 +127,11 @@ public class ModeCmdListAdapter extends BaseAdapter {
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
 					Intent intent = new Intent();
-					intent.setClass(context, ModifyCmdActivity.class);
+					intent.setClass(context, ModifyModeCmdActivity.class);
 					intent.putExtra("modecmd", modeCmd_S.getModeCmd_S());
-					((CmdListActivity) context).mod_Idx = position;
+					intent.putExtra("mode",
+							((ModeCmdListActivity) context).mode_S.getMode_S());
+					((ModeCmdListActivity) context).mod_Idx = position;
 					// 开始一个新的 Activity等候返回结果
 					((Activity) context).startActivityForResult(intent, 1);
 				}

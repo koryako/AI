@@ -24,9 +24,10 @@ import define.type.MsgId_E;
 public class EnterAreaListAdapter extends BaseAdapter {
 	private Context context;
 	private List<Rgn_S> areaList;
-	private int msgId;
+	private short msgId;
 
-	public EnterAreaListAdapter(Context context, List<Rgn_S> areaList, int msgId) {
+	public EnterAreaListAdapter(Context context, List<Rgn_S> areaList,
+			short msgId) {
 		super();
 		this.context = context;
 		this.areaList = areaList;
@@ -76,14 +77,14 @@ public class EnterAreaListAdapter extends BaseAdapter {
 					intent.putExtra("areaName", rgn_S.getSzName());
 
 					if (msgId == MsgId_E.MSGID_APPL.getVal()) {
-						intent.putExtra("msgId", 4);
+						intent.putExtra("msgId", MsgId_E.MSGID_APPL.getVal());
 						intent.setClass(context, EnterDeviceListActivity.class);
 					} else if (msgId == MsgId_E.MSGID_SENS.getVal()) {
 						intent.setClass(context, SenseListActivity.class);
 					} else if (msgId == MsgId_E.MSGID_CAMA.getVal()) {
 						intent.setClass(context, CameraListActivity.class);
 					} else if (msgId == 34) {
-						intent.putExtra("msgId", 34);
+						intent.putExtra("msgId", (short) 34);
 						intent.setClass(context, EnterDeviceListActivity.class);
 					} else if (msgId == MsgId_E.MSGID_MODE.getVal()) {
 						intent.setClass(context, EnterModeListActivity.class);

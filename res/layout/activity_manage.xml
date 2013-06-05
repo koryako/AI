@@ -14,24 +14,16 @@
     <AbsoluteLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:layout_marginTop="20dp"
+        android:layout_weight="1"
         android:orientation="vertical" >
-
-        <ImageView
-            android:id="@+id/manage_device_iv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_x="114dp"
-            android:layout_y="90dp"
-            android:src="@drawable/activity_manage_device_iv_selector" />
 
         <ImageView
             android:id="@+id/manage_area_iv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_x="162dp"
-            android:layout_y="42dp"
+            android:layout_y="49dp"
             android:src="@drawable/activity_manage_area_iv_selector" />
 
         <ImageView
@@ -39,15 +31,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_x="66dp"
-            android:layout_y="42dp"
+            android:layout_y="49dp"
             android:src="@drawable/activity_manage_user_iv_selector" />
 
         <ImageView
             android:id="@+id/manage_controller_iv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_x="19dp"
-            android:layout_y="90dp"
+            android:layout_x="210dp"
+            android:layout_y="97dp"
             android:src="@drawable/activity_manage_control_iv_selector" />
 
         <ImageView
@@ -55,7 +47,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_x="162dp"
-            android:layout_y="139dp"
+            android:layout_y="145dp"
             android:src="@drawable/activity_manage_mode_iv_selector" />
 
         <ImageView
@@ -63,7 +55,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_x="66dp"
-            android:layout_y="138dp"
+            android:layout_y="145dp"
             android:src="@drawable/activity_manage_camera_iv_selector" />
 
         <ImageView
@@ -71,24 +63,31 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_x="114dp"
-            android:layout_y="186dp"
+            android:layout_y="193dp"
             android:src="@drawable/activity_manage_music_iv_selector" />
 
         <ImageView
-            android:id="@+id/manage_sensor_iv"
+            android:id="@+id/manage_sense_iv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_x="210dp"
-            android:layout_y="90dp"
-            android:src="@drawable/activity_manage_sensor_iv_selector" />
+            android:layout_x="18dp"
+            android:layout_y="97dp"
+            android:src="@drawable/activity_manage_sense_iv_selector" />
 
-          <ImageView
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_x="9dp"
-              android:layout_y="145dp"
-              android:src="@drawable/manage_v_bg" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_x="9dp"
+            android:layout_y="152dp"
+            android:src="@drawable/manage_v_bg" />
 
+        <ImageView
+            android:id="@+id/manage_device_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_x="114dp"
+            android:layout_y="1dp"
+            android:src="@drawable/activity_manage_device_iv_selector" />
     </AbsoluteLayout>
 
     <!-- <LinearLayout -->

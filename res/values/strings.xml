@@ -7,7 +7,6 @@
     <string name="menu_control">控制</string>
     <string name="menu_camera">监控</string>
     <string name="menu_location">定位</string>
-    
     <string name="login">登陆</string>
     <string name="username">用户名：</string>
     <string name="password">密　码：</string>
@@ -34,6 +33,10 @@
     <string name="modify_camera">修改摄像头</string>
     <string name="cmd_list">指令列表</string>
     <string name="add_cmd">添加指令</string>
+    
+    <string name="add_cmd_cmd">指　　令：</string>
+    <string name="add_cmd_mode">智能模式：</string>
+    
     <string name="modify_cmd">修改指令</string>
     <string name="cmd_name">指令名称：</string>
     <string name="voice_name">指令文本：</string>
@@ -70,7 +73,7 @@
     <string name="btn_test">测　试</string>
     <string name="btn_study">学　习</string>
     <string name="btn_modify">修　改</string>
-    <string name="control_light">电灯</string>
+    <string name="control_switch">电源</string>
     <string name="control_ac">空调</string>
     <string name="control_hdplay">高清播放器</string>
     <string name="control_hdplay_open_close">OPEN\/\nCLOSE</string>
@@ -78,17 +81,18 @@
     <string name="control_tv_power">POWER</string>
     <string name="control_tv_vol">VOL</string>
     <string name="control_tv_tvav">TV\/AV</string>
+    <string name="control_fans">风扇</string>
     <string name="control_fans_power">开\/关</string>
     <string name="control_fans_time">定时</string>
     <string name="control_fans_wind_type">风类</string>
     <string name="control_fans_shift">换挡</string>
     <string name="control_fans_sh">摇头</string>
-    
     <string name="control_ac_time">定时</string>
     <string name="control_ac_wind_direction">风向</string>
     <string name="control_ac_temperature">温度</string>
     <string name="control_ac_air_out">通风</string>
     <string name="control_ac_heating">制热</string>
     <string name="control_ac_witch">开/关</string>
+    <string name="control_user_defined">自定义</string>
 
 </resources>

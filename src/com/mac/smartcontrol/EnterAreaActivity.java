@@ -37,7 +37,7 @@ public class EnterAreaActivity extends Activity {
 	SenseBroadcastReceiver senseBroadcastReceiver;
 	TextView area_title_tv;
 	public Rgn_S rgn_S = null;
-	private int msgId;
+	private short msgId;
 	IntentFilter filter;
 
 	@Override
@@ -50,7 +50,7 @@ public class EnterAreaActivity extends Activity {
 		areaListView = (ListView) findViewById(R.id.userlist);
 		areaList = new ArrayList<Rgn_S>();
 		Bundle bd = getIntent().getExtras();
-		msgId = bd.getInt("msgId");
+		msgId = bd.getShort("msgId");
 		enterAreaListAdapter = new EnterAreaListAdapter(EnterAreaActivity.this,
 				areaList, msgId);
 		areaListView.setAdapter(enterAreaListAdapter);

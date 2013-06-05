@@ -6,13 +6,36 @@
     android:gravity="center"
     android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_marginTop="20dp"
+    <LinearLayout
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/control_title_size"
-        android:text="@string/control_light" />
+        android:layout_marginTop="15dp"
+        android:gravity="center"
+         >
+
+        <ImageView
+            android:id="@+id/back_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/control_back_iv_selector" />
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/control_switch"
+            android:textSize="@dimen/control_title_size" />
+
+        <ImageView
+            android:id="@+id/user_defined_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/control_user_defined_iv_selector" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -23,14 +46,13 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/light_btn_bg"
             android:gravity="center" >
 
             <ImageView
-                android:id="@+id/imageView1"
+                android:id="@+id/switch_iv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/light_close_btn" />
+                android:src="@drawable/switch_btn_close" />
         </LinearLayout>
     </LinearLayout>
 

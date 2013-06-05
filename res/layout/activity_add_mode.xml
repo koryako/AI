@@ -121,7 +121,6 @@
                 android:textColor="@color/white"
                 >
 
-                <requestFocus />
             </EditText>
             
         </LinearLayout>

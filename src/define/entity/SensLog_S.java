@@ -1,5 +1,6 @@
 package define.entity;
 
+import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 
 import com.mac.smartcontrol.util.FormatTransfer;
@@ -80,18 +81,22 @@ public class SensLog_S {
 	}
 
 	public void setSensLog_S(byte[] b) {
-		System.out.println(b.length);
 		byte[] usIdx_b = new byte[2];
 		System.arraycopy(b, 0, usIdx_b, 0, 2);
 		usIdx = FormatTransfer.lBytesToShort(usIdx_b);
 
-		byte[] szRgnName_b = new byte[32];
-		System.arraycopy(b, 2, szRgnName_b, 0, 32);
-		szRgnName = new String(szRgnName_b).trim();
+		try {
+			byte[] szRgnName_b = new byte[32];
+			System.arraycopy(b, 2, szRgnName_b, 0, 32);
+			szRgnName = new String(szRgnName_b, "gbk").trim();
 
-		byte[] szName_b = new byte[32];
-		System.arraycopy(b, 34, szName_b, 0, 32);
-		szName = new String(szName_b).trim();
+			byte[] szName_b = new byte[32];
+			System.arraycopy(b, 34, szName_b, 0, 32);
+			szName = new String(szName_b, "gbk").trim();
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		ucType = b[66];
 

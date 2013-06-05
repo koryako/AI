@@ -47,7 +47,7 @@ public class ModeCmdListActivity extends Activity {
 	public int mod_Idx = -1;
 	ModeCmdBroadcastReceiver modeCmdBroadcastReceiver;
 	TextView modecmd_title_tv;
-	Mode_S mode_S;
+	public Mode_S mode_S;
 	IntentFilter filter;
 
 	@Override

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-   	android:gravity="center"
-    android:layout_height="wrap_content" >
+    android:layout_height="wrap_content"
+    android:gravity="center" >
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -16,11 +16,19 @@
             android:layout_height="wrap_content"
             android:src="@drawable/sense_icon" />
 
-        <TextView
+        <com.mac.smartcontrol.widget.MarqueeText
             android:id="@+id/log_name"
-            android:layout_width="65dp"
+            android:layout_width="60dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginLeft="@dimen/add_margin_size"
+            android:ellipsize="marquee"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:gravity="center"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:scrollHorizontally="true"
+            android:singleLine="true"
             android:text="客厅煤气感应器" />
     </LinearLayout>
 
@@ -28,27 +36,37 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginLeft="@dimen/add_margin_size"
         android:layout_weight="1"
         android:gravity="center" >
 
-        <TextView
+        <com.mac.smartcontrol.widget.MarqueeText
             android:id="@+id/area_name"
-            android:layout_width="wrap_content"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:ellipsize="marquee"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:gravity="center"
-            android:layout_marginLeft="@dimen/padding_small"
-            android:layout_weight="1"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:scrollHorizontally="true"
+            android:singleLine="true"
             android:text="客厅" />
 
-        <TextView
+        <com.mac.smartcontrol.widget.MarqueeText
             android:id="@+id/log_content"
-            android:layout_width="wrap_content"
+            android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/add_margin_size"
+            android:ellipsize="marquee"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:gravity="center"
-            android:layout_marginLeft="@dimen/padding_small"
-            android:layout_weight="1"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:scrollHorizontally="true"
+            android:singleLine="true"
             android:text="煤气泄漏" />
     </LinearLayout>
 
@@ -59,13 +77,19 @@
         android:gravity="center"
         android:orientation="vertical" >
 
-        <TextView
+        <com.mac.smartcontrol.widget.MarqueeText
             android:id="@+id/log_time"
-            android:layout_width="wrap_content"
+            android:layout_width="70dp"
             android:layout_height="wrap_content"
-            android:textSize="10sp"
+            android:layout_gravity="center"
+            android:ellipsize="marquee"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:gravity="center"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:scrollHorizontally="true"
+            android:singleLine="true"
             android:text="2013-03-18 23:42:53" />
-
     </LinearLayout>
 
 </LinearLayout>

@@ -1,9 +1,7 @@
 package com.mac.smartcontrol.adapter;
 
-import java.io.IOException;
 import java.util.List;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -12,19 +10,15 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.mac.smartcontrol.CameraListActivity;
-import com.mac.smartcontrol.ModifyCameraActivity;
+import com.mac.smartcontrol.CmdListActivity;
 import com.mac.smartcontrol.R;
 import com.mac.smartcontrol.util.FormatTransfer;
-import com.mac.smartcontrol.util.WriteUtil;
+import com.mac.smartcontrol.widget.MarqueeText;
 
 import define.entity.Cama_S;
-import define.oper.MsgOper_E;
-import define.oper.body.req.MsgDelReq_S;
-import define.type.MsgId_E;
-import define.type.MsgType_E;
+import define.type.CmdDevType_E;
 
 public class CameraListAdapter extends BaseAdapter {
 	private Context context;
@@ -63,22 +57,22 @@ public class CameraListAdapter extends BaseAdapter {
 			convertView = localinflater
 					.inflate(R.layout.camera_list_item, null);
 
-			TextView camera_name_Tv = (TextView) convertView
+			MarqueeText camera_name_Tv = (MarqueeText) convertView
 					.findViewById(R.id.camera_name);
-			TextView area_name_Tv = (TextView) convertView
+			MarqueeText area_name_Tv = (MarqueeText) convertView
 					.findViewById(R.id.area_name);
 
-			TextView ip_Tv = (TextView) convertView.findViewById(R.id.ip_tv);
-			TextView port_Tv = (TextView) convertView
+			MarqueeText ip_Tv = (MarqueeText) convertView
+					.findViewById(R.id.ip_tv);
+			MarqueeText port_Tv = (MarqueeText) convertView
 					.findViewById(R.id.port_tv);
-
-			ImageView delete_Iv = (ImageView) convertView
-					.findViewById(R.id.delete_btn);
+			ImageView enter_Iv = (ImageView) convertView
+					.findViewById(R.id.enter_btn);
+			// ImageView delete_Iv = (ImageView) convertView
+			// .findViewById(R.id.delete_btn);
 			area_name_Tv.setText(((CameraListActivity) context).areaName);
-			System.out.println(((CameraListActivity) context).areaName + ","
-					+ ((CameraListActivity) context).rgn_S.getSzName());
-			ImageView modify_Iv = (ImageView) convertView
-					.findViewById(R.id.modify_btn);
+			// ImageView modify_Iv = (ImageView) convertView
+			// .findViewById(R.id.modify_btn);
 			final Cama_S cama_S = cameraList.get(position);
 			camera_name_Tv.setText(cama_S.getSzName());
 			byte[] ip_b = FormatTransfer.toLH(cama_S.getUiIpAddr());
@@ -92,39 +86,53 @@ public class CameraListAdapter extends BaseAdapter {
 			}
 			ip_Tv.setText(ip_Str.substring(0, ip_Str.length() - 1));
 			port_Tv.setText(cama_S.getUsPort() + "");
-			delete_Iv.setOnClickListener(new OnClickListener() {
 
-				@Override
-				public void onClick(View v) {
-					// TODO Auto-generated method stub
-					try {
-						WriteUtil.write(MsgId_E.MSGID_CAMA.getVal(), 0,
-								MsgType_E.MSGTYPE_REQ.getVal(),
-								MsgOper_E.MSGOPER_DEL.getVal(), MsgDelReq_S
-										.getSize(),
-								new MsgDelReq_S(cama_S.getUsIdx())
-										.getMsgDelReq_S());
-						((CameraListActivity) context).del_Idx = position;
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						Intent i = new Intent("IOException");
-						context.sendBroadcast(i);
-					}
-				}
-			});
-			modify_Iv.setOnClickListener(new OnClickListener() {
+			enter_Iv.setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
 					Intent intent = new Intent();
-					intent.setClass(context, ModifyCameraActivity.class);
-					intent.putExtra("camera", cama_S.getCama_S());
-					((CameraListActivity) context).mod_Idx = position;
-					// 开始一个新的 Activity等候返回结果
-					((Activity) context).startActivityForResult(intent, 1);
+					intent.putExtra("cmdType",
+							CmdDevType_E.CMD_DEV_CAMA.getVal());
+					intent.putExtra("camare", cama_S.getCama_S());
+					intent.setClass(context, CmdListActivity.class);
+					context.startActivity(intent);
 				}
 			});
+			// delete_Iv.setOnClickListener(new OnClickListener() {
+			//
+			// @Override
+			// public void onClick(View v) {
+			// // TODO Auto-generated method stub
+			// try {
+			// WriteUtil.write(MsgId_E.MSGID_CAMA.getVal(), 0,
+			// MsgType_E.MSGTYPE_REQ.getVal(),
+			// MsgOper_E.MSGOPER_DEL.getVal(), MsgDelReq_S
+			// .getSize(),
+			// new MsgDelReq_S(cama_S.getUsIdx())
+			// .getMsgDelReq_S());
+			// ((CameraListActivity) context).del_Idx = position;
+			// } catch (IOException e) {
+			// // TODO Auto-generated catch block
+			// Intent i = new Intent("IOException");
+			// context.sendBroadcast(i);
+			// }
+			// }
+			// });
+			// modify_Iv.setOnClickListener(new OnClickListener() {
+			//
+			// @Override
+			// public void onClick(View v) {
+			// // TODO Auto-generated method stub
+			// Intent intent = new Intent();
+			// intent.setClass(context, ModifyCameraActivity.class);
+			// intent.putExtra("camera", cama_S.getCama_S());
+			// ((CameraListActivity) context).mod_Idx = position;
+			// // 开始一个新的 Activity等候返回结果
+			// ((Activity) context).startActivityForResult(intent, 1);
+			// }
+			// });
 
 		}
 		return convertView;

@@ -24,6 +24,7 @@ import com.mac.smartcontrol.widget.MarqueeText;
 import define.entity.Appl_S;
 import define.entity.Rgn_S;
 import define.type.ApplType_E;
+import define.type.CmdDevType_E;
 import define.type.MsgId_E;
 
 public class EnterDeviceListAdapter extends BaseAdapter {
@@ -82,33 +83,27 @@ public class EnterDeviceListAdapter extends BaseAdapter {
 				area_name_Tv.setText(rgn_S.getSzName());
 			}
 			final Intent intent = new Intent();
-			intent.putExtra("device", appl_S.getAppl_S());
-
 			device_name_Tv.setText(appl_S.getSzName());
 			if (appl_S.getUcType() == ApplType_E.APPL_TYPE_SWITCH.getVal()) {
 				device_icon_Iv.setImageResource(R.drawable.light_icon);
-				intent.setClass(context, SwitchActivity.class);
 			} else if (appl_S.getUcType() == ApplType_E.APPL_TYPE_TVSET
 					.getVal()) {
 				device_icon_Iv.setImageResource(R.drawable.tv_icon);
-				intent.setClass(context, TVActivity.class);
 			} else if (appl_S.getUcType() == ApplType_E.APPL_TYPE_HDPLAY
 					.getVal()) {
 				device_icon_Iv.setImageResource(R.drawable.tv_box_icon);
-				intent.setClass(context, HDPlayActivity.class);
 			} else if (appl_S.getUcType() == ApplType_E.APPL_TYPE_AIRCOND
 					.getVal()) {
 				device_icon_Iv.setImageResource(R.drawable.ac_icon);
-				intent.setClass(context, ACActivity.class);
 			} else if (appl_S.getUcType() == ApplType_E.APPL_TYPE_CURTAIN
 					.getVal()) {
 				device_icon_Iv.setImageResource(R.drawable.curtain_icon);
-				intent.setClass(context, SwitchActivity.class);
 			} else if (appl_S.getUcType() == ApplType_E.APPL_TYPE_CUSTOM
 					.getVal()) {
 				device_icon_Iv.setImageResource(R.drawable.user_defined_icon);
-				intent.setClass(context, SwitchActivity.class);
 			}
+			intent.putExtra("device", appl_S.getAppl_S());
+			intent.putExtra("cmdType", CmdDevType_E.CMD_DEV_APPL.getVal());
 			enter_Iv.setOnClickListener(new OnClickListener() {
 
 				@Override
@@ -120,6 +115,25 @@ public class EnterDeviceListAdapter extends BaseAdapter {
 						intent.setClass(context, CmdListActivity.class);
 					} else if (msgId == 34) {
 						// intent.setClass(context, CmdListActivity.class);
+						if (appl_S.getUcType() == ApplType_E.APPL_TYPE_SWITCH
+								.getVal()) {
+							intent.setClass(context, SwitchActivity.class);
+						} else if (appl_S.getUcType() == ApplType_E.APPL_TYPE_TVSET
+								.getVal()) {
+							intent.setClass(context, TVActivity.class);
+						} else if (appl_S.getUcType() == ApplType_E.APPL_TYPE_HDPLAY
+								.getVal()) {
+							intent.setClass(context, HDPlayActivity.class);
+						} else if (appl_S.getUcType() == ApplType_E.APPL_TYPE_AIRCOND
+								.getVal()) {
+							intent.setClass(context, ACActivity.class);
+						} else if (appl_S.getUcType() == ApplType_E.APPL_TYPE_CURTAIN
+								.getVal()) {
+							intent.setClass(context, SwitchActivity.class);
+						} else if (appl_S.getUcType() == ApplType_E.APPL_TYPE_CUSTOM
+								.getVal()) {
+							intent.setClass(context, SwitchActivity.class);
+						}
 					}
 					context.startActivity(intent);
 				}
@@ -128,5 +142,4 @@ public class EnterDeviceListAdapter extends BaseAdapter {
 		}
 		return convertView;
 	}
-
 }
