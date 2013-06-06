@@ -48,8 +48,8 @@ public class AddSenseBroadcastReceiver extends BroadcastReceiver {
 				&& msgOper == MsgOper_E.MSGOPER_QRY.getVal()) {
 			MsgQryAck_S msgQryAck_S = new MsgQryAck_S();
 			msgQryAck_S.setMsgQryAck_S(body);
-			if (msgQryAck_S.getUsCnt() > 0) {
-				if (msgQryAck_S.getUsError() == 0) {
+			if (msgQryAck_S.getUsError() == 0) {
+				if (msgQryAck_S.getUsCnt() > 0) {
 					for (int i = 0; i < msgQryAck_S.getUsCnt(); i++) {
 						byte[] rgn_S_Byte = Arrays.copyOfRange(
 								msgQryAck_S.getPucData(), i * Rgn_S.getSize(),
@@ -59,9 +59,9 @@ public class AddSenseBroadcastReceiver extends BroadcastReceiver {
 						addSenseActivity.areaList.add(rgn_S);
 						addSenseActivity.area_adapter.add(rgn_S.getSzName());
 					}
-				} else {
-					ErrCode_E.showError(context, msgQryAck_S.getUsError());
 				}
+			} else {
+				ErrCode_E.showError(context, msgQryAck_S.getUsError());
 			}
 		}
 		if (msgId == MsgId_E.MSGID_SENS.getVal()

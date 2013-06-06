@@ -52,8 +52,8 @@ public class CameraBroadcastReceiver extends BroadcastReceiver {
 			MsgQryAck_S msgQryAck_S = new MsgQryAck_S();
 			msgQryAck_S.setMsgQryAck_S(body);
 			enterAreaActivity = (EnterAreaActivity) activity;
-			if (msgQryAck_S.getUsCnt() > 0) {
-				if (msgQryAck_S.getUsError() == 0) {
+			if (msgQryAck_S.getUsError() == 0) {
+				if (msgQryAck_S.getUsCnt() > 0) {
 					for (int i = 0; i < msgQryAck_S.getUsCnt(); i++) {
 						byte[] rgn_S_Byte = Arrays.copyOfRange(
 								msgQryAck_S.getPucData(), i * Rgn_S.getSize(),
@@ -103,8 +103,8 @@ public class CameraBroadcastReceiver extends BroadcastReceiver {
 		MsgQryAck_S msgQryAck_S = new MsgQryAck_S();
 		msgQryAck_S.setMsgQryAck_S(body);
 		CameraListActivity cameraListActivity = (CameraListActivity) activity;
-		if (msgQryAck_S.getUsCnt() > 0) {
-			if (msgQryAck_S.getUsError() == 0) {
+		if (msgQryAck_S.getUsError() == 0) {
+			if (msgQryAck_S.getUsCnt() > 0) {
 				for (int i = 0; i < msgQryAck_S.getUsCnt(); i++) {
 					byte[] cama_S_Byte = Arrays.copyOfRange(
 							msgQryAck_S.getPucData(), i * Cama_S.getSize(),
@@ -114,9 +114,9 @@ public class CameraBroadcastReceiver extends BroadcastReceiver {
 					cameraListActivity.cameraList.add(cama_S);
 				}
 				cameraListActivity.cameraListAdapter.notifyDataSetChanged();
-			} else {
-				ErrCode_E.showError(activity, msgQryAck_S.getUsError());
 			}
+		} else {
+			ErrCode_E.showError(activity, msgQryAck_S.getUsError());
 		}
 	}
 }

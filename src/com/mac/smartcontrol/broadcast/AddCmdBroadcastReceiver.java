@@ -15,15 +15,14 @@ import com.mac.smartcontrol.SocketService;
 import define.entity.Cmd_S;
 import define.entity.Ctrl_S;
 import define.entity.Mode_S;
-import define.oper.MsgOperCmd_E;
 import define.oper.MsgOperCtrl_E;
 import define.oper.MsgOper_E;
 import define.oper.body.ack.MsgAddAck_S;
-import define.oper.body.ack.MsgCmdQryByDevAck_S;
 import define.oper.body.ack.MsgCtrlStudyAck_S;
 import define.oper.body.ack.MsgCtrlTestAck_S;
 import define.oper.body.ack.MsgModeQryByRgnAck_S;
 import define.oper.body.ack.MsgQryAck_S;
+import define.type.CmdDevType_E;
 import define.type.ErrCode_E;
 import define.type.MsgId_E;
 
@@ -56,8 +55,10 @@ public class AddCmdBroadcastReceiver extends BroadcastReceiver {
 				&& msgOper == MsgOper_E.MSGOPER_QRY.getVal()) {
 			MsgQryAck_S msgQryAck_S = new MsgQryAck_S();
 			msgQryAck_S.setMsgQryAck_S(body);
-			if (msgQryAck_S.getUsCnt() > 0) {
-				if (msgQryAck_S.getUsError() == 0) {
+			addCmdActivity.ctrlList.clear();
+			addCmdActivity.ctrlNameList.clear();
+			if (msgQryAck_S.getUsError() == 0) {
+				if (msgQryAck_S.getUsCnt() > 0) {
 					for (int i = 0; i < msgQryAck_S.getUsCnt(); i++) {
 						byte[] ctrl_S_Byte = Arrays.copyOfRange(
 								msgQryAck_S.getPucData(), i * Ctrl_S.getSize(),
@@ -68,9 +69,9 @@ public class AddCmdBroadcastReceiver extends BroadcastReceiver {
 						addCmdActivity.ctrlNameList.add(ctrl_S.getSzName());
 					}
 					addCmdActivity.ctrl_adapter.notifyDataSetChanged();
-				} else {
-					ErrCode_E.showError(context, msgQryAck_S.getUsError());
 				}
+			} else {
+				ErrCode_E.showError(context, msgQryAck_S.getUsError());
 			}
 		}
 
@@ -119,28 +120,30 @@ public class AddCmdBroadcastReceiver extends BroadcastReceiver {
 			}
 		}
 
-		if ((msgId == MsgId_E.MSGID_CMD.getVal() && msgOper == MsgOperCmd_E.MSGOPER_CMD_QRY_BYDEV
+		if ((msgId == MsgId_E.MSGID_CMD.getVal() && msgOper == MsgOper_E.MSGOPER_QRY
 				.getVal())
 				|| (msgId == MsgId_E.MSGID_CMD.getVal() && msgOper == MsgOper_E.MSGOPER_MAX
 						.getVal())) {
-			MsgCmdQryByDevAck_S msgCmdQryByDevAck_S = new MsgCmdQryByDevAck_S();
-			msgCmdQryByDevAck_S.setMsgCmdQryByDevAck_S(body);
-			if (msgCmdQryByDevAck_S.getUsCnt() > 0) {
-				if (msgCmdQryByDevAck_S.getUcErr() == 0) {
-					for (int i = 0; i < msgCmdQryByDevAck_S.getUsCnt(); i++) {
+			MsgQryAck_S msgQryAck_S = new MsgQryAck_S();
+			msgQryAck_S.setMsgQryAck_S(body);
+			if (msgQryAck_S.getUsError() == 0) {
+				if (msgQryAck_S.getUsCnt() > 0) {
+					for (int i = 0; i < msgQryAck_S.getUsCnt(); i++) {
 						byte[] cmd_S_Byte = Arrays.copyOfRange(
-								msgCmdQryByDevAck_S.getPucData(),
-								i * Cmd_S.getSize(), (i + 1) * Cmd_S.getSize());
+								msgQryAck_S.getPucData(), i * Cmd_S.getSize(),
+								(i + 1) * Cmd_S.getSize());
 						Cmd_S cmd_S = new Cmd_S();
 						cmd_S.setCmd_S(cmd_S_Byte);
-						addCmdActivity.cmdList.add(cmd_S);
-						addCmdActivity.cmdNameList.add(cmd_S.getSzName());
+						if (cmd_S.getUcDevType() != CmdDevType_E.CMD_DEV_SENS
+								.getVal()) {
+							addCmdActivity.cmdList.add(cmd_S);
+							addCmdActivity.cmdNameList.add(cmd_S.getSzName());
+						}
 					}
 					addCmdActivity.cmd_adapter.notifyDataSetChanged();
-				} else {
-					ErrCode_E.showError(activity,
-							msgCmdQryByDevAck_S.getUcErr());
 				}
+			} else {
+				ErrCode_E.showError(activity, msgQryAck_S.getUsError());
 			}
 		}
 
@@ -150,8 +153,8 @@ public class AddCmdBroadcastReceiver extends BroadcastReceiver {
 						.getVal())) {
 			MsgModeQryByRgnAck_S msgModeQryByRgnAck_S = new MsgModeQryByRgnAck_S();
 			msgModeQryByRgnAck_S.setMsgModeQryByRgnAck_S(body);
-			if (msgModeQryByRgnAck_S.getUsCnt() > 0) {
-				if (msgModeQryByRgnAck_S.getUcErr() == 0) {
+			if (msgModeQryByRgnAck_S.getUcErr() == 0) {
+				if (msgModeQryByRgnAck_S.getUsCnt() > 0) {
 					for (int i = 0; i < msgModeQryByRgnAck_S.getUsCnt(); i++) {
 						byte[] cmd_S_Byte = Arrays.copyOfRange(
 								msgModeQryByRgnAck_S.getPucData(),
@@ -163,10 +166,9 @@ public class AddCmdBroadcastReceiver extends BroadcastReceiver {
 						addCmdActivity.modeNameList.add(mode_S.getSzName());
 					}
 					addCmdActivity.mode_adapter.notifyDataSetChanged();
-				} else {
-					ErrCode_E.showError(activity,
-							msgModeQryByRgnAck_S.getUcErr());
 				}
+			} else {
+				ErrCode_E.showError(activity, msgModeQryByRgnAck_S.getUcErr());
 			}
 		}
 

@@ -54,8 +54,8 @@ public class SenseBroadcastReceiver extends BroadcastReceiver {
 			MsgQryAck_S msgQryAck_S = new MsgQryAck_S();
 			msgQryAck_S.setMsgQryAck_S(body);
 			senseLogListActivity = (SenseLogListActivity) activity;
-			if (msgQryAck_S.getUsCnt() > 0) {
-				if (msgQryAck_S.getUsError() == 0) {
+			if (msgQryAck_S.getUsError() == 0) {
+				if (msgQryAck_S.getUsCnt() > 0) {
 					for (int i = 0; i < msgQryAck_S.getUsCnt(); i++) {
 						byte[] sensLog_S_Byte = Arrays.copyOfRange(
 								msgQryAck_S.getPucData(),
@@ -67,9 +67,9 @@ public class SenseBroadcastReceiver extends BroadcastReceiver {
 					}
 					senseLogListActivity.senseLogListAdapter
 							.notifyDataSetChanged();
-				} else {
-					ErrCode_E.showError(context, msgQryAck_S.getUsError());
 				}
+			} else {
+				ErrCode_E.showError(context, msgQryAck_S.getUsError());
 			}
 		}
 
@@ -78,8 +78,8 @@ public class SenseBroadcastReceiver extends BroadcastReceiver {
 			MsgQryAck_S msgQryAck_S = new MsgQryAck_S();
 			msgQryAck_S.setMsgQryAck_S(body);
 			enterAreaActivity = (EnterAreaActivity) activity;
-			if (msgQryAck_S.getUsCnt() > 0) {
-				if (msgQryAck_S.getUsError() == 0) {
+			if (msgQryAck_S.getUsError() == 0) {
+				if (msgQryAck_S.getUsCnt() > 0) {
 					enterAreaActivity.areaList.clear();
 					for (int i = 0; i < msgQryAck_S.getUsCnt(); i++) {
 						byte[] rgn_S_Byte = Arrays.copyOfRange(
@@ -91,9 +91,9 @@ public class SenseBroadcastReceiver extends BroadcastReceiver {
 					}
 					enterAreaActivity.enterAreaListAdapter
 							.notifyDataSetChanged();
-				} else {
-					ErrCode_E.showError(context, msgQryAck_S.getUsError());
 				}
+			} else {
+				ErrCode_E.showError(context, msgQryAck_S.getUsError());
 			}
 		}
 		if (msgId == MsgId_E.MSGID_SENS.getVal()
@@ -124,8 +124,8 @@ public class SenseBroadcastReceiver extends BroadcastReceiver {
 		MsgQryAck_S msgQryAck_S = new MsgQryAck_S();
 		msgQryAck_S.setMsgQryAck_S(body);
 		SenseListActivity senseListActivity = (SenseListActivity) activity;
-		if (msgQryAck_S.getUsCnt() > 0) {
-			if (msgQryAck_S.getUsError() == 0) {
+		if (msgQryAck_S.getUsError() == 0) {
+			if (msgQryAck_S.getUsCnt() > 0) {
 				for (int i = 0; i < msgQryAck_S.getUsCnt(); i++) {
 					byte[] sens_S_Byte = Arrays.copyOfRange(
 							msgQryAck_S.getPucData(), i * Sens_S.getSize(),
@@ -135,9 +135,9 @@ public class SenseBroadcastReceiver extends BroadcastReceiver {
 					senseListActivity.senseList.add(sens_S);
 				}
 				senseListActivity.senseListAdapter.notifyDataSetChanged();
-			} else {
-				ErrCode_E.showError(activity, msgQryAck_S.getUsError());
 			}
+		} else {
+			ErrCode_E.showError(activity, msgQryAck_S.getUsError());
 		}
 	}
 }

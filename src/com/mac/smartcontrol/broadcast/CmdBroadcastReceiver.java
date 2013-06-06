@@ -56,8 +56,8 @@ public class CmdBroadcastReceiver extends BroadcastReceiver {
 			MsgQryAck_S msgQryAck_S = new MsgQryAck_S();
 			msgQryAck_S.setMsgQryAck_S(body);
 			cmdListActivity = (CmdListActivity) activity;
-			if (msgQryAck_S.getUsCnt() > 0) {
-				if (msgQryAck_S.getUsError() == 0) {
+			if (msgQryAck_S.getUsError() == 0) {
+				if (msgQryAck_S.getUsCnt() > 0) {
 					for (int i = 0; i < msgQryAck_S.getUsCnt(); i++) {
 						byte[] ctrl_S_Byte = Arrays.copyOfRange(
 								msgQryAck_S.getPucData(), i * Ctrl_S.getSize(),
@@ -67,9 +67,9 @@ public class CmdBroadcastReceiver extends BroadcastReceiver {
 						cmdListActivity.ctrlMap.put(ctrl_S.getUsIdx(), ctrl_S);
 					}
 					// addSenseActivity.areaListAdapter.notifyDataSetChanged();
-				} else {
-					ErrCode_E.showError(context, msgQryAck_S.getUsError());
 				}
+			} else {
+				ErrCode_E.showError(context, msgQryAck_S.getUsError());
 			}
 		}
 		if (msgId == MsgId_E.MSGID_RGN.getVal()
@@ -77,8 +77,8 @@ public class CmdBroadcastReceiver extends BroadcastReceiver {
 			MsgQryAck_S msgQryAck_S = new MsgQryAck_S();
 			msgQryAck_S.setMsgQryAck_S(body);
 			enterDeviceListActivity = (EnterDeviceListActivity) activity;
-			if (msgQryAck_S.getUsCnt() > 0) {
-				if (msgQryAck_S.getUsError() == 0) {
+			if (msgQryAck_S.getUsError() == 0) {
+				if (msgQryAck_S.getUsCnt() > 0) {
 					for (int i = 0; i < msgQryAck_S.getUsCnt(); i++) {
 						byte[] rgn_S_Byte = Arrays.copyOfRange(
 								msgQryAck_S.getPucData(), i * Rgn_S.getSize(),
@@ -98,8 +98,8 @@ public class CmdBroadcastReceiver extends BroadcastReceiver {
 			MsgQryAck_S msgQryAck_S = new MsgQryAck_S();
 			msgQryAck_S.setMsgQryAck_S(body);
 			enterDeviceListActivity = (EnterDeviceListActivity) activity;
-			if (msgQryAck_S.getUsCnt() > 0) {
-				if (msgQryAck_S.getUsError() == 0) {
+			if (msgQryAck_S.getUsError() == 0) {
+				if (msgQryAck_S.getUsCnt() > 0) {
 					for (int i = 0; i < msgQryAck_S.getUsCnt(); i++) {
 						byte[] appl_S_Byte = Arrays.copyOfRange(
 								msgQryAck_S.getPucData(), i * Appl_S.getSize(),
@@ -110,9 +110,9 @@ public class CmdBroadcastReceiver extends BroadcastReceiver {
 					}
 					enterDeviceListActivity.deviceListAdapter
 							.notifyDataSetChanged();
-				} else {
-					ErrCode_E.showError(context, msgQryAck_S.getUsError());
 				}
+			} else {
+				ErrCode_E.showError(context, msgQryAck_S.getUsError());
 			}
 		}
 
@@ -142,8 +142,8 @@ public class CmdBroadcastReceiver extends BroadcastReceiver {
 			MsgQryAck_S msgQryAck_S = new MsgQryAck_S();
 			msgQryAck_S.setMsgQryAck_S(body);
 			enterDeviceListActivity = (EnterDeviceListActivity) activity;
-			if (msgQryAck_S.getUsCnt() > 0) {
-				if (msgQryAck_S.getUsError() == 0) {
+			if (msgQryAck_S.getUsError() == 0) {
+				if (msgQryAck_S.getUsCnt() > 0) {
 					for (int i = 0; i < msgQryAck_S.getUsCnt(); i++) {
 						byte[] appl_S_Byte = Arrays.copyOfRange(
 								msgQryAck_S.getPucData(), i * Appl_S.getSize(),
@@ -154,9 +154,9 @@ public class CmdBroadcastReceiver extends BroadcastReceiver {
 					}
 					enterDeviceListActivity.deviceListAdapter
 							.notifyDataSetChanged();
-				} else {
-					ErrCode_E.showError(context, msgQryAck_S.getUsError());
 				}
+			} else {
+				ErrCode_E.showError(context, msgQryAck_S.getUsError());
 			}
 		}
 
@@ -166,6 +166,7 @@ public class CmdBroadcastReceiver extends BroadcastReceiver {
 			msgDelAck_S.setMsgDelAck_S(body);
 			cmdListActivity = (CmdListActivity) activity;
 			if (msgDelAck_S.getUsError() == 0) {
+				cmdListActivity.cmdList.clear();
 				for (int i = 0; i < cmdListActivity.cmdList.size(); i++) {
 					Cmd_S cmd_S = cmdListActivity.cmdList.get(i);
 					if (cmd_S.getUsIdx() == msgDelAck_S.getUsIdx()) {
@@ -178,10 +179,8 @@ public class CmdBroadcastReceiver extends BroadcastReceiver {
 				ErrCode_E.showError(context, msgDelAck_S.getUsError());
 			}
 		}
-		if ((msgId == MsgId_E.MSGID_CMD.getVal() && msgOper == MsgOper_E.MSGOPER_QRY
-				.getVal())
-				|| (msgId == MsgId_E.MSGID_CMD.getVal() && msgOper == MsgOper_E.MSGOPER_MAX
-						.getVal())) {
+		if ((msgId == MsgId_E.MSGID_CMD.getVal() && msgOper == MsgOperCmd_E.MSGOPER_CMD_QRY_BYDEV
+				.getVal())) {
 			parseToList(body);
 		}
 

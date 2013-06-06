@@ -48,8 +48,8 @@ public class ModifyDeviceBroadcastReceiver extends BroadcastReceiver {
 				&& msgOper == MsgOper_E.MSGOPER_QRY.getVal()) {
 			MsgQryAck_S msgQryAck_S = new MsgQryAck_S();
 			msgQryAck_S.setMsgQryAck_S(body);
-			if (msgQryAck_S.getUsCnt() > 0) {
-				if (msgQryAck_S.getUsError() == 0) {
+			if (msgQryAck_S.getUsError() == 0) {
+				if (msgQryAck_S.getUsCnt() > 0) {
 					int selectIdx = 0;
 					for (int i = 0; i < msgQryAck_S.getUsCnt(); i++) {
 						byte[] rgn_S_Byte = Arrays.copyOfRange(
@@ -67,9 +67,9 @@ public class ModifyDeviceBroadcastReceiver extends BroadcastReceiver {
 					}
 					modifyDeviceActivity.area_adapter.notifyDataSetChanged();
 					modifyDeviceActivity.area_sp.setSelection(selectIdx);
-				} else {
-					ErrCode_E.showError(context, msgQryAck_S.getUsError());
 				}
+			} else {
+				ErrCode_E.showError(context, msgQryAck_S.getUsError());
 			}
 		}
 		if (msgId == MsgId_E.MSGID_APPL.getVal()

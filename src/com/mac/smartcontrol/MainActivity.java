@@ -1,15 +1,20 @@
 package com.mac.smartcontrol;
 
+import java.util.ArrayList;
+
 import android.app.ActivityGroup;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.speech.RecognizerIntent;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.mac.smartcontrol.util.NotificationUtil;
 
@@ -20,6 +25,8 @@ public class MainActivity extends ActivityGroup {
 	LinearLayout control_ll = null;
 	LinearLayout camera_ll = null;
 	LinearLayout location_ll = null;
+	ImageView voice_Iv = null;
+	private final int VOICE_RECOGNITION_REQUEST_CODE = 1234;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -36,7 +43,32 @@ public class MainActivity extends ActivityGroup {
 		control_ll = (LinearLayout) findViewById(R.id.menu_control_ll);
 		camera_ll = (LinearLayout) findViewById(R.id.menu_camera_ll);
 		location_ll = (LinearLayout) findViewById(R.id.menu_location_ll);
+		voice_Iv = (ImageView) findViewById(R.id.menu_voice_iv);
+		voice_Iv.setOnClickListener(new OnClickListener() {
 
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				try {
+					// 通过Intent传递语音识别的模式，开启语音
+					Intent intent = new Intent(
+							RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+					// 语言模式和自由模式的语音识别
+					intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+							RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+					// 提示语音开始
+					intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "开始语音");
+					// 开始语音识别
+					startActivityForResult(intent,
+							VOICE_RECOGNITION_REQUEST_CODE);
+				} catch (Exception e) {
+					// TODO: handle exception
+					e.printStackTrace();
+					Toast.makeText(getApplicationContext(), "找不到语音设备", 1)
+							.show();
+				}
+			}
+		});
 		manage_ll.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -217,5 +249,24 @@ public class MainActivity extends ActivityGroup {
 		// TODO Auto-generated method stub
 		NotificationUtil.cancelNotify(R.string.app_name);
 		super.onResume();
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		// TODO Auto-generated method stub
+		// 回调获取从谷歌得到的数据
+		if (requestCode == VOICE_RECOGNITION_REQUEST_CODE
+				&& resultCode == RESULT_OK) {
+			// 取得语音的字符
+			ArrayList<String> results = data
+					.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+
+			String resultString = "";
+			for (int i = 0; i < results.size(); i++) {
+				resultString += results.get(i);
+			}
+			Toast.makeText(this, resultString, Toast.LENGTH_SHORT).show();
+		}
+		super.onActivityResult(requestCode, resultCode, data);
 	}
 }

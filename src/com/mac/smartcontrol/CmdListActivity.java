@@ -103,6 +103,7 @@ public class CmdListActivity extends Activity {
 				newIntent.putExtra("cmdType", cmdType);
 				// 开始一个新的 Activity等候返回结果
 				startActivityForResult(newIntent, 0);
+				unregisterReceiver(cmdBroadcastReceiver);
 			}
 		});
 		ImageView back_Iv = (ImageView) findViewById(R.id.back);

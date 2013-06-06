@@ -56,8 +56,8 @@ public class ModifyModeCmdBroadcastReceiver extends BroadcastReceiver {
 				&& msgOper == MsgOper_E.MSGOPER_QRY.getVal()) {
 			MsgQryAck_S msgQryAck_S = new MsgQryAck_S();
 			msgQryAck_S.setMsgQryAck_S(body);
-			if (msgQryAck_S.getUsCnt() > 0) {
-				if (msgQryAck_S.getUsError() == 0) {
+			if (msgQryAck_S.getUsError() == 0) {
+				if (msgQryAck_S.getUsCnt() > 0) {
 					for (int i = 0; i < msgQryAck_S.getUsCnt(); i++) {
 						byte[] rgn_S_Byte = Arrays.copyOfRange(
 								msgQryAck_S.getPucData(), i * Rgn_S.getSize(),
@@ -69,9 +69,9 @@ public class ModifyModeCmdBroadcastReceiver extends BroadcastReceiver {
 					}
 					// addModeCmdActivity.area_adapter.notifyDataSetChanged();
 
-				} else {
-					ErrCode_E.showError(context, msgQryAck_S.getUsError());
 				}
+			} else {
+				ErrCode_E.showError(context, msgQryAck_S.getUsError());
 			}
 			flag++;
 			if (flag == 5) {
@@ -111,8 +111,8 @@ public class ModifyModeCmdBroadcastReceiver extends BroadcastReceiver {
 						.getVal())) {
 			MsgQryAck_S msgQryAck_S = new MsgQryAck_S();
 			msgQryAck_S.setMsgQryAck_S(body);
-			if (msgQryAck_S.getUsCnt() > 0) {
-				if (msgQryAck_S.getUsError() == 0) {
+			if (msgQryAck_S.getUsError() == 0) {
+				if (msgQryAck_S.getUsCnt() > 0) {
 					for (int i = 0; i < msgQryAck_S.getUsCnt(); i++) {
 						byte[] sens_S_Byte = Arrays.copyOfRange(
 								msgQryAck_S.getPucData(), i * Sens_S.getSize(),
@@ -131,9 +131,9 @@ public class ModifyModeCmdBroadcastReceiver extends BroadcastReceiver {
 					// addModeCmdActivity.cmd_adapter.notifyDataSetChanged();
 					// flag = 0;
 					// }
-				} else {
-					ErrCode_E.showError(activity, msgQryAck_S.getUsError());
 				}
+			} else {
+				ErrCode_E.showError(activity, msgQryAck_S.getUsError());
 			}
 			flag++;
 			if (flag == 5) {
@@ -147,8 +147,8 @@ public class ModifyModeCmdBroadcastReceiver extends BroadcastReceiver {
 						.getVal())) {
 			MsgQryAck_S msgQryAck_S = new MsgQryAck_S();
 			msgQryAck_S.setMsgQryAck_S(body);
-			if (msgQryAck_S.getUsCnt() > 0) {
-				if (msgQryAck_S.getUsError() == 0) {
+			if (msgQryAck_S.getUsError() == 0) {
+				if (msgQryAck_S.getUsCnt() > 0) {
 					for (int i = 0; i < msgQryAck_S.getUsCnt(); i++) {
 						byte[] cama_S_Byte = Arrays.copyOfRange(
 								msgQryAck_S.getPucData(), i * Cama_S.getSize(),
@@ -166,9 +166,9 @@ public class ModifyModeCmdBroadcastReceiver extends BroadcastReceiver {
 					// addModeCmdActivity.cmd_adapter.notifyDataSetChanged();
 					// flag = 0;
 					// }
-				} else {
-					ErrCode_E.showError(activity, msgQryAck_S.getUsError());
 				}
+			} else {
+				ErrCode_E.showError(activity, msgQryAck_S.getUsError());
 			}
 			flag++;
 			if (flag == 5) {
@@ -181,8 +181,8 @@ public class ModifyModeCmdBroadcastReceiver extends BroadcastReceiver {
 				&& msgOper == MsgOper_E.MSGOPER_QRY.getVal()) {
 			MsgQryAck_S msgQryAck_S = new MsgQryAck_S();
 			msgQryAck_S.setMsgQryAck_S(body);
-			if (msgQryAck_S.getUsCnt() > 0) {
-				if (msgQryAck_S.getUsError() == 0) {
+			if (msgQryAck_S.getUsError() == 0) {
+				if (msgQryAck_S.getUsCnt() > 0) {
 					for (int i = 0; i < msgQryAck_S.getUsCnt(); i++) {
 						byte[] cmd_S_Byte = Arrays.copyOfRange(
 								msgQryAck_S.getPucData(), i * Cmd_S.getSize(),
@@ -196,9 +196,9 @@ public class ModifyModeCmdBroadcastReceiver extends BroadcastReceiver {
 					// addModeCmdActivity.device_adapter.notifyDataSetChanged();
 					// addModeCmdActivity.cmd_adapter.notifyDataSetChanged();
 
-				} else {
-					ErrCode_E.showError(activity, msgQryAck_S.getUsError());
 				}
+			} else {
+				ErrCode_E.showError(activity, msgQryAck_S.getUsError());
 			}
 			flag++;
 			if (flag == 5) {

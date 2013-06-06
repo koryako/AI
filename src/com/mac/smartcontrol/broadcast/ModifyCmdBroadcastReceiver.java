@@ -24,6 +24,7 @@ import define.oper.body.ack.MsgCtrlTestAck_S;
 import define.oper.body.ack.MsgModAck_S;
 import define.oper.body.ack.MsgModeQryByRgnAck_S;
 import define.oper.body.ack.MsgQryAck_S;
+import define.type.CmdDevType_E;
 import define.type.ErrCode_E;
 import define.type.MsgId_E;
 
@@ -56,8 +57,8 @@ public class ModifyCmdBroadcastReceiver extends BroadcastReceiver {
 				&& msgOper == MsgOper_E.MSGOPER_QRY.getVal()) {
 			MsgQryAck_S msgQryAck_S = new MsgQryAck_S();
 			msgQryAck_S.setMsgQryAck_S(body);
-			if (msgQryAck_S.getUsCnt() > 0) {
-				if (msgQryAck_S.getUsError() == 0) {
+			if (msgQryAck_S.getUsError() == 0) {
+				if (msgQryAck_S.getUsCnt() > 0) {
 					int select_idx = 0;
 					for (int i = 0; i < msgQryAck_S.getUsCnt(); i++) {
 						byte[] ctrl_S_Byte = Arrays.copyOfRange(
@@ -74,9 +75,9 @@ public class ModifyCmdBroadcastReceiver extends BroadcastReceiver {
 					}
 					modifyCmdActivity.ctrl_adapter.notifyDataSetChanged();
 					modifyCmdActivity.ctrl_sp.setSelection(select_idx);
-				} else {
-					ErrCode_E.showError(context, msgQryAck_S.getUsError());
 				}
+			} else {
+				ErrCode_E.showError(context, msgQryAck_S.getUsError());
 			}
 		}
 		if (msgId == MsgId_E.MSGID_CMD.getVal()
@@ -128,8 +129,8 @@ public class ModifyCmdBroadcastReceiver extends BroadcastReceiver {
 						.getVal())) {
 			MsgCmdQryByDevAck_S msgCmdQryByDevAck_S = new MsgCmdQryByDevAck_S();
 			msgCmdQryByDevAck_S.setMsgCmdQryByDevAck_S(body);
-			if (msgCmdQryByDevAck_S.getUsCnt() > 0) {
-				if (msgCmdQryByDevAck_S.getUcErr() == 0) {
+			if (msgCmdQryByDevAck_S.getUcErr() == 0) {
+				if (msgCmdQryByDevAck_S.getUsCnt() > 0) {
 					int tag = -1;
 					for (int i = 0; i < msgCmdQryByDevAck_S.getUsCnt(); i++) {
 						byte[] cmd_S_Byte = Arrays.copyOfRange(
@@ -141,15 +142,18 @@ public class ModifyCmdBroadcastReceiver extends BroadcastReceiver {
 								.getUiPara()) {
 							tag = i;
 						}
-						modifyCmdActivity.cmdList.add(cmd_S);
-						modifyCmdActivity.cmdNameList.add(cmd_S.getSzName());
+						if (cmd_S.getUcDevType() != CmdDevType_E.CMD_DEV_SENS
+								.getVal()) {
+							modifyCmdActivity.cmdList.add(cmd_S);
+							modifyCmdActivity.cmdNameList
+									.add(cmd_S.getSzName());
+						}
 					}
 					modifyCmdActivity.cmd_adapter.notifyDataSetChanged();
 					modifyCmdActivity.cmd_sp.setSelection(tag);
-				} else {
-					ErrCode_E.showError(activity,
-							msgCmdQryByDevAck_S.getUcErr());
 				}
+			} else {
+				ErrCode_E.showError(activity, msgCmdQryByDevAck_S.getUcErr());
 			}
 		}
 
@@ -159,8 +163,8 @@ public class ModifyCmdBroadcastReceiver extends BroadcastReceiver {
 						.getVal())) {
 			MsgModeQryByRgnAck_S msgModeQryByRgnAck_S = new MsgModeQryByRgnAck_S();
 			msgModeQryByRgnAck_S.setMsgModeQryByRgnAck_S(body);
-			if (msgModeQryByRgnAck_S.getUsCnt() > 0) {
-				if (msgModeQryByRgnAck_S.getUcErr() == 0) {
+			if (msgModeQryByRgnAck_S.getUcErr() == 0) {
+				if (msgModeQryByRgnAck_S.getUsCnt() > 0) {
 					int tag = -1;
 					for (int i = 0; i < msgModeQryByRgnAck_S.getUsCnt(); i++) {
 						byte[] cmd_S_Byte = Arrays.copyOfRange(
@@ -178,10 +182,9 @@ public class ModifyCmdBroadcastReceiver extends BroadcastReceiver {
 					}
 					modifyCmdActivity.mode_adapter.notifyDataSetChanged();
 					modifyCmdActivity.mode_sp.setSelection(tag);
-				} else {
-					ErrCode_E.showError(activity,
-							msgModeQryByRgnAck_S.getUcErr());
 				}
+			} else {
+				ErrCode_E.showError(activity, msgModeQryByRgnAck_S.getUcErr());
 			}
 		}
 

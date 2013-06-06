@@ -89,8 +89,8 @@ public class ControllerBroadcastReceiver extends BroadcastReceiver {
 		MsgQryAck_S msgQryAck_S = new MsgQryAck_S();
 		msgQryAck_S.setMsgQryAck_S(body);
 		ControllerListActivity controllerListActivity = (ControllerListActivity) activity;
-		if (msgQryAck_S.getUsCnt() > 0) {
-			if (msgQryAck_S.getUsError() == 0) {
+		if (msgQryAck_S.getUsError() == 0) {
+			if (msgQryAck_S.getUsCnt() > 0) {
 				for (int i = 0; i < msgQryAck_S.getUsCnt(); i++) {
 					byte[] ctrl_S_Byte = Arrays.copyOfRange(
 							msgQryAck_S.getPucData(), i * Ctrl_S.getSize(),
@@ -101,9 +101,9 @@ public class ControllerBroadcastReceiver extends BroadcastReceiver {
 				}
 				controllerListActivity.controllerListAdapter
 						.notifyDataSetChanged();
-			} else {
-				ErrCode_E.showError(activity, msgQryAck_S.getUsError());
 			}
+		} else {
+			ErrCode_E.showError(activity, msgQryAck_S.getUsError());
 		}
 	}
 }

@@ -73,13 +73,13 @@ public class AddDeviceActivity extends Activity {
 
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
 				R.layout.simple_spinner_item, types);
-		adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		sense_type_sp.setAdapter(adapter);
 
 		area_adapter = new ArrayAdapter<String>(this,
 				R.layout.simple_spinner_item, areaNameList);
 		area_adapter
-				.setDropDownViewResource(android.R.layout.simple_spinner_item);
+				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		area_sp.setAdapter(area_adapter);
 
 		ImageView add_Iv = (ImageView) findViewById(R.id.add);

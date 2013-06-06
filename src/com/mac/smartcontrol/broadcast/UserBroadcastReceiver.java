@@ -178,8 +178,8 @@ public class UserBroadcastReceiver extends BroadcastReceiver {
 		MsgQryAck_S msgQryAck_S = new MsgQryAck_S();
 		msgQryAck_S.setMsgQryAck_S(body);
 		UserListActivity userListActivity = (UserListActivity) activity;
-		if (msgQryAck_S.getUsCnt() > 0) {
-			if (msgQryAck_S.getUsError() == 0) {
+		if (msgQryAck_S.getUsError() == 0) {
+			if (msgQryAck_S.getUsCnt() > 0) {
 				for (int i = 0; i < msgQryAck_S.getUsCnt(); i++) {
 					byte[] user_S_Byte = Arrays.copyOfRange(
 							msgQryAck_S.getPucData(), i * User_S.getSize(),
@@ -189,9 +189,9 @@ public class UserBroadcastReceiver extends BroadcastReceiver {
 					userListActivity.userList.add(user_S);
 				}
 				userListActivity.userListAdapter.notifyDataSetChanged();
-			} else {
-				ErrCode_E.showError(activity, msgQryAck_S.getUsError());
 			}
+		} else {
+			ErrCode_E.showError(activity, msgQryAck_S.getUsError());
 		}
 	}
 }

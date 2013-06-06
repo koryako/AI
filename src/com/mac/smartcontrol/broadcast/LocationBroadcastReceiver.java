@@ -48,8 +48,9 @@ public class LocationBroadcastReceiver extends BroadcastReceiver {
 				&& msgOper == MsgOper_E.MSGOPER_QRY.getVal()) {
 			MsgModeQryByRgnAck_S msgModeQryByRgnAck_S = new MsgModeQryByRgnAck_S();
 			msgModeQryByRgnAck_S.setMsgModeQryByRgnAck_S(body);
-			if (msgModeQryByRgnAck_S.getUsCnt() > 0) {
-				if (msgModeQryByRgnAck_S.getUcErr() == 0) {
+			if (msgModeQryByRgnAck_S.getUcErr() == 0) {
+				if (msgModeQryByRgnAck_S.getUsCnt() > 0) {
+					int mode_Idx = -1;
 					for (int i = 0; i < msgModeQryByRgnAck_S.getUsCnt(); i++) {
 						byte[] cmd_S_Byte = Arrays.copyOfRange(
 								msgModeQryByRgnAck_S.getPucData(),
@@ -57,14 +58,17 @@ public class LocationBroadcastReceiver extends BroadcastReceiver {
 								(i + 1) * Mode_S.getSize());
 						Mode_S mode_S = new Mode_S();
 						mode_S.setMode_S(cmd_S_Byte);
+						if (mode_S.getUsIdx() == locationActivity.mode_Id) {
+							mode_Idx = i;
+						}
 						locationActivity.modelist.add(mode_S);
 						locationActivity.modelistStr.add(mode_S.getSzName());
 					}
 					locationActivity.mode_adapter.notifyDataSetChanged();
-				} else {
-					ErrCode_E.showError(activity,
-							msgModeQryByRgnAck_S.getUcErr());
+					locationActivity.mode_Sp.setSelection(mode_Idx);
 				}
+			} else {
+				ErrCode_E.showError(activity, msgModeQryByRgnAck_S.getUcErr());
 			}
 		}
 	}

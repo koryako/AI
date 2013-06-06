@@ -22,7 +22,6 @@ import com.mac.smartcontrol.util.WriteUtil;
 import define.entity.Appl_S;
 import define.entity.Cmd_S;
 import define.oper.MsgOperCmd_E;
-import define.oper.MsgOperSql_E;
 import define.oper.body.req.MsgCmdQryByDevReq_S;
 import define.type.CmdDevType_E;
 import define.type.CmdType_E;
@@ -48,6 +47,25 @@ public class UserDefinedActivity extends Activity {
 			byte[] b = bundle.getByteArray("device");
 			appl_S.setAppl_S(b);
 		}
+
+		back_Iv = (ImageView) findViewById(R.id.back_iv);
+		back_Iv.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				finish();
+			}
+		});
+
+		userDefinedBroadcastReceiver = new UserDefinedBroadcastReceiver(
+				UserDefinedActivity.this);
+		IntentFilter filter = new IntentFilter();
+		filter.addAction(MsgId_E.MSGID_CMD.getVal() + "_"
+				+ MsgOperCmd_E.MSGOPER_CMD_QRY_BYDEV.getVal());
+
+		filter.addAction("IOException");
+		registerReceiver(userDefinedBroadcastReceiver, filter);
 		try {
 			WriteUtil.write(
 					MsgId_E.MSGID_CMD.getVal(),
@@ -64,26 +82,6 @@ public class UserDefinedActivity extends Activity {
 					Toast.LENGTH_LONG).show();
 			DisconnectionUtil.restart(UserDefinedActivity.this);
 		}
-
-		back_Iv = (ImageView) findViewById(R.id.back_iv);
-		back_Iv.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				finish();
-			}
-		});
-
-		userDefinedBroadcastReceiver = new UserDefinedBroadcastReceiver(
-				UserDefinedActivity.this);
-		IntentFilter filter = new IntentFilter();
-		filter.addAction(MsgId_E.MSGID_SQL.getVal() + "_"
-				+ MsgOperSql_E.MSGOPER_MAX.getVal());
-
-		filter.addAction("IOException");
-		registerReceiver(userDefinedBroadcastReceiver, filter);
-
 	}
 
 	public void init_Btn() {
@@ -95,9 +93,13 @@ public class UserDefinedActivity extends Activity {
 				row = cmd_List.size() / 3;
 			}
 		}
+		btn_Container.removeAllViews();
 		for (int i = 0; i < row; i++) {
 			LinearLayout layout = new LinearLayout(UserDefinedActivity.this);
 			for (int j = 0; j < 3; j++) {
+				if ((i * 3 + j) >= cmd_List.size()) {
+					break;
+				}
 				Button b1 = new Button(UserDefinedActivity.this);
 				b1.setBackgroundResource(R.drawable.control_user_defined_btn_selector);
 				final Cmd_S c = cmd_List.get(i * 3 + j);
@@ -120,14 +122,23 @@ public class UserDefinedActivity extends Activity {
 						}
 					}
 				});
-
 				LayoutParams params = new LayoutParams(
+						LinearLayout.LayoutParams.WRAP_CONTENT,
+						LinearLayout.LayoutParams.WRAP_CONTENT);
+				params.setMargins(10, 0, 0, 0);
+				b1.setLayoutParams(params);
+
+				layout.addView(b1);
+
+				LayoutParams l_params = new LayoutParams(
 						LinearLayout.LayoutParams.FILL_PARENT,
 						LinearLayout.LayoutParams.WRAP_CONTENT, 1);
-				b1.setLayoutParams(params);
-				layout.addView(b1);
+				l_params.setMargins(0, 10, 0, 0);
+
+				layout.setLayoutParams(l_params);
 			}
 			btn_Container.addView(layout);
+
 		}
 	}
 

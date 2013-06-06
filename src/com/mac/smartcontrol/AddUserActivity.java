@@ -46,7 +46,7 @@ public class AddUserActivity extends Activity {
 		registerReceiver(userBroadcastReceiver, filter);
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
 				R.layout.simple_spinner_item, types);
-		adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		usertype_sp.setAdapter(adapter);
 		ImageView add_Iv = (ImageView) findViewById(R.id.add);
 		ImageView back_Iv = (ImageView) findViewById(R.id.back);

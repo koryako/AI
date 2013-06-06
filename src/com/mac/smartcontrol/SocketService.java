@@ -8,10 +8,12 @@ import java.net.UnknownHostException;
 
 import android.app.Service;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.IBinder;
 
 import com.mac.smartcontrol.application.SmartControlApplication;
+import com.mac.smartcontrol.broadcast.Location_Exe_Cmd_BroadcastReceiver;
 import com.mac.smartcontrol.thread.MessageQueueRunnable;
 import com.mac.smartcontrol.thread.ReadRunnable;
 import com.mac.smartcontrol.util.WriteUtil;
@@ -32,6 +34,10 @@ public class SocketService extends Service {
 	Thread messageQueueThread = null;
 	MessageQueueRunnable messageQueueRunnable = null;
 	ReadRunnable readRunnable = null;
+	Location_Exe_Cmd_BroadcastReceiver cmd_BroadcastReceiver;
+	IntentFilter intentFilter;
+
+	// SharedPreferences sharedPreferences;
 
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -46,7 +52,20 @@ public class SocketService extends Service {
 		((SmartControlApplication) getApplication()).mLocationClient.start();
 		((SmartControlApplication) getApplication()).mLocationClient
 				.requestLocation();
-
+		// sharedPreferences = getSharedPreferences("location", 0);
+		// if (sharedPreferences != null) {
+		// boolean location_isOpen = sharedPreferences.getBoolean(
+		// "location_isOpen", false);
+		// short mode_Id = (short) sharedPreferences.getInt(
+		// "location_mode_ID", -1);
+		//
+		// if (location_isOpen && mode_Id != -1) {
+		cmd_BroadcastReceiver = new Location_Exe_Cmd_BroadcastReceiver();
+		intentFilter = new IntentFilter();
+		intentFilter.addAction("exe_mode");
+		registerReceiver(cmd_BroadcastReceiver, intentFilter);
+		// }
+		// }
 	}
 
 	@Override
@@ -114,7 +133,8 @@ public class SocketService extends Service {
 				e.printStackTrace();
 			}
 		}
-
+		if (cmd_BroadcastReceiver != null)
+			unregisterReceiver(cmd_BroadcastReceiver);
 		((SmartControlApplication) getApplication()).mLocationClient.stop();
 		return super.stopService(name);
 	}

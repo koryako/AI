@@ -1,8 +1,6 @@
 package com.mac.smartcontrol.broadcast;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -48,16 +46,15 @@ public class UserDefinedBroadcastReceiver extends BroadcastReceiver {
 			MsgCmdQryByDevAck_S msgCmdQryByDevAck_S = new MsgCmdQryByDevAck_S();
 			msgCmdQryByDevAck_S.setMsgCmdQryByDevAck_S(body);
 			if (msgCmdQryByDevAck_S.getUcErr() == 0) {
-				List<Cmd_S> list = new ArrayList<Cmd_S>();
 				for (int i = 0; i < msgCmdQryByDevAck_S.getUsCnt(); i++) {
 					byte[] cmd_S_Byte = Arrays.copyOfRange(
 							msgCmdQryByDevAck_S.getPucData(),
 							i * Cmd_S.getSize(), (i + 1) * Cmd_S.getSize());
 					Cmd_S cmd_S = new Cmd_S();
 					cmd_S.setCmd_S(cmd_S_Byte);
-					list.add(cmd_S);
+					userDefinedActivity.cmd_List.add(cmd_S);
 				}
-				userDefinedActivity.cmd_List.addAll(list);
+
 				userDefinedActivity.init_Btn();
 			} else {
 				ErrCode_E.showError(activity, msgCmdQryByDevAck_S.getUcErr());

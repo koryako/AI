@@ -39,11 +39,12 @@ public class LocationActivity extends Activity {
 	String location_address = "";
 	BDLocation bdLocation = null;
 	boolean location_isOpen = false;
+	public short mode_Id = -1;
 	LocationBroadcastReceiver broadcastReceiver;
 	public List<Mode_S> modelist;
 	public List<String> modelistStr;
 	public ArrayAdapter<String> mode_adapter;
-	Spinner mode_Sp;
+	public Spinner mode_Sp;
 
 	/*
 	 * (non-Javadoc)
@@ -67,6 +68,24 @@ public class LocationActivity extends Activity {
 		mode_Sp.setAdapter(mode_adapter);
 		final TextView position_name_Tv = (TextView) findViewById(R.id.position_name_et);
 		final TextView position_distance_Et = (TextView) findViewById(R.id.distance_et);
+		sharedPreferences = getSharedPreferences("location", 0);
+		if (sharedPreferences != null) {
+			editor = sharedPreferences.edit();
+			location_distance = sharedPreferences.getInt("location_distance",
+					1000);
+			location_longitude = sharedPreferences.getString(
+					"location_longitude", "0");
+			location_latitude = sharedPreferences.getString(
+					"location_latitude", "0");
+			location_address = sharedPreferences.getString("location_address",
+					"");
+			location_isOpen = sharedPreferences.getBoolean("location_isOpen",
+					false);
+			mode_Id = (short) sharedPreferences.getInt("location_mode_ID", -1);
+
+			position_name_Tv.setText(location_address);
+			position_distance_Et.setText(location_distance + "");
+		}
 		broadcastReceiver = new LocationBroadcastReceiver(this);
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(MsgId_E.MSGID_MODE.getVal() + "_"
@@ -83,22 +102,7 @@ public class LocationActivity extends Activity {
 					Toast.LENGTH_LONG).show();
 			DisconnectionUtil.restart(LocationActivity.this);
 		}
-		sharedPreferences = getSharedPreferences("location", 0);
-		if (sharedPreferences != null) {
-			editor = sharedPreferences.edit();
-			location_distance = sharedPreferences.getInt("location_distance",
-					1000);
-			location_longitude = sharedPreferences.getString(
-					"location_longitude", "0");
-			location_latitude = sharedPreferences.getString(
-					"location_latitude", "0");
-			location_address = sharedPreferences.getString("location_address",
-					"");
-			location_isOpen = sharedPreferences.getBoolean("location_isOpen",
-					true);
-			position_name_Tv.setText(location_address);
-			position_distance_Et.setText(location_distance + "");
-		}
+
 		final ImageView remeber_Iv = (ImageView) findViewById(R.id.remeber_iv);
 		LinearLayout remeber_ll = (LinearLayout) findViewById(R.id.remeber_ll);
 		remeber_ll.setOnClickListener(new OnClickListener() {
@@ -137,12 +141,19 @@ public class LocationActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+				int idx = mode_Sp.getSelectedItemPosition();
+				if (idx < 0) {
+					Toast.makeText(LocationActivity.this, "请选择要执行的智能模式",
+							Toast.LENGTH_LONG).show();
+					return;
+				}
+				mode_Id = modelist.get(idx).getUsIdx();
 				editor.putInt("location_distance", location_distance);
 				editor.putString("location_longitude", location_longitude);
 				editor.putString("location_latitude", location_latitude);
 				editor.putString("location_address", location_address);
 				editor.putBoolean("location_isOpen", location_isOpen);
-
+				editor.putInt("location_mode_ID", mode_Id);
 				editor.commit();
 			}
 		});

@@ -169,7 +169,8 @@ public class ACActivity extends Activity {
 						.show();
 				Intent intent = new Intent();
 				intent.putExtra("device", appl_S.getAppl_S());
-				intent.putExtra("type", 0);
+				intent.putExtra("cmdType", CmdDevType_E.CMD_DEV_APPL.getVal());
+				intent.putExtra("type", 1);
 				intent.putExtra("btn_Name", btn_Name.get(id));
 				intent.setClass(ACActivity.this, AddCmdActivity.class);
 				startActivityForResult(intent, 0);

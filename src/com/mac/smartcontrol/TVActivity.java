@@ -240,7 +240,7 @@ public class TVActivity extends Activity {
 				Intent intent = new Intent();
 				intent.putExtra("device", appl_S.getAppl_S());
 				intent.putExtra("cmdType", CmdDevType_E.CMD_DEV_APPL.getVal());
-				intent.putExtra("type", 0);
+				intent.putExtra("type", 1);
 				intent.putExtra("btn_Name", btn_Name.get(id));
 				intent.setClass(TVActivity.this, AddCmdActivity.class);
 				startActivityForResult(intent, 0);

@@ -114,8 +114,8 @@ public class AreaBroadcastReceiver extends BroadcastReceiver {
 		AreaListActivity areaListActivity = (AreaListActivity) activity;
 		// switch (msgId) {
 		// case 1:
-		if (msgQryAck_S.getUsCnt() > 0) {
-			if (msgQryAck_S.getUsError() == 0) {
+		if (msgQryAck_S.getUsError() == 0) {
+			if (msgQryAck_S.getUsCnt() > 0) {
 				for (int i = 0; i < msgQryAck_S.getUsCnt(); i++) {
 					byte[] rgn_S_Byte = Arrays.copyOfRange(
 							msgQryAck_S.getPucData(), i * Rgn_S.getSize(),
@@ -125,9 +125,9 @@ public class AreaBroadcastReceiver extends BroadcastReceiver {
 					areaListActivity.areaList.add(rgn_S);
 				}
 				areaListActivity.areaListAdapter.notifyDataSetChanged();
-			} else {
-				ErrCode_E.showError(activity, msgQryAck_S.getUsError());
 			}
+		} else {
+			ErrCode_E.showError(activity, msgQryAck_S.getUsError());
 		}
 	}
 	// break;

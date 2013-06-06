@@ -106,7 +106,9 @@ public class SwitchActivity extends Activity {
 							Toast.LENGTH_LONG).show();
 					Intent intent = new Intent();
 					intent.putExtra("device", appl_S.getAppl_S());
-					intent.putExtra("type", 0);
+					intent.putExtra("cmdType",
+							CmdDevType_E.CMD_DEV_APPL.getVal());
+					intent.putExtra("type", 1);
 					intent.putExtra("btn_Name", "¿ª¹Ø");
 					intent.setClass(SwitchActivity.this, AddCmdActivity.class);
 					startActivityForResult(intent, 0);

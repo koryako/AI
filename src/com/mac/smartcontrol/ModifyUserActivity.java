@@ -40,7 +40,7 @@ public class ModifyUserActivity extends Activity {
 		final Spinner usertype_sp = (Spinner) findViewById(R.id.usertype_sp);
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
 				R.layout.simple_spinner_item, types);
-		adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		usertype_sp.setAdapter(adapter);
 		user_S = new User_S();
 		Bundle bundle = this.getIntent().getExtras();

@@ -7,9 +7,13 @@ import com.mac.smartcontrol.util.FormatTransfer;
 public class MsgModeExcReq_S {
 	short usIdx;
 
-	private MsgModeExcReq_S(short usIdx) {
+	public MsgModeExcReq_S(short usIdx) {
 		super();
 		this.usIdx = usIdx;
+	}
+
+	public static short getSize() {
+		return 2;
 	}
 
 	public short getUsIdx() {

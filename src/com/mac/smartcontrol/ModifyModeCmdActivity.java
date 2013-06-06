@@ -408,8 +408,7 @@ public class ModifyModeCmdActivity extends Activity {
 		}
 
 		if (cmd_S != null) {
-			typeId = cmd_S.getUcDevType();
-			device_type_sp.setSelection(typeId - 1);
+			device_type_sp.setSelection(cmd_S.getUcDevType() - 1, true);
 			int area_Idx = -1;
 			if (typeId == CmdDevType_E.CMD_DEV_APPL.getVal()) {
 				for (int i = 0; i < deviceList.size(); i++) {
@@ -461,18 +460,18 @@ public class ModifyModeCmdActivity extends Activity {
 				}
 
 			}
-			area_sp.setSelection(area_Idx);
+			area_sp.setSelection(area_Idx, true);
 
 			for (int i = 0; i < deviceIDList.size(); i++) {
 				if (deviceIDList.get(i) == cmd_S.getUsDevIdx()) {
-					device_sp.setSelection(i);
+					device_sp.setSelection(i, true);
 					break;
 				}
 			}
 
 			for (int i = 0; i < cmdIDList.size(); i++) {
 				if (cmdIDList.get(i) == cmd_S.getUsIdx()) {
-					cmd_sp.setSelection(i);
+					cmd_sp.setSelection(i, true);
 					break;
 				}
 			}

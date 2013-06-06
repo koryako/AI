@@ -52,8 +52,8 @@ public class DeviceBroadcastReceiver extends BroadcastReceiver {
 			MsgQryAck_S msgQryAck_S = new MsgQryAck_S();
 			msgQryAck_S.setMsgQryAck_S(body);
 			enterAreaActivity = (EnterAreaActivity) activity;
-			if (msgQryAck_S.getUsCnt() > 0) {
-				if (msgQryAck_S.getUsError() == 0) {
+			if (msgQryAck_S.getUsError() == 0) {
+				if (msgQryAck_S.getUsCnt() > 0) {
 					for (int i = 0; i < msgQryAck_S.getUsCnt(); i++) {
 						byte[] rgn_S_Byte = Arrays.copyOfRange(
 								msgQryAck_S.getPucData(), i * Rgn_S.getSize(),
@@ -64,9 +64,9 @@ public class DeviceBroadcastReceiver extends BroadcastReceiver {
 					}
 					enterAreaActivity.enterAreaListAdapter
 							.notifyDataSetChanged();
-				} else {
-					ErrCode_E.showError(context, msgQryAck_S.getUsError());
 				}
+			} else {
+				ErrCode_E.showError(context, msgQryAck_S.getUsError());
 			}
 		}
 
@@ -102,8 +102,8 @@ public class DeviceBroadcastReceiver extends BroadcastReceiver {
 		MsgQryAck_S msgQryAck_S = new MsgQryAck_S();
 		msgQryAck_S.setMsgQryAck_S(body);
 		DeviceListActivity deviceListActivity = (DeviceListActivity) activity;
-		if (msgQryAck_S.getUsCnt() > 0) {
-			if (msgQryAck_S.getUsError() == 0) {
+		if (msgQryAck_S.getUsError() == 0) {
+			if (msgQryAck_S.getUsCnt() > 0) {
 				for (int i = 0; i < msgQryAck_S.getUsCnt(); i++) {
 					byte[] appl_S_Byte = Arrays.copyOfRange(
 							msgQryAck_S.getPucData(), i * Appl_S.getSize(),
@@ -113,9 +113,9 @@ public class DeviceBroadcastReceiver extends BroadcastReceiver {
 					deviceListActivity.deviceList.add(appl_S);
 				}
 				deviceListActivity.deviceListAdapter.notifyDataSetChanged();
-			} else {
-				ErrCode_E.showError(activity, msgQryAck_S.getUsError());
 			}
+		} else {
+			ErrCode_E.showError(activity, msgQryAck_S.getUsError());
 		}
 	}
 }

@@ -50,7 +50,7 @@ public class MenuActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				intent.putExtra("currentPage", 2);
+				intent.putExtra("currentPage", 1);
 				intent.setClass(MenuActivity.this, MainActivity.class);
 				startActivity(intent);
 				stopService(intent);

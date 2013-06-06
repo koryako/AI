@@ -31,10 +31,8 @@ import define.entity.Cmd_S;
 import define.entity.Ctrl_S;
 import define.entity.Mode_S;
 import define.entity.Sens_S;
-import define.oper.MsgOperCmd_E;
 import define.oper.MsgOperCtrl_E;
 import define.oper.MsgOper_E;
-import define.oper.body.req.MsgCmdQryByDevReq_S;
 import define.oper.body.req.MsgCtrlStudyReq_S;
 import define.oper.body.req.MsgCtrlTestReq_S;
 import define.oper.body.req.MsgQryReq_S;
@@ -118,13 +116,13 @@ public class ModifyCmdActivity extends Activity {
 				cmd_adapter = new ArrayAdapter<String>(this,
 						R.layout.simple_spinner_item, cmdNameList);
 				cmd_adapter
-						.setDropDownViewResource(android.R.layout.simple_spinner_item);
+						.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 				cmd_sp.setAdapter(cmd_adapter);
 
 				mode_adapter = new ArrayAdapter<String>(this,
 						R.layout.simple_spinner_item, modeNameList);
 				mode_adapter
-						.setDropDownViewResource(android.R.layout.simple_spinner_item);
+						.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 				mode_sp.setAdapter(mode_adapter);
 			} else if (cmdType == CmdDevType_E.CMD_DEV_CAMA.getVal()) {
 				cama_S = new Cama_S();
@@ -215,7 +213,7 @@ public class ModifyCmdActivity extends Activity {
 				+ MsgOperCtrl_E.MSGOPER_CTRL_TEST.getVal());
 
 		filter.addAction(MsgId_E.MSGID_CMD.getVal() + "_"
-				+ MsgOperCmd_E.MSGOPER_CMD_QRY_BYDEV.getVal());
+				+ MsgOper_E.MSGOPER_QRY.getVal());
 		filter.addAction(MsgId_E.MSGID_MODE.getVal() + "_"
 				+ MsgOper_E.MSGOPER_QRY.getVal());
 		filter.addAction("IOException");
@@ -235,15 +233,12 @@ public class ModifyCmdActivity extends Activity {
 
 		if (cmdType == CmdDevType_E.CMD_DEV_SENS.getVal()) {
 			try {
-				WriteUtil.write(MsgId_E.MSGID_CMD.getVal(), 0,
+				WriteUtil.write(MsgId_E.MSGID_CMD.getVal(), 1,
 						MsgType_E.MSGTYPE_REQ.getVal(),
-						MsgOperCmd_E.MSGOPER_CMD_QRY_BYDEV.getVal(),
-						MsgCmdQryByDevReq_S.getSize(), new MsgCmdQryByDevReq_S(
-								cmdType, sens_S.getUsIdx(),
-								CmdType_E.CMD_TYPE_NULL.getVal())
-								.getMsgCmdQryByDevReq_S());
+						MsgOper_E.MSGOPER_QRY.getVal(), (short) 2,
+						new MsgQryReq_S((short) 0).getMsgQryReq_S());
 
-				WriteUtil.write(MsgId_E.MSGID_MODE.getVal(), 0,
+				WriteUtil.write(MsgId_E.MSGID_MODE.getVal(), 2,
 						MsgType_E.MSGTYPE_REQ.getVal(),
 						MsgOper_E.MSGOPER_QRY.getVal(), (short) 2,
 						new MsgQryReq_S((short) 0).getMsgQryReq_S());
@@ -257,25 +252,25 @@ public class ModifyCmdActivity extends Activity {
 
 		// ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
 		// R.layout.simple_spinner_item,types);
-		// adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+		// adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		// sense_type_sp.setAdapter(adapter);
 
 		ctrl_adapter = new ArrayAdapter<String>(this,
 				R.layout.simple_spinner_item, ctrlNameList);
 		ctrl_adapter
-				.setDropDownViewResource(android.R.layout.simple_spinner_item);
+				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		ctrl_sp.setAdapter(ctrl_adapter);
 
 		code_adapter = new ArrayAdapter<String>(this,
 				R.layout.simple_spinner_item, code);
 		code_adapter
-				.setDropDownViewResource(android.R.layout.simple_spinner_item);
+				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		code_sp.setAdapter(code_adapter);
 
 		para_adapter = new ArrayAdapter<String>(this,
 				R.layout.simple_spinner_item, para);
 		para_adapter
-				.setDropDownViewResource(android.R.layout.simple_spinner_item);
+				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		para_sp.setAdapter(para_adapter);
 
 		if (cmdType == CmdDevType_E.CMD_DEV_APPL.getVal()) {

@@ -12,5 +12,5 @@ public class SaveLocationUtil {
 	public static void setBdLocation(BDLocation location) {
 		bdLocation = location;
 	}
-	
+
 }
