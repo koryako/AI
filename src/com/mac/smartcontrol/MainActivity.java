@@ -1,12 +1,14 @@
 package com.mac.smartcontrol;
 
-import java.util.ArrayList;
+import java.io.IOException;
+import java.util.List;
 
 import android.app.ActivityGroup;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.view.KeyEvent;
@@ -16,7 +18,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.mac.smartcontrol.broadcast.VoiceControlBroadcastReceiver;
 import com.mac.smartcontrol.util.NotificationUtil;
+import com.mac.smartcontrol.util.WriteUtil;
+
+import define.oper.MsgOperSql_E;
+import define.oper.MsgOper_E;
+import define.oper.body.req.MsgQryReq_S;
+import define.type.MsgId_E;
+import define.type.MsgType_E;
 
 public class MainActivity extends ActivityGroup {
 	private LinearLayout container = null;
@@ -27,6 +37,8 @@ public class MainActivity extends ActivityGroup {
 	LinearLayout location_ll = null;
 	ImageView voice_Iv = null;
 	private final int VOICE_RECOGNITION_REQUEST_CODE = 1234;
+	VoiceControlBroadcastReceiver broadcastReceiver;
+	public List<String> voiceName;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -44,19 +56,25 @@ public class MainActivity extends ActivityGroup {
 		camera_ll = (LinearLayout) findViewById(R.id.menu_camera_ll);
 		location_ll = (LinearLayout) findViewById(R.id.menu_location_ll);
 		voice_Iv = (ImageView) findViewById(R.id.menu_voice_iv);
+		broadcastReceiver = new VoiceControlBroadcastReceiver(MainActivity.this);
+		IntentFilter filter = new IntentFilter();
+		filter.addAction(MsgId_E.MSGID_SQL.getVal() + "_"
+				+ MsgOperSql_E.MSGOPER_MAX.getVal());
+		filter.addAction(MsgId_E.MSGID_CMD.getVal() + "_"
+				+ MsgOper_E.MSGOPER_QRY.getVal());
+		registerReceiver(broadcastReceiver, filter);
 		voice_Iv.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				try {
-					// 通过Intent传递语音识别的模式，开启语音
+
+				try { // 通过Intent传递语音识别的模式，开启语音
 					Intent intent = new Intent(
 							RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
 					// 语言模式和自由模式的语音识别
 					intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
-							RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-					// 提示语音开始
+							RecognizerIntent.LANGUAGE_MODEL_FREE_FORM); // 提示语音开始
 					intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "开始语音");
 					// 开始语音识别
 					startActivityForResult(intent,
@@ -64,11 +82,31 @@ public class MainActivity extends ActivityGroup {
 				} catch (Exception e) {
 					// TODO: handle exception
 					e.printStackTrace();
-					Toast.makeText(getApplicationContext(), "找不到语音设备", 1)
-							.show();
+					Toast.makeText(getApplicationContext(),
+							"找不到语音设备,请安装Google Voice", 1).show();
 				}
+
+				/*
+				 * String sql =
+				 * "select idx,dev_type,dev_idx,name,voice,ctrl_idx,type,code,para from tbl_cmd where voice=\'fgh\'"
+				 * ; MsgSqlExcReq_S msgSqlExcReq_S = new MsgSqlExcReq_S(); try {
+				 * msgSqlExcReq_S.setUsLen((short) sql.getBytes("gbk").length);
+				 * } catch (UnsupportedEncodingException e1) { //
+				 * TODOAuto-generated catch block e1.printStackTrace(); }
+				 * msgSqlExcReq_S.setSzSql(sql); try {
+				 * WriteUtil.write(MsgId_E.MSGID_SQL.getVal(), 0,
+				 * MsgType_E.MSGTYPE_REQ.getVal(),
+				 * MsgOperSql_E.MSGOPER_MAX.getVal(), (short)
+				 * (msgSqlExcReq_S.getUsLen() + 2),
+				 * msgSqlExcReq_S.getMsgSqlExcReq_S()); } catch (IOException e)
+				 * { // TODO Auto-generated catch block
+				 * Toast.makeText(MainActivity.this, "请确认网络是否开启,连接失败",
+				 * Toast.LENGTH_LONG).show(); }
+				 */
+
 			}
 		});
+
 		manage_ll.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -240,6 +278,7 @@ public class MainActivity extends ActivityGroup {
 		Intent intent = new Intent();
 		intent.setClass(MainActivity.this, SocketService.class);
 		stopService(intent);
+		unregisterReceiver(broadcastReceiver);
 		android.os.Process.killProcess(android.os.Process.myPid());
 		super.finish();
 	}
@@ -258,15 +297,35 @@ public class MainActivity extends ActivityGroup {
 		if (requestCode == VOICE_RECOGNITION_REQUEST_CODE
 				&& resultCode == RESULT_OK) {
 			// 取得语音的字符
-			ArrayList<String> results = data
+			voiceName = data
 					.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
 
-			String resultString = "";
-			for (int i = 0; i < results.size(); i++) {
-				resultString += results.get(i);
+			try {
+				WriteUtil.write(MsgId_E.MSGID_CMD.getVal(), 1,
+						MsgType_E.MSGTYPE_REQ.getVal(),
+						MsgOper_E.MSGOPER_QRY.getVal(), (short) 2,
+						new MsgQryReq_S((short) 0).getMsgQryReq_S());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				Toast.makeText(MainActivity.this, "请确认网络是否开启,连接失败",
+						Toast.LENGTH_LONG).show();
 			}
-			Toast.makeText(this, resultString, Toast.LENGTH_SHORT).show();
+			/*
+			 * for (int i = 0; i < results.size(); i++) { String sql =
+			 * "select idx,dev_type,dev_idx,name,voice,ctrl_idx,type,code,para from tbl_cmd where name="
+			 * + results.get(i); MsgSqlExcReq_S msgSqlExcReq_S = new
+			 * MsgSqlExcReq_S(); msgSqlExcReq_S.setUsLen((short)
+			 * sql.getBytes().length); msgSqlExcReq_S.setSzSql(sql); try {
+			 * WriteUtil.write(MsgId_E.MSGID_SQL.getVal(), 0,
+			 * MsgType_E.MSGTYPE_REQ.getVal(),
+			 * MsgOperSql_E.MSGOPER_MAX.getVal(), msgSqlExcReq_S.getUsLen(),
+			 * msgSqlExcReq_S.getMsgSqlExcReq_S()); } catch (IOException e) { //
+			 * TODO Auto-generated catch block Toast.makeText(MainActivity.this,
+			 * "请确认网络是否开启,连接失败", Toast.LENGTH_LONG).show(); } }
+			 */
+
 		}
 		super.onActivityResult(requestCode, resultCode, data);
+
 	}
 }

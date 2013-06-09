@@ -1,6 +1,7 @@
 package com.mac.smartcontrol.broadcast;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -8,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 
+import com.mac.smartcontrol.MainActivity;
 import com.mac.smartcontrol.SocketService;
 import com.mac.smartcontrol.util.FormatTransfer;
 import com.mac.smartcontrol.util.WriteUtil;
@@ -15,6 +17,8 @@ import com.mac.smartcontrol.util.WriteUtil;
 import define.entity.Cmd_S;
 import define.oper.MsgOperCmd_E;
 import define.oper.MsgOperSql_E;
+import define.oper.MsgOper_E;
+import define.oper.body.ack.MsgQryAck_S;
 import define.oper.body.ack.MsgSqlExcAck_S;
 import define.type.ErrCode_E;
 import define.type.MsgId_E;
@@ -22,12 +26,10 @@ import define.type.MsgType_E;
 
 public class VoiceControlBroadcastReceiver extends BroadcastReceiver {
 	Activity activity;
-	byte device_type;
 
-	public VoiceControlBroadcastReceiver(Activity activity, byte device_type) {
+	public VoiceControlBroadcastReceiver(Activity activity) {
 		super();
 		this.activity = activity;
-		this.device_type = device_type;
 	}
 
 	@Override
@@ -110,6 +112,55 @@ public class VoiceControlBroadcastReceiver extends BroadcastReceiver {
 				ErrCode_E.showError(activity, msgSqlExcAck_S.getUsError());
 			}
 
+		}
+
+		if (msgId == MsgId_E.MSGID_CMD.getVal()
+				&& msgOper == MsgOper_E.MSGOPER_QRY.getVal()) {
+			MainActivity mainActivity = (MainActivity) activity;
+			if (mainActivity.voiceName.size() > 0) {
+				return;
+			}
+			MsgQryAck_S msgQryAck_S = new MsgQryAck_S();
+			msgQryAck_S.setMsgQryAck_S(body);
+			int tag = -1;
+			if (msgQryAck_S.getUsCnt() > 0) {
+				if (msgQryAck_S.getUsError() == 0) {
+					for (int i = 0; i < msgQryAck_S.getUsCnt(); i++) {
+						byte[] cmd_S_Byte = Arrays.copyOfRange(
+								msgQryAck_S.getPucData(), i * Cmd_S.getSize(),
+								(i + 1) * Cmd_S.getSize());
+						Cmd_S cmd_S = new Cmd_S();
+						cmd_S.setCmd_S(cmd_S_Byte);
+						for (int j = 0; j < mainActivity.voiceName.size(); j++) {
+							if (cmd_S.getSzVoice().equals(
+									mainActivity.voiceName.get(j))) {
+								tag = j;
+								try {
+									WriteUtil.write(MsgId_E.MSGID_CMD.getVal(),
+											1, MsgType_E.MSGTYPE_REQ.getVal(),
+											MsgOperCmd_E.MSGOPER_CMD_EXC
+													.getVal(), Cmd_S.getSize(),
+											cmd_S.getCmd_S());
+								} catch (IOException e) {
+									// TODO Auto-generated catch block
+									Toast.makeText(context, "请确认网络是否开启,连接失败",
+											Toast.LENGTH_LONG).show();
+								}
+								mainActivity.voiceName.clear();
+								Toast.makeText(
+										context,
+										"已执行："
+												+ mainActivity.voiceName
+														.get(tag),
+										Toast.LENGTH_LONG).show();
+								return;
+							}
+						}
+					}
+				} else {
+					ErrCode_E.showError(activity, msgQryAck_S.getUsError());
+				}
+			}
 		}
 	}
 }

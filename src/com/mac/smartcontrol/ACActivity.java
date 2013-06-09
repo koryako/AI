@@ -189,6 +189,7 @@ public class ACActivity extends Activity {
 				}
 			}
 		}
+
 	}
 
 	@Override

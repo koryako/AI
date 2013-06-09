@@ -54,7 +54,7 @@ public class MsgSqlExcAck_S {
 	}
 
 	public void setMsgSqlExcAck_S(byte[] b) {
-		b[0] = usError;
+		usError = b[0];
 
 		byte[] usRow_b = new byte[2];
 		System.arraycopy(b, 1, usRow_b, 0, 2);

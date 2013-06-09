@@ -86,8 +86,10 @@ public class UserDefinedActivity extends Activity {
 
 	public void init_Btn() {
 		int row = 0;
+		int res = cmd_List.size() / 3;
+		int remainder = cmd_List.size() % 3;
 		if (cmd_List.size() != 0) {
-			if (cmd_List.size() % 3 != 0) {
+			if (remainder != 0) {
 				row = cmd_List.size() / 3 + 1;
 			} else {
 				row = cmd_List.size() / 3;
@@ -105,7 +107,7 @@ public class UserDefinedActivity extends Activity {
 				final Cmd_S c = cmd_List.get(i * 3 + j);
 				b1.setText(c.getSzName());
 				b1.setOnClickListener(new OnClickListener() {
-
+					;
 					@Override
 					public void onClick(View v) {
 						// TODO Auto-generated method stub
@@ -122,10 +124,25 @@ public class UserDefinedActivity extends Activity {
 						}
 					}
 				});
-				LayoutParams params = new LayoutParams(
-						LinearLayout.LayoutParams.WRAP_CONTENT,
-						LinearLayout.LayoutParams.WRAP_CONTENT);
-				params.setMargins(10, 0, 0, 0);
+				LayoutParams params = null;
+				if (res == i) {
+					if (remainder == 0) {
+						params = new LayoutParams(
+								LinearLayout.LayoutParams.WRAP_CONTENT,
+								LinearLayout.LayoutParams.WRAP_CONTENT, 1);
+					} else {
+						params = new LayoutParams(
+								LinearLayout.LayoutParams.WRAP_CONTENT,
+								LinearLayout.LayoutParams.WRAP_CONTENT);
+						params.setMargins(10, 0, 0, 0);
+					}
+				} else {
+					params = new LayoutParams(
+							LinearLayout.LayoutParams.WRAP_CONTENT,
+							LinearLayout.LayoutParams.WRAP_CONTENT);
+					params.setMargins(10, 0, 0, 0);
+				}
+
 				b1.setLayoutParams(params);
 
 				layout.addView(b1);

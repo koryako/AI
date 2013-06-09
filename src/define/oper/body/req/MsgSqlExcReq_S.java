@@ -1,5 +1,6 @@
 package define.oper.body.req;
 
+import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 
 import com.mac.smartcontrol.util.FormatTransfer;
@@ -38,7 +39,12 @@ public class MsgSqlExcReq_S {
 	public byte[] getMsgSqlExcReq_S() {
 		ByteBuffer bb_Msg = ByteBuffer.allocate(usLen + 2);
 		bb_Msg.put(FormatTransfer.toLH(usLen));
-		bb_Msg.put(szSql.getBytes());
+		try {
+			bb_Msg.put(szSql.getBytes("gbk"));
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return bb_Msg.array();
 	}
 }
