@@ -20,7 +20,6 @@ import com.mac.smartcontrol.util.WriteUtil;
 import define.entity.Appl_S;
 import define.entity.Cmd_S;
 import define.oper.MsgOperCmd_E;
-import define.oper.MsgOperSql_E;
 import define.oper.body.req.MsgCmdQryByDevReq_S;
 import define.type.ApplType_E;
 import define.type.CmdDevType_E;
@@ -34,7 +33,7 @@ public class SwitchActivity extends Activity {
 	ImageView back_Iv;
 	public List<Cmd_S> cmd_List;
 	ControlBroadcastReceiver controlBroadcastReceiver;
-	Appl_S appl_S = new Appl_S();
+	Appl_S appl_S;
 
 	public boolean b = false;
 	IntentFilter filter;
@@ -45,6 +44,7 @@ public class SwitchActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.control_switch);
 		cmd_List = new ArrayList<Cmd_S>();
+		appl_S = new Appl_S();
 		Bundle bundle = getIntent().getExtras();
 		if (bundle != null) {
 			byte[] b = bundle.getByteArray("device");
@@ -132,9 +132,8 @@ public class SwitchActivity extends Activity {
 		controlBroadcastReceiver = new ControlBroadcastReceiver(
 				SwitchActivity.this, ApplType_E.APPL_TYPE_SWITCH.getVal());
 		filter = new IntentFilter();
-		filter.addAction(MsgId_E.MSGID_SQL.getVal() + "_"
-				+ MsgOperSql_E.MSGOPER_MAX.getVal());
-
+		filter.addAction(MsgId_E.MSGID_CMD.getVal() + "_"
+				+ MsgOperCmd_E.MSGOPER_CMD_QRY_BYDEV.getVal());
 		filter.addAction("IOException");
 		registerReceiver(controlBroadcastReceiver, filter);
 
