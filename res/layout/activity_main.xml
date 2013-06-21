@@ -20,8 +20,7 @@
             android:gravity="center"
             android:marqueeRepeatLimit="marquee_forever"
             android:scrollHorizontally="true"
-            android:singleLine="true"
-            android:text="西安,temp1:23℃-27℃,中雨" />
+            android:singleLine="true" />
     </LinearLayout>
 
     <!-- 中间动态加载View -->

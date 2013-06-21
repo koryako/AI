@@ -28,6 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.baidu.location.BDLocation;
+import com.google.gson.Gson;
 import com.mac.smartcontrol.broadcast.LocationAddressBroadcastReceiver;
 import com.mac.smartcontrol.broadcast.VoiceControlBroadcastReceiver;
 import com.mac.smartcontrol.util.NotificationUtil;
@@ -35,6 +36,7 @@ import com.mac.smartcontrol.util.SQLiteHelper;
 import com.mac.smartcontrol.util.SaveLocationUtil;
 import com.mac.smartcontrol.util.WriteUtil;
 
+import define.entity.WeatherInfo;
 import define.oper.MsgOperSql_E;
 import define.oper.MsgOper_E;
 import define.oper.body.req.MsgQryReq_S;
@@ -247,6 +249,11 @@ public class MainActivity extends ActivityGroup {
 							// 取得返回的字符串
 							strResult = EntityUtils.toString(httpResponse
 									.getEntity());
+							Gson gson = new Gson();
+							WeatherInfo weather = gson.fromJson(strResult,
+									WeatherInfo.class);
+							weather_Tv.setText(weather.getWeatherinfo()
+									.toString());
 						} else {
 							weather_Tv.setText("请求错误!");
 						}

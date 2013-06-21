@@ -58,6 +58,8 @@ public class LocationActivity extends Activity {
 		setContentView(R.layout.activity_location);
 		ImageView postion_Iv = (ImageView) findViewById(R.id.position_iv);
 		ImageView save_Iv = (ImageView) findViewById(R.id.save_iv);
+		final ImageView remeber_Iv = (ImageView) findViewById(R.id.remeber_iv);
+		LinearLayout remeber_ll = (LinearLayout) findViewById(R.id.remeber_ll);
 		modelist = new ArrayList<Mode_S>();
 		modelistStr = new ArrayList<String>();
 		mode_Sp = (Spinner) findViewById(R.id.mode_sp);
@@ -85,6 +87,9 @@ public class LocationActivity extends Activity {
 
 			position_name_Tv.setText(location_address);
 			position_distance_Et.setText(location_distance + "");
+			if (location_isOpen)
+				remeber_Iv.setImageResource(R.drawable.checkbox_bg_focus);
+
 		}
 		broadcastReceiver = new LocationBroadcastReceiver(this);
 		IntentFilter filter = new IntentFilter();
@@ -103,8 +108,6 @@ public class LocationActivity extends Activity {
 			DisconnectionUtil.restart(LocationActivity.this);
 		}
 
-		final ImageView remeber_Iv = (ImageView) findViewById(R.id.remeber_iv);
-		LinearLayout remeber_ll = (LinearLayout) findViewById(R.id.remeber_ll);
 		remeber_ll.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -155,6 +158,8 @@ public class LocationActivity extends Activity {
 				editor.putBoolean("location_isOpen", location_isOpen);
 				editor.putInt("location_mode_ID", mode_Id);
 				editor.commit();
+				Toast.makeText(LocationActivity.this, "±£´æ³É¹¦", Toast.LENGTH_LONG)
+						.show();
 			}
 		});
 

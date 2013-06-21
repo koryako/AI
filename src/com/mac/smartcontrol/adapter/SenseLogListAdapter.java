@@ -1,5 +1,7 @@
 package com.mac.smartcontrol.adapter;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import android.content.Context;
@@ -77,7 +79,7 @@ public class SenseLogListAdapter extends BaseAdapter {
 		} else if (sensLog_S.getUcType() == SensType_E.SENS_TYPE_SMOKE.getVal()) {
 			holder.log_content_Tv.setText("ÑÌÎí¸ÐÓ¦");
 		}
-		holder.log_time_Tv.setText(sensLog_S.getUiTime() + "");
+		holder.log_time_Tv.setText(paserTime(sensLog_S.getUiTime()));
 		return convertView;
 	}
 
@@ -95,5 +97,14 @@ public class SenseLogListAdapter extends BaseAdapter {
 		viewHolder.area_name_Tv.setText(null);
 		viewHolder.log_content_Tv.setText(null);
 		viewHolder.log_time_Tv.setText(null);
+	}
+
+	public String paserTime(int time) {
+		// System.setProperty("user.timezone", "Asia/Shanghai");
+		// TimeZone tz = TimeZone.getTimeZone("Asia/Shanghai");
+		// TimeZone.setDefault(tz);
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String times = format.format(new Date(time * 1000L));
+		return times;
 	}
 }

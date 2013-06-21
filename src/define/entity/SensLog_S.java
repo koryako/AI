@@ -10,15 +10,25 @@ public class SensLog_S {
 	String szRgnName; // 区域名称
 	String szName; // 感应器名称
 	byte ucType; // 感应器类型
+	int uiPara;
 	int uiTime;
 
+	public int getUiPara() {
+		return uiPara;
+	}
+
+	public void setUiPara(int uiPara) {
+		this.uiPara = uiPara;
+	}
+
 	public SensLog_S(short usIdx, String szRgnName, String szName, byte ucType,
-			int uiTime) {
+			int uiPara, int uiTime) {
 		super();
 		this.usIdx = usIdx;
 		this.szRgnName = szRgnName;
 		this.szName = szName;
 		this.ucType = ucType;
+		this.uiPara = uiPara;
 		this.uiTime = uiTime;
 	}
 
@@ -28,7 +38,7 @@ public class SensLog_S {
 	}
 
 	public static short getSize() {
-		return 71;
+		return 75;
 	}
 
 	public String getSzRgnName() {
@@ -68,6 +78,7 @@ public class SensLog_S {
 		bb_Msg.put(szRgnName.getBytes());
 		bb_Msg.put(szName.getBytes());
 		bb_Msg.put(ucType);
+		bb_Msg.put(FormatTransfer.toLH(uiPara));
 		bb_Msg.put(FormatTransfer.toLH(uiTime));
 		return bb_Msg.array();
 	}
@@ -100,8 +111,12 @@ public class SensLog_S {
 
 		ucType = b[66];
 
+		byte[] uiPara_b = new byte[4];
+		System.arraycopy(b, 67, uiPara_b, 0, 4);
+		uiPara = FormatTransfer.lBytesToInt(uiPara_b);
+
 		byte[] uiTime_b = new byte[4];
-		System.arraycopy(b, 67, uiTime_b, 0, 4);
+		System.arraycopy(b, 71, uiTime_b, 0, 4);
 		uiTime = FormatTransfer.lBytesToInt(uiTime_b);
 
 	}
