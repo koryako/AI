@@ -30,14 +30,15 @@ public class MyLocationListener implements BDLocationListener {
 			return;
 		SaveLocationUtil.setBdLocation(location);
 		isExeMode(location);
+		context.sendBroadcast(new Intent("location_ok"));
 	}
 
 	public void onReceivePoi(BDLocation location) {
-		if (location == null) {
+		if (location == null)
 			return;
-		}
 		SaveLocationUtil.setBdLocation(location);
 		isExeMode(location);
+		context.sendBroadcast(new Intent("location_ok"));
 	}
 
 	public void isExeMode(BDLocation location) {

@@ -3,6 +3,14 @@ package com.mac.smartcontrol;
 import java.io.IOException;
 import java.util.List;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.ParseException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
+
 import android.app.ActivityGroup;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -16,10 +24,15 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.baidu.location.BDLocation;
+import com.mac.smartcontrol.broadcast.LocationAddressBroadcastReceiver;
 import com.mac.smartcontrol.broadcast.VoiceControlBroadcastReceiver;
 import com.mac.smartcontrol.util.NotificationUtil;
+import com.mac.smartcontrol.util.SQLiteHelper;
+import com.mac.smartcontrol.util.SaveLocationUtil;
 import com.mac.smartcontrol.util.WriteUtil;
 
 import define.oper.MsgOperSql_E;
@@ -38,13 +51,19 @@ public class MainActivity extends ActivityGroup {
 	ImageView voice_Iv = null;
 	private final int VOICE_RECOGNITION_REQUEST_CODE = 1234;
 	VoiceControlBroadcastReceiver broadcastReceiver;
+	LocationAddressBroadcastReceiver addressBroadcastReceiver;
 	public List<String> voiceName;
+	TextView weather_Tv;
+	SQLiteHelper sqLiteHelper;
+	// 默认北京
+	String weather_URL = "http://www.weather.com.cn/data/cityinfo/";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		// 隐藏标题栏
 		setContentView(R.layout.activity_main);
+		sqLiteHelper = new SQLiteHelper(MainActivity.this, "ai", null, 1);
 		Bundle bundle = getIntent().getExtras();
 		if (bundle != null)
 			currentPage = bundle.getInt("currentPage");
@@ -56,8 +75,13 @@ public class MainActivity extends ActivityGroup {
 		camera_ll = (LinearLayout) findViewById(R.id.menu_camera_ll);
 		location_ll = (LinearLayout) findViewById(R.id.menu_location_ll);
 		voice_Iv = (ImageView) findViewById(R.id.menu_voice_iv);
+		weather_Tv = (TextView) findViewById(R.id.weather_tv);
 		broadcastReceiver = new VoiceControlBroadcastReceiver(MainActivity.this);
 		IntentFilter filter = new IntentFilter();
+		addressBroadcastReceiver = new LocationAddressBroadcastReceiver(
+				MainActivity.this);
+		registerReceiver(addressBroadcastReceiver, new IntentFilter(
+				"location_ok"));
 		filter.addAction(MsgId_E.MSGID_SQL.getVal() + "_"
 				+ MsgOperSql_E.MSGOPER_MAX.getVal());
 		filter.addAction(MsgId_E.MSGID_CMD.getVal() + "_"
@@ -194,6 +218,49 @@ public class MainActivity extends ActivityGroup {
 		default:
 			break;
 		}
+
+	}
+
+	public void request_Weather() {
+		String city_num = null;
+		BDLocation bdLocation = SaveLocationUtil.getBdLocation();
+		if (bdLocation != null) {
+			String address = bdLocation.getAddrStr();
+			if (address != null && !address.equals("")) {
+				int p_index = address.indexOf("省") + 1;
+				int c_index = address.indexOf("市");
+				String city = address.substring(p_index, c_index);
+				city_num = sqLiteHelper.selectCity_Num_By_City_Name(city);
+				if (city_num != null && !"".equals(city_num)) {
+					String httpUrl = weather_URL + city_num + ".html";
+					// HttpGet连接对象
+					HttpGet httpRequest = new HttpGet(httpUrl);
+					// 取得HttpClient对象
+					HttpClient httpclient = new DefaultHttpClient();
+					// 请求HttpClient，取得HttpResponse
+					String strResult = null;
+					try {
+						HttpResponse httpResponse = httpclient
+								.execute(httpRequest);
+						// 请求成功
+						if (httpResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+							// 取得返回的字符串
+							strResult = EntityUtils.toString(httpResponse
+									.getEntity());
+						} else {
+							weather_Tv.setText("请求错误!");
+						}
+					} catch (ParseException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+
 	}
 
 	private void initFocus() {
@@ -279,6 +346,7 @@ public class MainActivity extends ActivityGroup {
 		intent.setClass(MainActivity.this, SocketService.class);
 		stopService(intent);
 		unregisterReceiver(broadcastReceiver);
+		unregisterReceiver(addressBroadcastReceiver);
 		android.os.Process.killProcess(android.os.Process.myPid());
 		super.finish();
 	}

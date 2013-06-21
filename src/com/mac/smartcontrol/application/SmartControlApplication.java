@@ -1,7 +1,6 @@
 package com.mac.smartcontrol.application;
 
 import android.app.Application;
-import android.content.BroadcastReceiver;
 
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
@@ -10,7 +9,6 @@ import com.mac.smartcontrol.listener.MyLocationListener;
 public class SmartControlApplication extends Application {
 	public LocationClient mLocationClient = null;
 	public MyLocationListener myListener = null;
-	BroadcastReceiver BroadcastReceiver;
 
 	@Override
 	public void onCreate() {
@@ -31,7 +29,7 @@ public class SmartControlApplication extends Application {
 		option.setServiceName("com.baidu.location.service_v2.9");
 		option.setPoiExtraInfo(true);
 		option.setAddrType("all");
-		option.setPriority(LocationClientOption.GpsFirst); // 不设置，默认是gps优先
+		option.setPriority(LocationClientOption.NetWorkFirst); // 不设置，默认是gps优先
 		option.setPoiNumber(3);
 		option.disableCache(true);
 		mLocationClient.setLocOption(option);

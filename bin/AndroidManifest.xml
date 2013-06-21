@@ -103,7 +103,7 @@
         </activity>
         <activity android:name=".AddModeCmdActivity" >
         </activity>
-         <activity android:name=".ModifyModeCmdActivity" >
+        <activity android:name=".ModifyModeCmdActivity" >
         </activity>
         <activity android:name=".ACActivity" >
         </activity>
@@ -113,7 +113,7 @@
         </activity>
         <activity android:name=".HDPlayActivity" >
         </activity>
-          <activity android:name=".UserDefinedActivity" >
+        <activity android:name=".UserDefinedActivity" >
         </activity>
     </application>
 

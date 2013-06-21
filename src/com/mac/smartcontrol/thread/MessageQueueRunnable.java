@@ -25,15 +25,6 @@ public class MessageQueueRunnable implements Runnable {
 	public void run() {
 		// TODO Auto-generated method stub
 		while (isRun) {
-			if (MessageQueue.getList().size() < 0) {
-				try {
-					Thread.sleep(10);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				return;
-			}
 			for (int i = 0; i < MessageQueue.getList().size(); i++) {
 				Message message = MessageQueue.getList().get(i);
 				if (message.getMessage_Header().getUsMsgId() == MsgId_E.MSGID_USER
