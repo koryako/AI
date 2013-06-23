@@ -1,6 +1,5 @@
 package com.mac.smartcontrol;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,11 +13,9 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.mac.smartcontrol.adapter.EnterAreaListAdapter;
 import com.mac.smartcontrol.broadcast.SenseBroadcastReceiver;
-import com.mac.smartcontrol.util.DisconnectionUtil;
 import com.mac.smartcontrol.util.WriteUtil;
 
 import define.entity.Rgn_S;
@@ -55,7 +52,7 @@ public class EnterAreaActivity extends Activity {
 				areaList, msgId);
 		areaListView.setAdapter(enterAreaListAdapter);
 		ImageView back_Iv = (ImageView) findViewById(R.id.back);
-		if (msgId == 34) {
+		if (msgId == 34 || msgId == 94) {
 			back_Iv.setVisibility(View.INVISIBLE);
 		}
 		back_Iv.setOnClickListener(new OnClickListener() {
@@ -92,18 +89,17 @@ public class EnterAreaActivity extends Activity {
 		filter.addAction("IOException");
 		registerReceiver(senseBroadcastReceiver, filter);
 
-		try {
-			WriteUtil.write(MsgId_E.MSGID_RGN.getVal(), 0,
-					MsgType_E.MSGTYPE_REQ.getVal(), MsgOper_E.MSGOPER_QRY
-							.getVal(), (short) 2, new MsgQryReq_S((short) 0)
-							.getMsgQryReq_S());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			Toast.makeText(EnterAreaActivity.this, "获取列表失败", Toast.LENGTH_LONG)
-					.show();
-
-			DisconnectionUtil.restart(EnterAreaActivity.this);
-		}
+		// try {
+		WriteUtil.write(MsgId_E.MSGID_RGN.getVal(), 0,
+				MsgType_E.MSGTYPE_REQ.getVal(), MsgOper_E.MSGOPER_QRY.getVal(),
+				(short) 2, new MsgQryReq_S((short) 0).getMsgQryReq_S(), this);
+		// } catch (IOException e) {
+		// // TODO Auto-generated catch block
+		// Toast.makeText(EnterAreaActivity.this, "获取列表失败", Toast.LENGTH_LONG)
+		// .show();
+		//
+		// DisconnectionUtil.restart(EnterAreaActivity.this);
+		// }
 
 	}
 

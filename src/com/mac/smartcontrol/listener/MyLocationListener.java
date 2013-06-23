@@ -17,6 +17,7 @@ public class MyLocationListener implements BDLocationListener {
 	double location_longitude = 0;
 	double location_latitude = 0;
 	boolean location_isOpen;
+	boolean is_Exe_Mode = false;
 
 	public MyLocationListener(Context context) {
 		super();
@@ -29,7 +30,8 @@ public class MyLocationListener implements BDLocationListener {
 		if (location == null)
 			return;
 		SaveLocationUtil.setBdLocation(location);
-		isExeMode(location);
+		if (!is_Exe_Mode)
+			isExeMode(location);
 		context.sendBroadcast(new Intent("location_ok"));
 	}
 
@@ -37,7 +39,8 @@ public class MyLocationListener implements BDLocationListener {
 		if (location == null)
 			return;
 		SaveLocationUtil.setBdLocation(location);
-		isExeMode(location);
+		if (!is_Exe_Mode)
+			isExeMode(location);
 		context.sendBroadcast(new Intent("location_ok"));
 	}
 
@@ -63,6 +66,7 @@ public class MyLocationListener implements BDLocationListener {
 					context.sendBroadcast(intent);
 				}
 			}
+			is_Exe_Mode = true;
 		}
 	}
 }

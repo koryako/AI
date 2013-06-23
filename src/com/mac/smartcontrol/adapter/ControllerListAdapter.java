@@ -1,11 +1,9 @@
 package com.mac.smartcontrol.adapter;
 
-import java.io.IOException;
 import java.util.List;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -97,18 +95,18 @@ public class ControllerListAdapter extends BaseAdapter {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				try {
-					WriteUtil.write(MsgId_E.MSGID_CTRL.getVal(), 0,
-							MsgType_E.MSGTYPE_REQ.getVal(),
-							MsgOper_E.MSGOPER_DEL.getVal(),
-							MsgDelReq_S.getSize(),
-							new MsgDelReq_S(ctrl_S.getUsIdx()).getMsgDelReq_S());
-					((AreaListActivity) context).del_Idx = position;
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					Intent i = new Intent("IOException");
-					context.sendBroadcast(i);
-				}
+				// try {
+				WriteUtil.write(MsgId_E.MSGID_CTRL.getVal(), 0,
+						MsgType_E.MSGTYPE_REQ.getVal(),
+						MsgOper_E.MSGOPER_DEL.getVal(), MsgDelReq_S.getSize(),
+						new MsgDelReq_S(ctrl_S.getUsIdx()).getMsgDelReq_S(),
+						context);
+				((AreaListActivity) context).del_Idx = position;
+				// } catch (IOException e) {
+				// // TODO Auto-generated catch block
+				// Intent i = new Intent("IOException");
+				// context.sendBroadcast(i);
+				// }
 			}
 		});
 		holder.modify_Iv.setOnClickListener(new OnClickListener() {
@@ -164,22 +162,21 @@ public class ControllerListAdapter extends BaseAdapter {
 									return;
 								}
 
-								try {
-									ctrl_S.setSzName(name);
-									WriteUtil.write(
-											MsgId_E.MSGID_CTRL.getVal(), 0,
-											MsgType_E.MSGTYPE_REQ.getVal(),
-											MsgOper_E.MSGOPER_MOD.getVal(),
-											Ctrl_S.getSize(),
-											ctrl_S.getCtrl_S());
-									((ControllerListActivity) context).mod_Idx = position;
-									((ControllerListActivity) context).ctrl_S = ctrl_S;
-									dialog.dismiss();
-								} catch (IOException e) {
-									// TODO Auto-generated catch block
-									Toast.makeText(context, "ÐÞ¸ÄÊ§°Ü",
-											Toast.LENGTH_LONG).show();
-								}
+								// try {
+								ctrl_S.setSzName(name);
+								WriteUtil.write(MsgId_E.MSGID_CTRL.getVal(), 0,
+										MsgType_E.MSGTYPE_REQ.getVal(),
+										MsgOper_E.MSGOPER_MOD.getVal(),
+										Ctrl_S.getSize(), ctrl_S.getCtrl_S(),
+										context);
+								((ControllerListActivity) context).mod_Idx = position;
+								((ControllerListActivity) context).ctrl_S = ctrl_S;
+								dialog.dismiss();
+								// } catch (IOException e) {
+								// // TODO Auto-generated catch block
+								// Toast.makeText(context, "ÐÞ¸ÄÊ§°Ü",
+								// Toast.LENGTH_LONG).show();
+								// }
 							}
 						});
 

@@ -37,7 +37,8 @@ public class MessageQueueRunnable implements Runnable {
 				if (message.getMessage_Header().getUcMsgType() == MsgType_E.MSGTYPE_NTF
 						.getVal()) {
 					Intent intent = new Intent("ntf");
-					intent.putExtra("ntf", message.getUsBody());
+					intent.putExtra("data", message.getUsBody());
+
 					try {
 						service.sendBroadcast(intent);
 					} catch (Exception e) {

@@ -1,7 +1,5 @@
 package com.mac.smartcontrol.broadcast;
 
-import java.io.IOException;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -31,17 +29,19 @@ public class Location_Exe_Cmd_BroadcastReceiver extends BroadcastReceiver {
 		}
 		short mode_Id = intent.getExtras().getShort("mode_Id");
 		if (action.equals("exe_mode")) {
-			try {
-				WriteUtil.write(MsgId_E.MSGID_MODE.getVal(), 0,
-						MsgType_E.MSGTYPE_REQ.getVal(),
-						MsgOperMode_E.MSGOPER_MODE_EXC.getVal(),
-						MsgModeExcReq_S.getSize(),
-						new MsgModeExcReq_S(mode_Id).getMsgModeExcReq_S());
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				Toast.makeText(context, "请确认网络是否开启,连接失败", Toast.LENGTH_LONG)
-						.show();
-			}
+			if (SocketService.os == null)
+				return;
+			// try {
+			WriteUtil.write(MsgId_E.MSGID_MODE.getVal(), 0,
+					MsgType_E.MSGTYPE_REQ.getVal(),
+					MsgOperMode_E.MSGOPER_MODE_EXC.getVal(),
+					MsgModeExcReq_S.getSize(),
+					new MsgModeExcReq_S(mode_Id).getMsgModeExcReq_S(), context);
+			// } catch (IOException e) {
+			// // TODO Auto-generated catch block
+			// Toast.makeText(context, "请确认网络是否开启,连接失败", Toast.LENGTH_LONG)
+			// .show();
+			// }
 		}
 	}
 }

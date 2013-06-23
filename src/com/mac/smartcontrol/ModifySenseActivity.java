@@ -1,6 +1,5 @@
 package com.mac.smartcontrol;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +16,6 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.mac.smartcontrol.broadcast.ModifySenseBroadcastReceiver;
-import com.mac.smartcontrol.util.DisconnectionUtil;
 import com.mac.smartcontrol.util.WriteUtil;
 
 import define.entity.Rgn_S;
@@ -64,18 +62,17 @@ public class ModifySenseActivity extends Activity {
 		filter.addAction("IOException");
 		registerReceiver(modifySenseBroadcastReceiver, filter);
 
-		try {
-			WriteUtil.write(MsgId_E.MSGID_RGN.getVal(), 0,
-					MsgType_E.MSGTYPE_REQ.getVal(), MsgOper_E.MSGOPER_QRY
-							.getVal(), (short) 2, new MsgQryReq_S((short) 0)
-							.getMsgQryReq_S());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			Toast.makeText(ModifySenseActivity.this, "请确认网络是否开启,连接失败",
-					Toast.LENGTH_LONG).show();
-
-			DisconnectionUtil.restart(ModifySenseActivity.this);
-		}
+		// try {
+		WriteUtil.write(MsgId_E.MSGID_RGN.getVal(), 0,
+				MsgType_E.MSGTYPE_REQ.getVal(), MsgOper_E.MSGOPER_QRY.getVal(),
+				(short) 2, new MsgQryReq_S((short) 0).getMsgQryReq_S(), this);
+		// } catch (IOException e) {
+		// // TODO Auto-generated catch block
+		// Toast.makeText(ModifySenseActivity.this, "请确认网络是否开启,连接失败",
+		// Toast.LENGTH_LONG).show();
+		//
+		// DisconnectionUtil.restart(ModifySenseActivity.this);
+		// }
 
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
 				R.layout.simple_spinner_item, types);
@@ -114,18 +111,18 @@ public class ModifySenseActivity extends Activity {
 						.getSelectedItemPosition() + 1));
 				sens_S.setUsRgnIdx(areaList.get(
 						area_sp.getSelectedItemPosition()).getUsIdx());
-				try {
-					WriteUtil.write(MsgId_E.MSGID_SENS.getVal(), 0,
-							MsgType_E.MSGTYPE_REQ.getVal(),
-							MsgOper_E.MSGOPER_MOD.getVal(), Sens_S.getSize(),
-							sens_S.getSens_S());
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					Toast.makeText(ModifySenseActivity.this, "请确认网络是否开启,连接失败",
-							Toast.LENGTH_LONG).show();
-
-					DisconnectionUtil.restart(ModifySenseActivity.this);
-				}
+				// try {
+				WriteUtil.write(MsgId_E.MSGID_SENS.getVal(), 0,
+						MsgType_E.MSGTYPE_REQ.getVal(),
+						MsgOper_E.MSGOPER_MOD.getVal(), Sens_S.getSize(),
+						sens_S.getSens_S(), ModifySenseActivity.this);
+				// } catch (IOException e) {
+				// // TODO Auto-generated catch block
+				// Toast.makeText(ModifySenseActivity.this, "请确认网络是否开启,连接失败",
+				// Toast.LENGTH_LONG).show();
+				//
+				// DisconnectionUtil.restart(ModifySenseActivity.this);
+				// }
 			}
 		});
 

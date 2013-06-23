@@ -20,6 +20,7 @@ public class MenuActivity extends Activity {
 		ImageView manage_Iv = (ImageView) findViewById(R.id.main_manage_iv);
 		ImageView location_Iv = (ImageView) findViewById(R.id.main_location_iv);
 		ImageView control_Iv = (ImageView) findViewById(R.id.main_control_iv);
+		ImageView camera_Iv = (ImageView) findViewById(R.id.main_camera_iv);
 		final Intent intent = new Intent();
 		manage_Iv.setOnClickListener(new OnClickListener() {
 
@@ -51,6 +52,18 @@ public class MenuActivity extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				intent.putExtra("currentPage", 1);
+				intent.setClass(MenuActivity.this, MainActivity.class);
+				startActivity(intent);
+				stopService(intent);
+				finish();
+			}
+		});
+		camera_Iv.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				intent.putExtra("currentPage", 2);
 				intent.setClass(MenuActivity.this, MainActivity.class);
 				startActivity(intent);
 				stopService(intent);

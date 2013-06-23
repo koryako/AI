@@ -1,6 +1,5 @@
 package com.mac.smartcontrol.adapter;
 
-import java.io.IOException;
 import java.util.List;
 
 import android.app.Activity;
@@ -100,18 +99,18 @@ public class DeviceListAdapter extends BaseAdapter {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				try {
-					WriteUtil.write(MsgId_E.MSGID_APPL.getVal(), 0,
-							MsgType_E.MSGTYPE_REQ.getVal(),
-							MsgOper_E.MSGOPER_DEL.getVal(),
-							MsgDelReq_S.getSize(),
-							new MsgDelReq_S(appl_S.getUsIdx()).getMsgDelReq_S());
-					((DeviceListActivity) context).del_Idx = position;
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					Intent i = new Intent("IOException");
-					context.sendBroadcast(i);
-				}
+				// try {
+				WriteUtil.write(MsgId_E.MSGID_APPL.getVal(), 0,
+						MsgType_E.MSGTYPE_REQ.getVal(),
+						MsgOper_E.MSGOPER_DEL.getVal(), MsgDelReq_S.getSize(),
+						new MsgDelReq_S(appl_S.getUsIdx()).getMsgDelReq_S(),
+						context);
+				((DeviceListActivity) context).del_Idx = position;
+				// } catch (IOException e) {
+				// // TODO Auto-generated catch block
+				// Intent i = new Intent("IOException");
+				// context.sendBroadcast(i);
+				// }
 			}
 		});
 		holder.modify_Iv.setOnClickListener(new OnClickListener() {

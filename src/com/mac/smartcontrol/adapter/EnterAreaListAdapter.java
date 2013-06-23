@@ -95,6 +95,9 @@ public class EnterAreaListAdapter extends BaseAdapter {
 				} else if (msgId == 34) {
 					intent.putExtra("msgId", (short) 34);
 					intent.setClass(context, EnterDeviceListActivity.class);
+				} else if (msgId == 94) {
+					intent.putExtra("msgId", (short) 94);
+					intent.setClass(context, CameraListActivity.class);
 				} else if (msgId == MsgId_E.MSGID_MODE.getVal()) {
 					intent.setClass(context, EnterModeListActivity.class);
 				}

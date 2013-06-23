@@ -9,26 +9,12 @@ public class Cama_S {
 	short usIdx;
 	short usRgnIdx; // 区域索引
 	String szName; // 名称
-	int uiIpAddr; // IP地址
-	short usPort; // 端口
-
-	public Cama_S(short usIdx, short usRgnIdx, String szName, int uiIpAddr,
-			short usPort) {
-		super();
-		this.usIdx = usIdx;
-		this.usRgnIdx = usRgnIdx;
-		this.szName = szName;
-		this.uiIpAddr = uiIpAddr;
-		this.usPort = usPort;
-	}
-
-	public Cama_S() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+	String szUid; // UID
+	String szUser; //
+	String szPass; // 密码
 
 	public static short getSize() {
-		return 42;
+		return 132;
 	}
 
 	public short getUsIdx() {
@@ -55,24 +41,32 @@ public class Cama_S {
 		this.szName = szName;
 	}
 
-	public int getUiIpAddr() {
-		return uiIpAddr;
+	public String getSzUid() {
+		return szUid;
 	}
 
-	public void setUiIpAddr(int uiIpAddr) {
-		this.uiIpAddr = uiIpAddr;
+	public void setSzUid(String szUid) {
+		this.szUid = szUid;
 	}
 
-	public short getUsPort() {
-		return usPort;
+	public String getSzUser() {
+		return szUser;
 	}
 
-	public void setUsPort(short usPort) {
-		this.usPort = usPort;
+	public void setSzUser(String szUser) {
+		this.szUser = szUser;
+	}
+
+	public String getSzPass() {
+		return szPass;
+	}
+
+	public void setSzPass(String szPass) {
+		this.szPass = szPass;
 	}
 
 	public byte[] getCama_S() {
-		ByteBuffer bb_Msg = ByteBuffer.allocate(42);
+		ByteBuffer bb_Msg = ByteBuffer.allocate(getSize());
 		bb_Msg.put(FormatTransfer.toLH(usIdx));
 		bb_Msg.put(FormatTransfer.toLH(usRgnIdx));
 		try {
@@ -87,8 +81,42 @@ public class Cama_S {
 			e.printStackTrace();
 		}
 
-		bb_Msg.put(FormatTransfer.toLH(uiIpAddr));
-		bb_Msg.put(FormatTransfer.toLH(usPort));
+		try {
+			int szUid_Len = szUid.getBytes("gbk").length;
+			bb_Msg.put(szUid.getBytes("gbk"));
+			if (szUid_Len < 32) {
+				byte[] szUid_Sub = new byte[32 - szUid_Len];
+				bb_Msg.put(new String(szUid_Sub).getBytes("gbk"));
+			}
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		try {
+			int szUser_Len = szUser.getBytes("gbk").length;
+			bb_Msg.put(szUser.getBytes("gbk"));
+			if (szUser_Len < 32) {
+				byte[] szUser_Sub = new byte[32 - szUser_Len];
+				bb_Msg.put(new String(szUser_Sub).getBytes("gbk"));
+			}
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		try {
+			int szPass_Len = szPass.getBytes("gbk").length;
+			bb_Msg.put(szPass.getBytes("gbk"));
+			if (szPass_Len < 32) {
+				byte[] szPass_Sub = new byte[32 - szPass_Len];
+				bb_Msg.put(new String(szPass_Sub).getBytes("gbk"));
+			}
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		return bb_Msg.array();
 	}
 
@@ -104,7 +132,6 @@ public class Cama_S {
 
 		byte[] szName_b = new byte[32];
 		System.arraycopy(b, 4, szName_b, 0, 32);
-		// szName = new String(szName_b).trim();
 		try {
 			szName = new String(szName_b, "gbk").trim();
 		} catch (UnsupportedEncodingException e) {
@@ -112,13 +139,32 @@ public class Cama_S {
 			e.printStackTrace();
 		}
 
-		byte[] uiIpAddr_b = new byte[4];
-		System.arraycopy(b, 36, uiIpAddr_b, 0, 4);
-		uiIpAddr = FormatTransfer.lBytesToInt(uiIpAddr_b);
+		byte[] szUid_b = new byte[32];
+		System.arraycopy(b, 36, szUid_b, 0, 32);
+		try {
+			szUid = new String(szUid_b, "gbk").trim();
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
-		byte[] usPort_b = new byte[2];
-		System.arraycopy(b, 40, usPort_b, 0, 2);
-		usPort = FormatTransfer.lBytesToShort(usPort_b);
+		byte[] szUser_b = new byte[32];
+		System.arraycopy(b, 68, szUser_b, 0, 32);
+		try {
+			szUser = new String(szUser_b, "gbk").trim();
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		byte[] szPass_b = new byte[32];
+		System.arraycopy(b, 100, szPass_b, 0, 32);
+		try {
+			szPass = new String(szPass_b, "gbk").trim();
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 }

@@ -14,6 +14,7 @@ import android.widget.ImageView;
 
 import com.mac.smartcontrol.ACActivity;
 import com.mac.smartcontrol.CmdListActivity;
+import com.mac.smartcontrol.CurtainActivity;
 import com.mac.smartcontrol.EnterDeviceListActivity;
 import com.mac.smartcontrol.HDPlayActivity;
 import com.mac.smartcontrol.R;
@@ -133,7 +134,7 @@ public class EnterDeviceListAdapter extends BaseAdapter {
 						intent.setClass(context, ACActivity.class);
 					} else if (appl_S.getUcType() == ApplType_E.APPL_TYPE_CURTAIN
 							.getVal()) {
-						intent.setClass(context, SwitchActivity.class);
+						intent.setClass(context, CurtainActivity.class);
 					} else if (appl_S.getUcType() == ApplType_E.APPL_TYPE_CUSTOM
 							.getVal()) {
 						intent.setClass(context, SwitchActivity.class);

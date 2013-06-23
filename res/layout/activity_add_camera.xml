@@ -90,13 +90,13 @@
             android:gravity="center" >
 
             <TextView
-                android:id="@+id/ip_tv"
+                android:id="@+id/uid_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/camera_ip" />
+                android:text="@string/camera_uid" />
 
             <EditText
-                android:id="@+id/ip_et"
+                android:id="@+id/uid_et"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -104,7 +104,6 @@
                 android:ems="10"
                 android:paddingLeft="@dimen/padding_large"
                 android:textColor="@color/white" >
-                <requestFocus />
             </EditText>
         </LinearLayout>
 
@@ -115,13 +114,13 @@
             android:gravity="center" >
 
             <TextView
-                android:id="@+id/port_tv"
+                android:id="@+id/user_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/camera_port" />
+                android:text="@string/camera_user" />
 
             <EditText
-                android:id="@+id/port_et"
+                android:id="@+id/user_et"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -129,7 +128,31 @@
                 android:ems="10"
                 android:paddingLeft="@dimen/padding_large"
                 android:textColor="@color/white" 
-                android:numeric="integer"
+                >
+            </EditText>
+        </LinearLayout>
+        
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/add_margin_size"
+            android:gravity="center" >
+
+            <TextView
+                android:id="@+id/pass_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/camera_pass" />
+
+            <EditText
+                android:id="@+id/pass_et"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/edittext_bg"
+                android:ems="10"
+                android:paddingLeft="@dimen/padding_large"
+                android:textColor="@color/white" 
                 >
                 <requestFocus />
             </EditText>

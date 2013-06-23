@@ -1,6 +1,6 @@
 package com.mac.smartcontrol.util;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 
@@ -8,7 +8,7 @@ import com.mac.smartcontrol.LoginActivity;
 import com.mac.smartcontrol.SocketService;
 
 public class DisconnectionUtil {
-	public static void restart(Activity context) {
+	public static void restart(Context context) {
 		Toast.makeText(context, "请确认网络是否开启,操作失败,请重新登录", Toast.LENGTH_LONG)
 				.show();
 		Intent i_s = new Intent();

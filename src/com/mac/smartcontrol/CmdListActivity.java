@@ -1,6 +1,5 @@
 package com.mac.smartcontrol;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,11 +15,9 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.mac.smartcontrol.adapter.CmdListAdapter;
 import com.mac.smartcontrol.broadcast.CmdBroadcastReceiver;
-import com.mac.smartcontrol.util.DisconnectionUtil;
 import com.mac.smartcontrol.util.WriteUtil;
 
 import define.entity.Appl_S;
@@ -72,7 +69,7 @@ public class CmdListActivity extends Activity {
 				sens_S.setSens_S(bundle.getByteArray("sense"));
 			} else if (cmdType == CmdDevType_E.CMD_DEV_CAMA.getVal()) {
 				cama_S = new Cama_S();
-				cama_S.setCama_S(bundle.getByteArray("camare"));
+				cama_S.setCama_S(bundle.getByteArray("camera"));
 			}
 		}
 
@@ -132,52 +129,51 @@ public class CmdListActivity extends Activity {
 		filter.addAction("IOException");
 		registerReceiver(cmdBroadcastReceiver, filter);
 
-		try {
-			WriteUtil.write(MsgId_E.MSGID_CTRL.getVal(), 0,
-					MsgType_E.MSGTYPE_REQ.getVal(), MsgOper_E.MSGOPER_QRY
-							.getVal(), (short) 2, new MsgQryReq_S((short) 0)
-							.getMsgQryReq_S());
-			if (cmdType == CmdDevType_E.CMD_DEV_APPL.getVal()) {
-				WriteUtil.write(
-						MsgId_E.MSGID_CMD.getVal(),
-						1,
-						MsgType_E.MSGTYPE_REQ.getVal(),
-						MsgOperCmd_E.MSGOPER_CMD_QRY_BYDEV.getVal(),
-						MsgCmdQryByDevReq_S.getSize(),
-						new MsgCmdQryByDevReq_S(CmdDevType_E.CMD_DEV_APPL
-								.getVal(), appl_S.getUsIdx(),
-								CmdType_E.CMD_TYPE_NULL.getVal())
-								.getMsgCmdQryByDevReq_S());
-			} else if (cmdType == CmdDevType_E.CMD_DEV_SENS.getVal()) {
-				WriteUtil.write(
-						MsgId_E.MSGID_CMD.getVal(),
-						1,
-						MsgType_E.MSGTYPE_REQ.getVal(),
-						MsgOperCmd_E.MSGOPER_CMD_QRY_BYDEV.getVal(),
-						MsgCmdQryByDevReq_S.getSize(),
-						new MsgCmdQryByDevReq_S(CmdDevType_E.CMD_DEV_SENS
-								.getVal(), sens_S.getUsIdx(),
-								CmdType_E.CMD_TYPE_NULL.getVal())
-								.getMsgCmdQryByDevReq_S());
-			} else if (cmdType == CmdDevType_E.CMD_DEV_CAMA.getVal()) {
-				WriteUtil.write(
-						MsgId_E.MSGID_CMD.getVal(),
-						1,
-						MsgType_E.MSGTYPE_REQ.getVal(),
-						MsgOperCmd_E.MSGOPER_CMD_QRY_BYDEV.getVal(),
-						MsgCmdQryByDevReq_S.getSize(),
-						new MsgCmdQryByDevReq_S(CmdDevType_E.CMD_DEV_CAMA
-								.getVal(), cama_S.getUsIdx(),
-								CmdType_E.CMD_TYPE_NULL.getVal())
-								.getMsgCmdQryByDevReq_S());
-			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			Toast.makeText(CmdListActivity.this, "获取列表失败", Toast.LENGTH_LONG)
-					.show();
-			DisconnectionUtil.restart(CmdListActivity.this);
-
+		// try {
+		WriteUtil.write(MsgId_E.MSGID_CTRL.getVal(), 0,
+				MsgType_E.MSGTYPE_REQ.getVal(), MsgOper_E.MSGOPER_QRY.getVal(),
+				(short) 2, new MsgQryReq_S((short) 0).getMsgQryReq_S(), this);
+		if (cmdType == CmdDevType_E.CMD_DEV_APPL.getVal()) {
+			WriteUtil
+					.write(MsgId_E.MSGID_CMD.getVal(),
+							1,
+							MsgType_E.MSGTYPE_REQ.getVal(),
+							MsgOperCmd_E.MSGOPER_CMD_QRY_BYDEV.getVal(),
+							MsgCmdQryByDevReq_S.getSize(),
+							new MsgCmdQryByDevReq_S(CmdDevType_E.CMD_DEV_APPL
+									.getVal(), appl_S.getUsIdx(),
+									CmdType_E.CMD_TYPE_NULL.getVal())
+									.getMsgCmdQryByDevReq_S(), this);
+		} else if (cmdType == CmdDevType_E.CMD_DEV_SENS.getVal()) {
+			WriteUtil
+					.write(MsgId_E.MSGID_CMD.getVal(),
+							1,
+							MsgType_E.MSGTYPE_REQ.getVal(),
+							MsgOperCmd_E.MSGOPER_CMD_QRY_BYDEV.getVal(),
+							MsgCmdQryByDevReq_S.getSize(),
+							new MsgCmdQryByDevReq_S(CmdDevType_E.CMD_DEV_SENS
+									.getVal(), sens_S.getUsIdx(),
+									CmdType_E.CMD_TYPE_NULL.getVal())
+									.getMsgCmdQryByDevReq_S(), this);
+		} else if (cmdType == CmdDevType_E.CMD_DEV_CAMA.getVal()) {
+			WriteUtil
+					.write(MsgId_E.MSGID_CMD.getVal(),
+							1,
+							MsgType_E.MSGTYPE_REQ.getVal(),
+							MsgOperCmd_E.MSGOPER_CMD_QRY_BYDEV.getVal(),
+							MsgCmdQryByDevReq_S.getSize(),
+							new MsgCmdQryByDevReq_S(CmdDevType_E.CMD_DEV_CAMA
+									.getVal(), cama_S.getUsIdx(),
+									CmdType_E.CMD_TYPE_NULL.getVal())
+									.getMsgCmdQryByDevReq_S(), this);
 		}
+		// } catch (IOException e) {
+		// // TODO Auto-generated catch block
+		// Toast.makeText(CmdListActivity.this, "获取列表失败", Toast.LENGTH_LONG)
+		// .show();
+		// DisconnectionUtil.restart(CmdListActivity.this);
+		//
+		// }
 
 	}
 

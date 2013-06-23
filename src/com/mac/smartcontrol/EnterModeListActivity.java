@@ -1,6 +1,5 @@
 package com.mac.smartcontrol;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,11 +17,9 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.mac.smartcontrol.adapter.EnterModeListAdapter;
 import com.mac.smartcontrol.broadcast.EnterModeBroadcastReceiver;
-import com.mac.smartcontrol.util.DisconnectionUtil;
 import com.mac.smartcontrol.util.WriteUtil;
 
 import define.entity.Mode_S;
@@ -106,29 +103,29 @@ public class EnterModeListActivity extends Activity {
 											startActivityForResult(intent, 1);
 										} else if (which == 1) {
 
-											try {
-												WriteUtil.write(
-														MsgId_E.MSGID_MODE
-																.getVal(),
-														0,
-														MsgType_E.MSGTYPE_REQ
-																.getVal(),
-														MsgOper_E.MSGOPER_DEL
-																.getVal(),
-														MsgDelReq_S.getSize(),
-														new MsgDelReq_S(mode_S
-																.getUsIdx())
-																.getMsgDelReq_S());
-												del_Idx = arg2;
-											} catch (IOException e) {
-												// TODO Auto-generated catch
-												// block
-												Intent i = new Intent(
-														"IOException");
-												sendBroadcast(i);
-												DisconnectionUtil
-														.restart(EnterModeListActivity.this);
-											}
+											// try {
+											WriteUtil.write(
+													MsgId_E.MSGID_MODE.getVal(),
+													0,
+													MsgType_E.MSGTYPE_REQ
+															.getVal(),
+													MsgOper_E.MSGOPER_DEL
+															.getVal(),
+													MsgDelReq_S.getSize(),
+													new MsgDelReq_S(mode_S
+															.getUsIdx())
+															.getMsgDelReq_S(),
+													EnterModeListActivity.this);
+											del_Idx = arg2;
+											// } catch (IOException e) {
+											// // TODO Auto-generated catch
+											// // block
+											// Intent i = new Intent(
+											// "IOException");
+											// sendBroadcast(i);
+											// DisconnectionUtil
+											// .restart(EnterModeListActivity.this);
+											// }
 										}
 										dialog.dismiss();
 									}
@@ -158,18 +155,18 @@ public class EnterModeListActivity extends Activity {
 		filter.addAction("IOException");
 		registerReceiver(modeBroadcastReceiver, filter);
 
-		try {
-			WriteUtil.write(MsgId_E.MSGID_MODE.getVal(), 1,
-					MsgType_E.MSGTYPE_REQ.getVal(), MsgOper_E.MSGOPER_MAX
-							.getVal(), (short) 2,
-					new MsgQryReq_S(rgn_S.getUsIdx()).getMsgQryReq_S());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			Toast.makeText(EnterModeListActivity.this, "获取列表失败",
-					Toast.LENGTH_LONG).show();
-			DisconnectionUtil.restart(EnterModeListActivity.this);
-
-		}
+		// try {
+		WriteUtil.write(MsgId_E.MSGID_MODE.getVal(), 1,
+				MsgType_E.MSGTYPE_REQ.getVal(), MsgOper_E.MSGOPER_MAX.getVal(),
+				(short) 2, new MsgQryReq_S(rgn_S.getUsIdx()).getMsgQryReq_S(),
+				this);
+		// } catch (IOException e) {
+		// // TODO Auto-generated catch block
+		// Toast.makeText(EnterModeListActivity.this, "获取列表失败",
+		// Toast.LENGTH_LONG).show();
+		// DisconnectionUtil.restart(EnterModeListActivity.this);
+		//
+		// }
 
 	}
 

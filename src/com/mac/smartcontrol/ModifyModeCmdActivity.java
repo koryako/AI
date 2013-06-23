@@ -1,6 +1,5 @@
 package com.mac.smartcontrol;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +17,6 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.mac.smartcontrol.broadcast.ModifyModeCmdBroadcastReceiver;
-import com.mac.smartcontrol.util.DisconnectionUtil;
 import com.mac.smartcontrol.util.WriteUtil;
 
 import define.entity.Appl_S;
@@ -312,37 +310,32 @@ public class ModifyModeCmdActivity extends Activity {
 			}
 		});
 
-		try {
-			WriteUtil.write(MsgId_E.MSGID_RGN.getVal(), 0,
-					MsgType_E.MSGTYPE_REQ.getVal(), MsgOper_E.MSGOPER_QRY
-							.getVal(), (short) 2, new MsgQryReq_S((short) 0)
-							.getMsgQryReq_S());
-			WriteUtil.write(MsgId_E.MSGID_APPL.getVal(), 1,
-					MsgType_E.MSGTYPE_REQ.getVal(), MsgOper_E.MSGOPER_QRY
-							.getVal(), (short) 2, new MsgQryReq_S((short) 0)
-							.getMsgQryReq_S());
+		// try {
+		WriteUtil.write(MsgId_E.MSGID_RGN.getVal(), 0,
+				MsgType_E.MSGTYPE_REQ.getVal(), MsgOper_E.MSGOPER_QRY.getVal(),
+				(short) 2, new MsgQryReq_S((short) 0).getMsgQryReq_S(), this);
+		WriteUtil.write(MsgId_E.MSGID_APPL.getVal(), 1,
+				MsgType_E.MSGTYPE_REQ.getVal(), MsgOper_E.MSGOPER_QRY.getVal(),
+				(short) 2, new MsgQryReq_S((short) 0).getMsgQryReq_S(), this);
 
-			WriteUtil.write(MsgId_E.MSGID_SENS.getVal(), 2,
-					MsgType_E.MSGTYPE_REQ.getVal(), MsgOper_E.MSGOPER_QRY
-							.getVal(), (short) 2, new MsgQryReq_S((short) 0)
-							.getMsgQryReq_S());
+		WriteUtil.write(MsgId_E.MSGID_SENS.getVal(), 2,
+				MsgType_E.MSGTYPE_REQ.getVal(), MsgOper_E.MSGOPER_QRY.getVal(),
+				(short) 2, new MsgQryReq_S((short) 0).getMsgQryReq_S(), this);
 
-			WriteUtil.write(MsgId_E.MSGID_CAMA.getVal(), 3,
-					MsgType_E.MSGTYPE_REQ.getVal(), MsgOper_E.MSGOPER_QRY
-							.getVal(), (short) 2, new MsgQryReq_S((short) 0)
-							.getMsgQryReq_S());
+		WriteUtil.write(MsgId_E.MSGID_CAMA.getVal(), 3,
+				MsgType_E.MSGTYPE_REQ.getVal(), MsgOper_E.MSGOPER_QRY.getVal(),
+				(short) 2, new MsgQryReq_S((short) 0).getMsgQryReq_S(), this);
 
-			WriteUtil.write(MsgId_E.MSGID_CMD.getVal(), 4,
-					MsgType_E.MSGTYPE_REQ.getVal(), MsgOper_E.MSGOPER_QRY
-							.getVal(), (short) 2, new MsgQryReq_S((short) 0)
-							.getMsgQryReq_S());
+		WriteUtil.write(MsgId_E.MSGID_CMD.getVal(), 4,
+				MsgType_E.MSGTYPE_REQ.getVal(), MsgOper_E.MSGOPER_QRY.getVal(),
+				(short) 2, new MsgQryReq_S((short) 0).getMsgQryReq_S(), this);
 
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			Toast.makeText(ModifyModeCmdActivity.this, "请确认网络是否开启,连接失败",
-					Toast.LENGTH_LONG).show();
-			DisconnectionUtil.restart(ModifyModeCmdActivity.this);
-		}
+		// } catch (IOException e) {
+		// // TODO Auto-generated catch block
+		// Toast.makeText(ModifyModeCmdActivity.this, "请确认网络是否开启,连接失败",
+		// Toast.LENGTH_LONG).show();
+		// DisconnectionUtil.restart(ModifyModeCmdActivity.this);
+		// }
 
 		ImageView modify_Iv = (ImageView) findViewById(R.id.modify);
 		ImageView back_Iv = (ImageView) findViewById(R.id.back);
@@ -373,17 +366,17 @@ public class ModifyModeCmdActivity extends Activity {
 				}
 				modeCmd_S.setUsCmdIdx(cmdId);
 				modeCmd_S.setUsModeIdx(mode_S.getUsIdx());
-				try {
-					WriteUtil.write(MsgId_E.MSGID_MODECMD.getVal(), 0,
-							MsgType_E.MSGTYPE_REQ.getVal(),
-							MsgOper_E.MSGOPER_MOD.getVal(),
-							ModeCmd_S.getSize(), modeCmd_S.getModeCmd_S());
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					Toast.makeText(ModifyModeCmdActivity.this,
-							"请确认网络是否开启,连接失败", Toast.LENGTH_LONG).show();
-					DisconnectionUtil.restart(ModifyModeCmdActivity.this);
-				}
+				// try {
+				WriteUtil.write(MsgId_E.MSGID_MODECMD.getVal(), 0,
+						MsgType_E.MSGTYPE_REQ.getVal(),
+						MsgOper_E.MSGOPER_MOD.getVal(), ModeCmd_S.getSize(),
+						modeCmd_S.getModeCmd_S(), ModifyModeCmdActivity.this);
+				// } catch (IOException e) {
+				// // TODO Auto-generated catch block
+				// Toast.makeText(ModifyModeCmdActivity.this,
+				// "请确认网络是否开启,连接失败", Toast.LENGTH_LONG).show();
+				// DisconnectionUtil.restart(ModifyModeCmdActivity.this);
+				// }
 			}
 		});
 

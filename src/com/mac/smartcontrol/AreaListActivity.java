@@ -1,6 +1,5 @@
 package com.mac.smartcontrol;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +18,6 @@ import android.widget.Toast;
 
 import com.mac.smartcontrol.adapter.AreaListAdapter;
 import com.mac.smartcontrol.broadcast.AreaBroadcastReceiver;
-import com.mac.smartcontrol.util.DisconnectionUtil;
 import com.mac.smartcontrol.util.WriteUtil;
 
 import define.entity.Rgn_S;
@@ -109,20 +107,21 @@ public class AreaListActivity extends Activity {
 											"名字太长了", Toast.LENGTH_LONG).show();
 									return;
 								}
-								try {
-									AreaListActivity.this.rgn_S.setSzName(name);
-									WriteUtil.write(MsgId_E.MSGID_RGN.getVal(),
-											0, MsgType_E.MSGTYPE_REQ.getVal(),
-											MsgOper_E.MSGOPER_ADD.getVal(),
-											Rgn_S.getSize(), rgn_S.getRgn_S());
-									dialog.dismiss();
-								} catch (IOException e) {
-									// TODO Auto-generated catch block
-									Toast.makeText(AreaListActivity.this,
-											"添加失败", Toast.LENGTH_LONG).show();
-									DisconnectionUtil
-											.restart(AreaListActivity.this);
-								}
+								// try {
+								AreaListActivity.this.rgn_S.setSzName(name);
+								WriteUtil.write(MsgId_E.MSGID_RGN.getVal(), 0,
+										MsgType_E.MSGTYPE_REQ.getVal(),
+										MsgOper_E.MSGOPER_ADD.getVal(),
+										Rgn_S.getSize(), rgn_S.getRgn_S(),
+										AreaListActivity.this);
+								dialog.dismiss();
+								// } catch (IOException e) {
+								// // TODO Auto-generated catch block
+								// Toast.makeText(AreaListActivity.this,
+								// "添加失败", Toast.LENGTH_LONG).show();
+								// DisconnectionUtil
+								// .restart(AreaListActivity.this);
+								// }
 							}
 						});
 			}
@@ -144,18 +143,17 @@ public class AreaListActivity extends Activity {
 		filter.addAction("IOException");
 		registerReceiver(areaBroadcastReceiver, filter);
 
-		try {
-			WriteUtil.write(MsgId_E.MSGID_RGN.getVal(), 0,
-					MsgType_E.MSGTYPE_REQ.getVal(), MsgOper_E.MSGOPER_QRY
-							.getVal(), (short) 2, new MsgQryReq_S((short) 0)
-							.getMsgQryReq_S());
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			Toast.makeText(AreaListActivity.this, "获取列表失败", Toast.LENGTH_LONG)
-					.show();
-			DisconnectionUtil.restart(AreaListActivity.this);
-
-		}
+		// try {
+		WriteUtil.write(MsgId_E.MSGID_RGN.getVal(), 0,
+				MsgType_E.MSGTYPE_REQ.getVal(), MsgOper_E.MSGOPER_QRY.getVal(),
+				(short) 2, new MsgQryReq_S((short) 0).getMsgQryReq_S(), this);
+		// } catch (Exception e) {
+		// // TODO Auto-generated catch block
+		// Toast.makeText(AreaListActivity.this, "获取列表失败", Toast.LENGTH_LONG)
+		// .show();
+		// DisconnectionUtil.restart(AreaListActivity.this);
+		//
+		// }
 
 	}
 

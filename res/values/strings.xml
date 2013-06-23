@@ -33,10 +33,8 @@
     <string name="modify_camera">修改摄像头</string>
     <string name="cmd_list">指令列表</string>
     <string name="add_cmd">添加指令</string>
-    
     <string name="add_cmd_cmd">指　　令：</string>
     <string name="add_cmd_mode">智能模式：</string>
-    
     <string name="modify_cmd">修改指令</string>
     <string name="cmd_name">指令名称：</string>
     <string name="voice_name">指令文本：</string>
@@ -51,6 +49,9 @@
     <string name="on_location">开启定位</string>
     <string name="camera_ip">地　址：</string>
     <string name="camera_port">端　口：</string>
+    <string name="camera_uid">编　号：</string>
+    <string name="camera_user">账　号：</string>
+    <string name="camera_pass">密　码：</string>
     <string name="area">区　域：</string>
     <string name="mode_cmd_list">智能模式指令列表</string>
     <string name="add_mode_cmd">添加智能指令</string>
@@ -78,6 +79,7 @@
     <string name="control_hdplay">高清播放器</string>
     <string name="control_hdplay_open_close">OPEN\/\nCLOSE</string>
     <string name="control_tv">电视</string>
+    <string name="control_switch_pause">暂停</string>
     <string name="control_tv_power">POWER</string>
     <string name="control_tv_vol">VOL</string>
     <string name="control_tv_tvav">TV\/AV</string>
@@ -94,5 +96,36 @@
     <string name="control_ac_heating">制热</string>
     <string name="control_ac_witch">开/关</string>
     <string name="control_user_defined">自定义</string>
+    <string name="searching_tip">正在搜索，请稍候...</string>
+    <string name="videoing">录像中...</string>
+    <string name="connecting">正在连接...</string>
+    <string name="main_show_back">再按一次，退出程序！</string>
+    <string name="exit_alert">确认退出吗 ?</string>
+    <string name="exit">退出</string>
+    <string name="str_ok">确定</string>
+    <string name="str_cancel">取消</string>
+    <string name="ptz_default_vedio_params">视频参数恢复默认值</string>
+    <string name="p2p_relay_mode_time_out">转发模式观看,剩余时间:</string>
+    <string name="str_second">秒</string>
+    <string name="alerm_motion_alarm">移动侦测报警</string>
+    <string name="alerm_gpio_alarm">IO联动报警</string>
+    <string name="p2p_view_time_out">已到观看时间</string>
+    <string name="pppp_status_unknown">未知状态</string>
+    <string name="pppp_status_online">在线</string>
+    <string name="pppp_status_disconnect">断线</string>
+    <string name="pppp_status_connect_failed">连接失败</string>
+    <string name="pppp_status_invalid_id">ID号无效</string>
+    <string name="pppp_dev_type_unknown">未知类型</string>
+    <string name="pppp_status_connecting">正在连接</string>
+    <string name="pppp_status_initialing">已连接, 正在初始化</string>
+    <string name="device_not_on_line">摄像机不在线</string>
+    <string name="pppp_status_connect_timeout">连接超时</string>
+    <string name="exit_show">   提示：</string>
+    <string name="exit_qu">删除本地文 件</string>
+    <string name="exit_qu_show">取 消</string>
+    <string name="exit_play_show">确认退出播放?</string>
+    <string name="exit_chenxu_show">确认退出程序?</string>
+    <string name="eixt_show_toast">本地录像中，请先停止再退出！</string>
+    <string name="ptz_control">请按菜单键,进行云台控制</string>
 
 </resources>

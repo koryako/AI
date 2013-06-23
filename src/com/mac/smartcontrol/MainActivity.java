@@ -18,6 +18,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.speech.RecognizerIntent;
 import android.view.KeyEvent;
 import android.view.View;
@@ -37,7 +39,6 @@ import com.mac.smartcontrol.util.SaveLocationUtil;
 import com.mac.smartcontrol.util.WriteUtil;
 
 import define.entity.WeatherInfo;
-import define.oper.MsgOperSql_E;
 import define.oper.MsgOper_E;
 import define.oper.body.req.MsgQryReq_S;
 import define.type.MsgId_E;
@@ -59,6 +60,8 @@ public class MainActivity extends ActivityGroup {
 	SQLiteHelper sqLiteHelper;
 	// 默认北京
 	String weather_URL = "http://www.weather.com.cn/data/cityinfo/";
+	Handler handler;
+	WeatherInfo weather;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -84,10 +87,12 @@ public class MainActivity extends ActivityGroup {
 				MainActivity.this);
 		registerReceiver(addressBroadcastReceiver, new IntentFilter(
 				"location_ok"));
-		filter.addAction(MsgId_E.MSGID_SQL.getVal() + "_"
-				+ MsgOperSql_E.MSGOPER_MAX.getVal());
+		// filter.addAction(MsgId_E.MSGID_SQL.getVal() + "_"
+		// + MsgOperSql_E.MSGOPER_MAX.getVal());
 		filter.addAction(MsgId_E.MSGID_CMD.getVal() + "_"
 				+ MsgOper_E.MSGOPER_QRY.getVal());
+		// filter.addAction(MsgId_E.MSGID_MODE.getVal() + "_"
+		// + MsgOper_E.MSGOPER_QRY.getVal());
 		registerReceiver(broadcastReceiver, filter);
 		voice_Iv.setOnClickListener(new OnClickListener() {
 
@@ -175,12 +180,14 @@ public class MainActivity extends ActivityGroup {
 			public void onClick(View v) {
 				initFocus();
 				currentPage = 2;
-				// container.removeAllViews();
-				// container.addView(getLocalActivityManager().startActivity(
-				// "camera",
-				// new Intent(MainActivity.this, CameraActivity.class)
-				// .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
-				// .getDecorView());
+				container.removeAllViews();
+				Intent intent = new Intent(MainActivity.this,
+						EnterAreaActivity.class)
+						.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				intent.putExtra("msgId", (short) 94);
+				container.removeAllViews();
+				container.addView(getLocalActivityManager().startActivity(
+						"camera", intent).getDecorView());
 				camera_ll
 						.setBackgroundResource(R.drawable.menu_camera_btn_focus);
 			}
@@ -221,52 +228,74 @@ public class MainActivity extends ActivityGroup {
 			break;
 		}
 
+		handler = new Handler() {
+
+			@Override
+			public void handleMessage(Message msg) {
+				// TODO Auto-generated method stub
+				super.handleMessage(msg);
+				if (msg.what == 0) {
+					weather_Tv.setText(weather.getWeatherinfo().toString());
+				} else {
+					weather_Tv.setText("请求错误!");
+				}
+			}
+		};
 	}
 
 	public void request_Weather() {
-		String city_num = null;
-		BDLocation bdLocation = SaveLocationUtil.getBdLocation();
-		if (bdLocation != null) {
-			String address = bdLocation.getAddrStr();
-			if (address != null && !address.equals("")) {
-				int p_index = address.indexOf("省") + 1;
-				int c_index = address.indexOf("市");
-				String city = address.substring(p_index, c_index);
-				city_num = sqLiteHelper.selectCity_Num_By_City_Name(city);
-				if (city_num != null && !"".equals(city_num)) {
-					String httpUrl = weather_URL + city_num + ".html";
-					// HttpGet连接对象
-					HttpGet httpRequest = new HttpGet(httpUrl);
-					// 取得HttpClient对象
-					HttpClient httpclient = new DefaultHttpClient();
-					// 请求HttpClient，取得HttpResponse
-					String strResult = null;
-					try {
-						HttpResponse httpResponse = httpclient
-								.execute(httpRequest);
-						// 请求成功
-						if (httpResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-							// 取得返回的字符串
-							strResult = EntityUtils.toString(httpResponse
-									.getEntity());
-							Gson gson = new Gson();
-							WeatherInfo weather = gson.fromJson(strResult,
-									WeatherInfo.class);
-							weather_Tv.setText(weather.getWeatherinfo()
-									.toString());
-						} else {
-							weather_Tv.setText("请求错误!");
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				String city_num = null;
+				BDLocation bdLocation = SaveLocationUtil.getBdLocation();
+				if (bdLocation != null) {
+					String address = bdLocation.getAddrStr();
+					if (address != null && !address.equals("")) {
+						int p_index = address.indexOf("省") + 1;
+						int c_index = address.indexOf("市");
+						String city = address.substring(p_index, c_index);
+						city_num = sqLiteHelper
+								.selectCity_Num_By_City_Name(city);
+						if (city_num != null && !"".equals(city_num)) {
+							String httpUrl = weather_URL + city_num + ".html";
+							// HttpGet连接对象
+							HttpGet httpRequest = new HttpGet(httpUrl);
+							// 取得HttpClient对象
+							HttpClient httpclient = new DefaultHttpClient();
+							// 请求HttpClient，取得HttpResponse
+							String strResult = null;
+							try {
+								HttpResponse httpResponse = httpclient
+										.execute(httpRequest);
+								// 请求成功
+								if (httpResponse.getStatusLine()
+										.getStatusCode() == HttpStatus.SC_OK) {
+									// 取得返回的字符串
+									strResult = EntityUtils
+											.toString(httpResponse.getEntity());
+									Gson gson = new Gson();
+									weather = gson.fromJson(strResult,
+											WeatherInfo.class);
+									handler.sendEmptyMessage(0);
+								} else {
+									handler.sendEmptyMessage(1);
+								}
+							} catch (ParseException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
 						}
-					} catch (ParseException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
 					}
 				}
+
 			}
-		}
+		}).start();
 
 	}
 
@@ -306,7 +335,16 @@ public class MainActivity extends ActivityGroup {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						dialog.dismiss();
-						finish();
+						Intent intent = new Intent();
+						intent.setClass(MainActivity.this, SocketService.class);
+						stopService(intent);
+						unregisterReceiver(broadcastReceiver);
+						unregisterReceiver(addressBroadcastReceiver);
+						// Application application = getApplication();
+						// ((SmartControlApplication) application)
+						// .unRegisterReceiver();
+						android.os.Process.killProcess(android.os.Process
+								.myPid());
 					}
 				});
 		builder.setNegativeButton("取消",
@@ -349,12 +387,6 @@ public class MainActivity extends ActivityGroup {
 	@Override
 	public void finish() {
 		// TODO Auto-generated method stub
-		Intent intent = new Intent();
-		intent.setClass(MainActivity.this, SocketService.class);
-		stopService(intent);
-		unregisterReceiver(broadcastReceiver);
-		unregisterReceiver(addressBroadcastReceiver);
-		android.os.Process.killProcess(android.os.Process.myPid());
 		super.finish();
 	}
 
@@ -375,16 +407,21 @@ public class MainActivity extends ActivityGroup {
 			voiceName = data
 					.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
 
-			try {
-				WriteUtil.write(MsgId_E.MSGID_CMD.getVal(), 1,
-						MsgType_E.MSGTYPE_REQ.getVal(),
-						MsgOper_E.MSGOPER_QRY.getVal(), (short) 2,
-						new MsgQryReq_S((short) 0).getMsgQryReq_S());
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				Toast.makeText(MainActivity.this, "请确认网络是否开启,连接失败",
-						Toast.LENGTH_LONG).show();
-			}
+			// try {
+			WriteUtil.write(MsgId_E.MSGID_CMD.getVal(), 1,
+					MsgType_E.MSGTYPE_REQ.getVal(), MsgOper_E.MSGOPER_QRY
+							.getVal(), (short) 2, new MsgQryReq_S((short) 0)
+							.getMsgQryReq_S(), this);
+
+			WriteUtil.write(MsgId_E.MSGID_MODE.getVal(), 2,
+					MsgType_E.MSGTYPE_REQ.getVal(), MsgOper_E.MSGOPER_QRY
+							.getVal(), (short) 2, new MsgQryReq_S((short) 0)
+							.getMsgQryReq_S(), this);
+			// } catch (IOException e) {
+			// // TODO Auto-generated catch block
+			// Toast.makeText(MainActivity.this, "请确认网络是否开启,连接失败",
+			// Toast.LENGTH_LONG).show();
+			// }
 			/*
 			 * for (int i = 0; i < results.size(); i++) { String sql =
 			 * "select idx,dev_type,dev_idx,name,voice,ctrl_idx,type,code,para from tbl_cmd where name="

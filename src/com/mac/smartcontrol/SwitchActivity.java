@@ -1,6 +1,5 @@
 package com.mac.smartcontrol;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.mac.smartcontrol.broadcast.ControlBroadcastReceiver;
-import com.mac.smartcontrol.util.DisconnectionUtil;
 import com.mac.smartcontrol.util.WriteUtil;
 
 import define.entity.Appl_S;
@@ -37,12 +35,15 @@ public class SwitchActivity extends Activity {
 
 	public boolean b = false;
 	IntentFilter filter;
+	public ImageView switch_Icon;
+	public boolean state;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.control_switch);
+		switch_Icon = (ImageView) findViewById(R.id.switch_state_iv);
 		cmd_List = new ArrayList<Cmd_S>();
 		appl_S = new Appl_S();
 		Bundle bundle = getIntent().getExtras();
@@ -50,22 +51,19 @@ public class SwitchActivity extends Activity {
 			byte[] b = bundle.getByteArray("device");
 			appl_S.setAppl_S(b);
 		}
-		try {
-			WriteUtil.write(
-					MsgId_E.MSGID_CMD.getVal(),
-					1,
-					MsgType_E.MSGTYPE_REQ.getVal(),
-					MsgOperCmd_E.MSGOPER_CMD_QRY_BYDEV.getVal(),
-					MsgCmdQryByDevReq_S.getSize(),
-					new MsgCmdQryByDevReq_S(CmdDevType_E.CMD_DEV_APPL.getVal(),
-							appl_S.getUsIdx(), CmdType_E.CMD_TYPE_PREDEF
-									.getVal()).getMsgCmdQryByDevReq_S());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			Toast.makeText(SwitchActivity.this, "请确认网络是否开启,连接失败",
-					Toast.LENGTH_LONG).show();
-			DisconnectionUtil.restart(SwitchActivity.this);
-		}
+		// try {
+		WriteUtil.write(MsgId_E.MSGID_CMD.getVal(), 1, MsgType_E.MSGTYPE_REQ
+				.getVal(), MsgOperCmd_E.MSGOPER_CMD_QRY_BYDEV.getVal(),
+				MsgCmdQryByDevReq_S.getSize(), new MsgCmdQryByDevReq_S(
+						CmdDevType_E.CMD_DEV_APPL.getVal(), appl_S.getUsIdx(),
+						CmdType_E.CMD_TYPE_PREDEF.getVal())
+						.getMsgCmdQryByDevReq_S(), this);
+		// } catch (IOException e) {
+		// // TODO Auto-generated catch block
+		// Toast.makeText(SwitchActivity.this, "请确认网络是否开启,连接失败",
+		// Toast.LENGTH_LONG).show();
+		// DisconnectionUtil.restart(SwitchActivity.this);
+		// }
 
 		back_Iv = (ImageView) findViewById(R.id.back_iv);
 		back_Iv.setOnClickListener(new OnClickListener() {
@@ -100,7 +98,12 @@ public class SwitchActivity extends Activity {
 							Toast.LENGTH_LONG).show();
 					return;
 				}
-				int idx = checkIsExist("开关");
+				int idx = -1;
+				if (state) {
+					idx = checkIsExist("关");
+				} else {
+					idx = checkIsExist("开");
+				}
 				if (idx == -1) {
 					Toast.makeText(SwitchActivity.this, "请添加此按钮的指令",
 							Toast.LENGTH_LONG).show();
@@ -109,22 +112,40 @@ public class SwitchActivity extends Activity {
 					intent.putExtra("cmdType",
 							CmdDevType_E.CMD_DEV_APPL.getVal());
 					intent.putExtra("type", 1);
-					intent.putExtra("btn_Name", "开关");
+					if (state) {
+						intent.putExtra("btn_Name", "关");
+						intent.putExtra("uiparam", 2);
+					} else {
+						intent.putExtra("btn_Name", "开");
+						intent.putExtra("uiparam", 1);
+					}
+
 					intent.setClass(SwitchActivity.this, AddCmdActivity.class);
 					startActivityForResult(intent, 0);
 				} else {
 					Cmd_S cmd_S = cmd_List.get(idx);
-					try {
-						WriteUtil.write(MsgId_E.MSGID_CMD.getVal(), 1,
-								MsgType_E.MSGTYPE_REQ.getVal(),
-								MsgOperCmd_E.MSGOPER_CMD_EXC.getVal(),
-								Cmd_S.getSize(), cmd_S.getCmd_S());
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						Toast.makeText(SwitchActivity.this, "请确认网络是否开启,连接失败",
-								Toast.LENGTH_LONG).show();
-						DisconnectionUtil.restart(SwitchActivity.this);
+					// try {
+					WriteUtil.write(MsgId_E.MSGID_CMD.getVal(), 1,
+							MsgType_E.MSGTYPE_REQ.getVal(),
+							MsgOperCmd_E.MSGOPER_CMD_EXC.getVal(),
+							Cmd_S.getSize(), cmd_S.getCmd_S(),
+							SwitchActivity.this);
+					if (state) {
+						switch_Iv.setImageResource(R.drawable.switch_btn_close);
+						switch_Icon
+								.setImageResource(R.drawable.switch_state_close);
+					} else {
+						switch_Iv.setImageResource(R.drawable.switch_btn_open);
+						switch_Icon
+								.setImageResource(R.drawable.switch_state_open);
 					}
+					state = !state;
+					// } catch (IOException e) {
+					// // TODO Auto-generated catch block
+					// Toast.makeText(SwitchActivity.this, "请确认网络是否开启,连接失败",
+					// Toast.LENGTH_LONG).show();
+					// DisconnectionUtil.restart(SwitchActivity.this);
+					// }
 				}
 			}
 		});
@@ -134,6 +155,8 @@ public class SwitchActivity extends Activity {
 		filter = new IntentFilter();
 		filter.addAction(MsgId_E.MSGID_CMD.getVal() + "_"
 				+ MsgOperCmd_E.MSGOPER_CMD_QRY_BYDEV.getVal());
+		// filter.addAction(MsgId_E.MSGID_CMD.getVal() + "_"
+		// + MsgOperCmd_E.MSGOPER_CMD_EXC.getVal());
 		filter.addAction("IOException");
 		registerReceiver(controlBroadcastReceiver, filter);
 

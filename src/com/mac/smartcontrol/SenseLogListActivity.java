@@ -1,6 +1,5 @@
 package com.mac.smartcontrol;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,11 +12,9 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.mac.smartcontrol.adapter.SenseLogListAdapter;
 import com.mac.smartcontrol.broadcast.SenseBroadcastReceiver;
-import com.mac.smartcontrol.util.DisconnectionUtil;
 import com.mac.smartcontrol.util.WriteUtil;
 
 import define.entity.SensLog_S;
@@ -70,18 +67,17 @@ public class SenseLogListActivity extends Activity {
 		filter.addAction("IOException");
 		registerReceiver(senseBroadcastReceiver, filter);
 
-		try {
-			WriteUtil.write(MsgId_E.MSGID_SENSLOG.getVal(), 0,
-					MsgType_E.MSGTYPE_REQ.getVal(), MsgOper_E.MSGOPER_QRY
-							.getVal(), (short) 2, new MsgQryReq_S((short) 0)
-							.getMsgQryReq_S());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			Toast.makeText(SenseLogListActivity.this, "获取列表失败",
-					Toast.LENGTH_LONG).show();
-			DisconnectionUtil.restart(SenseLogListActivity.this);
-
-		}
+		// try {
+		WriteUtil.write(MsgId_E.MSGID_SENSLOG.getVal(), 0,
+				MsgType_E.MSGTYPE_REQ.getVal(), MsgOper_E.MSGOPER_QRY.getVal(),
+				(short) 2, new MsgQryReq_S((short) 0).getMsgQryReq_S(), this);
+		// } catch (IOException e) {
+		// // TODO Auto-generated catch block
+		// Toast.makeText(SenseLogListActivity.this, "获取列表失败",
+		// Toast.LENGTH_LONG).show();
+		// DisconnectionUtil.restart(SenseLogListActivity.this);
+		//
+		// }
 
 	}
 

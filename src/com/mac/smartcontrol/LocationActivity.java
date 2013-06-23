@@ -1,6 +1,5 @@
 package com.mac.smartcontrol;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +18,6 @@ import android.widget.Toast;
 
 import com.baidu.location.BDLocation;
 import com.mac.smartcontrol.broadcast.LocationBroadcastReceiver;
-import com.mac.smartcontrol.util.DisconnectionUtil;
 import com.mac.smartcontrol.util.SaveLocationUtil;
 import com.mac.smartcontrol.util.WriteUtil;
 
@@ -96,17 +94,17 @@ public class LocationActivity extends Activity {
 		filter.addAction(MsgId_E.MSGID_MODE.getVal() + "_"
 				+ MsgOper_E.MSGOPER_QRY.getVal());
 		registerReceiver(broadcastReceiver, filter);
-		try {
-			WriteUtil.write(MsgId_E.MSGID_MODE.getVal(), 0,
-					MsgType_E.MSGTYPE_REQ.getVal(), MsgOper_E.MSGOPER_QRY
-							.getVal(), (short) 2, new MsgQryReq_S((short) 0)
-							.getMsgQryReq_S());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			Toast.makeText(LocationActivity.this, "请确认网络是否开启,连接失败",
-					Toast.LENGTH_LONG).show();
-			DisconnectionUtil.restart(LocationActivity.this);
-		}
+		// try {
+		WriteUtil.write(MsgId_E.MSGID_MODE.getVal(), 0,
+				MsgType_E.MSGTYPE_REQ.getVal(), MsgOper_E.MSGOPER_QRY.getVal(),
+				(short) 2, new MsgQryReq_S((short) 0).getMsgQryReq_S(),
+				LocationActivity.this);
+		// } catch (IOException e) {
+		// // TODO Auto-generated catch block
+		// Toast.makeText(LocationActivity.this, "请确认网络是否开启,连接失败",
+		// Toast.LENGTH_LONG).show();
+		// DisconnectionUtil.restart(LocationActivity.this);
+		// }
 
 		remeber_ll.setOnClickListener(new OnClickListener() {
 

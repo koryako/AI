@@ -1,11 +1,9 @@
 package com.mac.smartcontrol.adapter;
 
-import java.io.IOException;
 import java.util.List;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -84,18 +82,18 @@ public class AreaListAdapter extends BaseAdapter {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				try {
-					WriteUtil.write(MsgId_E.MSGID_RGN.getVal(), 0,
-							MsgType_E.MSGTYPE_REQ.getVal(),
-							MsgOper_E.MSGOPER_DEL.getVal(),
-							MsgDelReq_S.getSize(),
-							new MsgDelReq_S(rgn_S.getUsIdx()).getMsgDelReq_S());
-					((AreaListActivity) context).del_Idx = position;
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					Intent i = new Intent("IOException");
-					context.sendBroadcast(i);
-				}
+				// try {
+				WriteUtil.write(MsgId_E.MSGID_RGN.getVal(), 0,
+						MsgType_E.MSGTYPE_REQ.getVal(),
+						MsgOper_E.MSGOPER_DEL.getVal(), MsgDelReq_S.getSize(),
+						new MsgDelReq_S(rgn_S.getUsIdx()).getMsgDelReq_S(),
+						context);
+				((AreaListActivity) context).del_Idx = position;
+				// } catch (IOException e) {
+				// // TODO Auto-generated catch block
+				// Intent i = new Intent("IOException");
+				// context.sendBroadcast(i);
+				// }
 			}
 		});
 		holder.modify_Iv.setOnClickListener(new OnClickListener() {
@@ -150,20 +148,21 @@ public class AreaListAdapter extends BaseAdapter {
 											Toast.LENGTH_LONG).show();
 									return;
 								}
-								try {
-									rgn_S.setSzName(name);
-									WriteUtil.write(MsgId_E.MSGID_RGN.getVal(),
-											0, MsgType_E.MSGTYPE_REQ.getVal(),
-											MsgOper_E.MSGOPER_MOD.getVal(),
-											Rgn_S.getSize(), rgn_S.getRgn_S());
-									((AreaListActivity) context).mod_Idx = position;
-									((AreaListActivity) context).rgn_S = rgn_S;
-									dialog.dismiss();
-								} catch (IOException e) {
-									// TODO Auto-generated catch block
-									Toast.makeText(context, "ÐÞ¸ÄÊ§°Ü",
-											Toast.LENGTH_LONG).show();
-								}
+								// try {
+								rgn_S.setSzName(name);
+								WriteUtil.write(MsgId_E.MSGID_RGN.getVal(), 0,
+										MsgType_E.MSGTYPE_REQ.getVal(),
+										MsgOper_E.MSGOPER_MOD.getVal(),
+										Rgn_S.getSize(), rgn_S.getRgn_S(),
+										context);
+								((AreaListActivity) context).mod_Idx = position;
+								((AreaListActivity) context).rgn_S = rgn_S;
+								dialog.dismiss();
+								// } catch (IOException e) {
+								// // TODO Auto-generated catch block
+								// Toast.makeText(context, "ÐÞ¸ÄÊ§°Ü",
+								// Toast.LENGTH_LONG).show();
+								// }
 							}
 						});
 

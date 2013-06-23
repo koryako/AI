@@ -1,6 +1,5 @@
 package com.mac.smartcontrol;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,11 +17,9 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.mac.smartcontrol.adapter.CameraListAdapter;
 import com.mac.smartcontrol.broadcast.CameraBroadcastReceiver;
-import com.mac.smartcontrol.util.DisconnectionUtil;
 import com.mac.smartcontrol.util.WriteUtil;
 
 import define.entity.Cama_S;
@@ -45,6 +42,7 @@ public class CameraListActivity extends Activity {
 	public Cama_S cama_S = null;
 	public Rgn_S rgn_S = null;
 	public String areaName = "";
+	private int msgId = -1; // 如果是94 是要进入监控，隐藏添加按钮
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -56,6 +54,7 @@ public class CameraListActivity extends Activity {
 			rgn_S = new Rgn_S();
 			rgn_S.setRgn_S(bundle.getByteArray("area"));
 			areaName = bundle.getString("areaName");
+			msgId = bundle.getShort("msgId");
 		}
 
 		camera_title_tv = (TextView) findViewById(R.id.userlist_title);
@@ -64,8 +63,13 @@ public class CameraListActivity extends Activity {
 
 		deviceListView = (ListView) findViewById(R.id.userlist);
 		cameraList = new ArrayList<Cama_S>();
-		cameraListAdapter = new CameraListAdapter(CameraListActivity.this,
-				cameraList);
+		if (msgId == 94) {
+			cameraListAdapter = new CameraListAdapter(CameraListActivity.this,
+					cameraList, 1);
+		} else {
+			cameraListAdapter = new CameraListAdapter(CameraListActivity.this,
+					cameraList, 1);
+		}
 		deviceListView.setAdapter(cameraListAdapter);
 
 		deviceListView
@@ -98,30 +102,31 @@ public class CameraListActivity extends Activity {
 													startActivityForResult(
 															intent, 1);
 												} else if (which == 1) {
-													try {
-														WriteUtil
-																.write(MsgId_E.MSGID_CAMA
-																		.getVal(),
-																		0,
-																		MsgType_E.MSGTYPE_REQ
-																				.getVal(),
-																		MsgOper_E.MSGOPER_DEL
-																				.getVal(),
-																		MsgDelReq_S
-																				.getSize(),
-																		new MsgDelReq_S(
-																				cama_S.getUsIdx())
-																				.getMsgDelReq_S());
-														del_Idx = arg2;
-													} catch (IOException e) {
-														// TODO Auto-generated
-														// catch block
-														Intent i = new Intent(
-																"IOException");
-														sendBroadcast(i);
-														DisconnectionUtil
-																.restart(CameraListActivity.this);
-													}
+													// try {
+													WriteUtil.write(
+															MsgId_E.MSGID_CAMA
+																	.getVal(),
+															0,
+															MsgType_E.MSGTYPE_REQ
+																	.getVal(),
+															MsgOper_E.MSGOPER_DEL
+																	.getVal(),
+															MsgDelReq_S
+																	.getSize(),
+															new MsgDelReq_S(
+																	cama_S.getUsIdx())
+																	.getMsgDelReq_S(),
+															CameraListActivity.this);
+													del_Idx = arg2;
+													// } catch (IOException e) {
+													// // TODO Auto-generated
+													// // catch block
+													// Intent i = new Intent(
+													// "IOException");
+													// sendBroadcast(i);
+													// DisconnectionUtil
+													// .restart(CameraListActivity.this);
+													// }
 												}
 												dialog.dismiss();
 											}
@@ -131,6 +136,8 @@ public class CameraListActivity extends Activity {
 				});
 
 		ImageView add_Iv = (ImageView) findViewById(R.id.add);
+		if (msgId == 94)
+			add_Iv.setVisibility(View.INVISIBLE);
 		add_Iv.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -166,17 +173,17 @@ public class CameraListActivity extends Activity {
 		filter.addAction("IOException");
 		registerReceiver(cameraBroadcastReceiver, filter);
 
-		try {
-			WriteUtil.write(MsgId_E.MSGID_CAMA.getVal(), 0,
-					MsgType_E.MSGTYPE_REQ.getVal(), MsgOper_E.MSGOPER_MAX
-							.getVal(), (short) 2,
-					new MsgQryReq_S(rgn_S.getUsIdx()).getMsgQryReq_S());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			Toast.makeText(CameraListActivity.this, "获取列表失败", Toast.LENGTH_LONG)
-					.show();
-			DisconnectionUtil.restart(CameraListActivity.this);
-		}
+		// try {
+		WriteUtil.write(MsgId_E.MSGID_CAMA.getVal(), 0,
+				MsgType_E.MSGTYPE_REQ.getVal(), MsgOper_E.MSGOPER_MAX.getVal(),
+				(short) 2, new MsgQryReq_S(rgn_S.getUsIdx()).getMsgQryReq_S(),
+				CameraListActivity.this);
+		// } catch (IOException e) {
+		// // TODO Auto-generated catch block
+		// Toast.makeText(CameraListActivity.this, "获取列表失败", Toast.LENGTH_LONG)
+		// .show();
+		// DisconnectionUtil.restart(CameraListActivity.this);
+		// }
 
 	}
 

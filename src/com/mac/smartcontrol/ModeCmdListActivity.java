@@ -1,6 +1,5 @@
 package com.mac.smartcontrol;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,11 +15,9 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.mac.smartcontrol.adapter.ModeCmdListAdapter;
 import com.mac.smartcontrol.broadcast.ModeCmdBroadcastReceiver;
-import com.mac.smartcontrol.util.DisconnectionUtil;
 import com.mac.smartcontrol.util.WriteUtil;
 
 import define.entity.Appl_S;
@@ -121,38 +118,32 @@ public class ModeCmdListActivity extends Activity {
 		filter.addAction("IOException");
 		registerReceiver(modeCmdBroadcastReceiver, filter);
 
-		try {
-			WriteUtil.write(MsgId_E.MSGID_MODECMD.getVal(), 5,
-					MsgType_E.MSGTYPE_REQ.getVal(), MsgOper_E.MSGOPER_MAX
-							.getVal(), MsgCmdQryByDevReq_S.getSize(),
-					new MsgModeCmdQryByModeReq_S(mode_S.getUsIdx())
-							.getMsgQryReq_S());
-			WriteUtil.write(MsgId_E.MSGID_CMD.getVal(), 4,
-					MsgType_E.MSGTYPE_REQ.getVal(), MsgOper_E.MSGOPER_QRY
-							.getVal(), (short) 2, new MsgQryReq_S((short) 0)
-							.getMsgQryReq_S());
-			WriteUtil.write(MsgId_E.MSGID_CAMA.getVal(), 3,
-					MsgType_E.MSGTYPE_REQ.getVal(), MsgOper_E.MSGOPER_QRY
-							.getVal(), (short) 2, new MsgQryReq_S((short) 0)
-							.getMsgQryReq_S());
-			WriteUtil.write(MsgId_E.MSGID_SENS.getVal(), 2,
-					MsgType_E.MSGTYPE_REQ.getVal(), MsgOper_E.MSGOPER_QRY
-							.getVal(), (short) 2, new MsgQryReq_S((short) 0)
-							.getMsgQryReq_S());
-			WriteUtil.write(MsgId_E.MSGID_APPL.getVal(), 1,
-					MsgType_E.MSGTYPE_REQ.getVal(), MsgOper_E.MSGOPER_QRY
-							.getVal(), (short) 2, new MsgQryReq_S((short) 0)
-							.getMsgQryReq_S());
-			WriteUtil.write(MsgId_E.MSGID_RGN.getVal(), 0,
-					MsgType_E.MSGTYPE_REQ.getVal(), MsgOper_E.MSGOPER_QRY
-							.getVal(), (short) 2, new MsgQryReq_S((short) 0)
-							.getMsgQryReq_S());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			Toast.makeText(ModeCmdListActivity.this, "获取列表失败",
-					Toast.LENGTH_LONG).show();
-			DisconnectionUtil.restart(ModeCmdListActivity.this);
-		}
+		// try {
+		WriteUtil.write(MsgId_E.MSGID_MODECMD.getVal(), 5,
+				MsgType_E.MSGTYPE_REQ.getVal(), MsgOper_E.MSGOPER_MAX.getVal(),
+				MsgCmdQryByDevReq_S.getSize(), new MsgModeCmdQryByModeReq_S(
+						mode_S.getUsIdx()).getMsgQryReq_S(), this);
+		WriteUtil.write(MsgId_E.MSGID_CMD.getVal(), 4,
+				MsgType_E.MSGTYPE_REQ.getVal(), MsgOper_E.MSGOPER_QRY.getVal(),
+				(short) 2, new MsgQryReq_S((short) 0).getMsgQryReq_S(), this);
+		WriteUtil.write(MsgId_E.MSGID_CAMA.getVal(), 3,
+				MsgType_E.MSGTYPE_REQ.getVal(), MsgOper_E.MSGOPER_QRY.getVal(),
+				(short) 2, new MsgQryReq_S((short) 0).getMsgQryReq_S(), this);
+		WriteUtil.write(MsgId_E.MSGID_SENS.getVal(), 2,
+				MsgType_E.MSGTYPE_REQ.getVal(), MsgOper_E.MSGOPER_QRY.getVal(),
+				(short) 2, new MsgQryReq_S((short) 0).getMsgQryReq_S(), this);
+		WriteUtil.write(MsgId_E.MSGID_APPL.getVal(), 1,
+				MsgType_E.MSGTYPE_REQ.getVal(), MsgOper_E.MSGOPER_QRY.getVal(),
+				(short) 2, new MsgQryReq_S((short) 0).getMsgQryReq_S(), this);
+		WriteUtil.write(MsgId_E.MSGID_RGN.getVal(), 0,
+				MsgType_E.MSGTYPE_REQ.getVal(), MsgOper_E.MSGOPER_QRY.getVal(),
+				(short) 2, new MsgQryReq_S((short) 0).getMsgQryReq_S(), this);
+		// } catch (IOException e) {
+		// // TODO Auto-generated catch block
+		// Toast.makeText(ModeCmdListActivity.this, "获取列表失败",
+		// Toast.LENGTH_LONG).show();
+		// DisconnectionUtil.restart(ModeCmdListActivity.this);
+		// }
 
 		modecmdListView = (ListView) findViewById(R.id.userlist);
 		modecmdList = new ArrayList<ModeCmd_S>();

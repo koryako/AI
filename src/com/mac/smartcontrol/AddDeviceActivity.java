@@ -1,6 +1,5 @@
 package com.mac.smartcontrol;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +17,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mac.smartcontrol.broadcast.AddDeviceBroadcastReceiver;
-import com.mac.smartcontrol.util.DisconnectionUtil;
 import com.mac.smartcontrol.util.WriteUtil;
 
 import define.entity.Appl_S;
@@ -59,17 +57,17 @@ public class AddDeviceActivity extends Activity {
 		filter.addAction("IOException");
 		registerReceiver(addDeviceBroadcastReceiver, filter);
 
-		try {
-			WriteUtil.write(MsgId_E.MSGID_RGN.getVal(), 0,
-					MsgType_E.MSGTYPE_REQ.getVal(), MsgOper_E.MSGOPER_QRY
-							.getVal(), (short) 2, new MsgQryReq_S((short) 0)
-							.getMsgQryReq_S());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			Toast.makeText(AddDeviceActivity.this, "请确认网络是否开启,连接失败",
-					Toast.LENGTH_LONG).show();
-			DisconnectionUtil.restart(AddDeviceActivity.this);
-		}
+		// try {
+		WriteUtil.write(MsgId_E.MSGID_RGN.getVal(), 0,
+				MsgType_E.MSGTYPE_REQ.getVal(), MsgOper_E.MSGOPER_QRY.getVal(),
+				(short) 2, new MsgQryReq_S((short) 0).getMsgQryReq_S(),
+				AddDeviceActivity.this);
+		// } catch (IOException e) {
+		// // TODO Auto-generated catch block
+		// Toast.makeText(AddDeviceActivity.this, "请确认网络是否开启,连接失败",
+		// Toast.LENGTH_LONG).show();
+		// DisconnectionUtil.restart(AddDeviceActivity.this);
+		// }
 
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
 				R.layout.simple_spinner_item, types);
@@ -106,17 +104,17 @@ public class AddDeviceActivity extends Activity {
 						.getSelectedItemPosition() + 1));
 				appl_S.setUsRgnIdx(areaList.get(
 						area_sp.getSelectedItemPosition()).getUsIdx());
-				try {
-					WriteUtil.write(MsgId_E.MSGID_APPL.getVal(), 0,
-							MsgType_E.MSGTYPE_REQ.getVal(),
-							MsgOper_E.MSGOPER_ADD.getVal(), Appl_S.getSize(),
-							appl_S.getAppl_S());
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					Toast.makeText(AddDeviceActivity.this, "请确认网络是否开启,连接失败",
-							Toast.LENGTH_LONG).show();
-					DisconnectionUtil.restart(AddDeviceActivity.this);
-				}
+				// try {
+				WriteUtil.write(MsgId_E.MSGID_APPL.getVal(), 0,
+						MsgType_E.MSGTYPE_REQ.getVal(),
+						MsgOper_E.MSGOPER_ADD.getVal(), Appl_S.getSize(),
+						appl_S.getAppl_S(), AddDeviceActivity.this);
+				// } catch (IOException e) {
+				// // TODO Auto-generated catch block
+				// Toast.makeText(AddDeviceActivity.this, "请确认网络是否开启,连接失败",
+				// Toast.LENGTH_LONG).show();
+				// DisconnectionUtil.restart(AddDeviceActivity.this);
+				// }
 			}
 		});
 

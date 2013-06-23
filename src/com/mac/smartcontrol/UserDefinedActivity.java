@@ -1,6 +1,5 @@
 package com.mac.smartcontrol;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,10 +12,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
-import android.widget.Toast;
 
 import com.mac.smartcontrol.broadcast.UserDefinedBroadcastReceiver;
-import com.mac.smartcontrol.util.DisconnectionUtil;
 import com.mac.smartcontrol.util.WriteUtil;
 
 import define.entity.Appl_S;
@@ -66,22 +63,19 @@ public class UserDefinedActivity extends Activity {
 
 		filter.addAction("IOException");
 		registerReceiver(userDefinedBroadcastReceiver, filter);
-		try {
-			WriteUtil.write(
-					MsgId_E.MSGID_CMD.getVal(),
-					1,
-					MsgType_E.MSGTYPE_REQ.getVal(),
-					MsgOperCmd_E.MSGOPER_CMD_QRY_BYDEV.getVal(),
-					MsgCmdQryByDevReq_S.getSize(),
-					new MsgCmdQryByDevReq_S(CmdDevType_E.CMD_DEV_APPL.getVal(),
-							appl_S.getUsIdx(), CmdType_E.CMD_TYPE_CUSTOM
-									.getVal()).getMsgCmdQryByDevReq_S());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			Toast.makeText(UserDefinedActivity.this, "请确认网络是否开启,连接失败",
-					Toast.LENGTH_LONG).show();
-			DisconnectionUtil.restart(UserDefinedActivity.this);
-		}
+		// try {
+		WriteUtil.write(MsgId_E.MSGID_CMD.getVal(), 1, MsgType_E.MSGTYPE_REQ
+				.getVal(), MsgOperCmd_E.MSGOPER_CMD_QRY_BYDEV.getVal(),
+				MsgCmdQryByDevReq_S.getSize(), new MsgCmdQryByDevReq_S(
+						CmdDevType_E.CMD_DEV_APPL.getVal(), appl_S.getUsIdx(),
+						CmdType_E.CMD_TYPE_CUSTOM.getVal())
+						.getMsgCmdQryByDevReq_S(), this);
+		// } catch (IOException e) {
+		// // TODO Auto-generated catch block
+		// Toast.makeText(UserDefinedActivity.this, "请确认网络是否开启,连接失败",
+		// Toast.LENGTH_LONG).show();
+		// DisconnectionUtil.restart(UserDefinedActivity.this);
+		// }
 	}
 
 	public void init_Btn() {
@@ -111,17 +105,18 @@ public class UserDefinedActivity extends Activity {
 					@Override
 					public void onClick(View v) {
 						// TODO Auto-generated method stub
-						try {
-							WriteUtil.write(MsgId_E.MSGID_CMD.getVal(), 1,
-									MsgType_E.MSGTYPE_REQ.getVal(),
-									MsgOperCmd_E.MSGOPER_CMD_EXC.getVal(),
-									Cmd_S.getSize(), c.getCmd_S());
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							Toast.makeText(UserDefinedActivity.this,
-									"请确认网络是否开启,连接失败", Toast.LENGTH_LONG).show();
-							DisconnectionUtil.restart(UserDefinedActivity.this);
-						}
+						// try {
+						WriteUtil.write(MsgId_E.MSGID_CMD.getVal(), 1,
+								MsgType_E.MSGTYPE_REQ.getVal(),
+								MsgOperCmd_E.MSGOPER_CMD_EXC.getVal(),
+								Cmd_S.getSize(), c.getCmd_S(),
+								UserDefinedActivity.this);
+						// } catch (IOException e) {
+						// // TODO Auto-generated catch block
+						// Toast.makeText(UserDefinedActivity.this,
+						// "请确认网络是否开启,连接失败", Toast.LENGTH_LONG).show();
+						// DisconnectionUtil.restart(UserDefinedActivity.this);
+						// }
 					}
 				});
 				LayoutParams params = null;

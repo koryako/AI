@@ -1,6 +1,5 @@
 package com.mac.smartcontrol;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +21,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mac.smartcontrol.broadcast.AddCmdBroadcastReceiver;
-import com.mac.smartcontrol.util.DisconnectionUtil;
 import com.mac.smartcontrol.util.WriteUtil;
 
 import define.entity.Appl_S;
@@ -36,6 +34,7 @@ import define.oper.MsgOper_E;
 import define.oper.body.req.MsgCtrlStudyReq_S;
 import define.oper.body.req.MsgCtrlTestReq_S;
 import define.oper.body.req.MsgQryReq_S;
+import define.type.ApplType_E;
 import define.type.CmdDevType_E;
 import define.type.CmdType_E;
 import define.type.MsgId_E;
@@ -57,6 +56,7 @@ public class AddCmdActivity extends Activity {
 	Spinner mode_sp = null;
 	public List<Ctrl_S> ctrlList = null;
 	private String[] para = { "打开", "关闭" };
+	private String[] para1 = { "打开", "关闭", "暂停" };
 	private String[] code;
 	// private String[] cmd_Type = { "系统预定义", "用户自定义" };
 	private Appl_S appl_S;
@@ -72,7 +72,7 @@ public class AddCmdActivity extends Activity {
 	public short usCmdIdx = -1;
 	public int ucOffset = -1;
 	public TextView infrared_code_tv;
-	private int type = -1;// 区分是管理里面添加还是走控制添加
+	private int type = -1;// 区分是管理里面添加还是走控制添加,预定义区分
 	private String btn_Name;
 	private byte cmdType;
 
@@ -86,6 +86,8 @@ public class AddCmdActivity extends Activity {
 	public ArrayAdapter<String> mode_adapter;
 	public List<Cmd_S> cmdList;
 	public List<Mode_S> modeList;
+	private int uiMsgSeq = 1;
+	private int uiParam = -1;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +106,11 @@ public class AddCmdActivity extends Activity {
 				appl_S.setAppl_S(bundle.getByteArray("device"));
 				type = bundle.getInt("type");
 				btn_Name = bundle.getString("btn_Name");
+				if (appl_S.getUcType() == ApplType_E.APPL_TYPE_SWITCH.getVal()
+						|| appl_S.getUcType() == ApplType_E.APPL_TYPE_CURTAIN
+								.getVal()) {
+					uiParam = bundle.getInt("uiparam");
+				}
 
 			} else if (cmdType == CmdDevType_E.CMD_DEV_SENS.getVal()) {
 				sens_S = new Sens_S();
@@ -156,23 +163,20 @@ public class AddCmdActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				try {
-					WriteUtil.write(
-							MsgId_E.MSGID_CTRL.getVal(),
-							1,
-							MsgType_E.MSGTYPE_REQ.getVal(),
-							MsgOperCtrl_E.MSGOPER_CTRL_STUDY.getVal(),
-							MsgCtrlTestReq_S.getSize(),
-							new MsgCtrlStudyReq_S(ctrlList.get(
-									ctrl_sp.getSelectedItemPosition())
-									.getUsIdx(), (short) 0)
-									.getMsgCtrlStudyReq_S());
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					Toast.makeText(AddCmdActivity.this, "请确认网络是否开启,连接失败",
-							Toast.LENGTH_LONG).show();
-					DisconnectionUtil.restart(AddCmdActivity.this);
-				}
+				// try {
+				WriteUtil.write(MsgId_E.MSGID_CTRL.getVal(), ++uiMsgSeq,
+						MsgType_E.MSGTYPE_REQ.getVal(),
+						MsgOperCtrl_E.MSGOPER_CTRL_STUDY.getVal(),
+						MsgCtrlTestReq_S.getSize(), new MsgCtrlStudyReq_S(
+								ctrlList.get(ctrl_sp.getSelectedItemPosition())
+										.getUsIdx(), (short) 0)
+								.getMsgCtrlStudyReq_S(), AddCmdActivity.this);
+				// } catch (IOException e) {
+				// // TODO Auto-generated catch block
+				// Toast.makeText(AddCmdActivity.this, "请确认网络是否开启,连接失败",
+				// Toast.LENGTH_LONG).show();
+				// DisconnectionUtil.restart(AddCmdActivity.this);
+				// }
 			}
 		});
 		test_Btn = (Button) findViewById(R.id.test_btn);
@@ -192,18 +196,19 @@ public class AddCmdActivity extends Activity {
 					ctrlTestReq_S.setUiPara(para_sp.getSelectedItemPosition() + 1);
 				}
 
-				try {
-					WriteUtil.write(MsgId_E.MSGID_CTRL.getVal(), 1,
-							MsgType_E.MSGTYPE_REQ.getVal(),
-							MsgOperCtrl_E.MSGOPER_CTRL_TEST.getVal(),
-							MsgCtrlTestReq_S.getSize(),
-							ctrlTestReq_S.getMsgCtrlTestReq_S());
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					Toast.makeText(AddCmdActivity.this, "请确认网络是否开启,连接失败",
-							Toast.LENGTH_LONG).show();
-					DisconnectionUtil.restart(AddCmdActivity.this);
-				}
+				// try {
+				WriteUtil.write(MsgId_E.MSGID_CTRL.getVal(), ++uiMsgSeq,
+						MsgType_E.MSGTYPE_REQ.getVal(),
+						MsgOperCtrl_E.MSGOPER_CTRL_TEST.getVal(),
+						MsgCtrlTestReq_S.getSize(),
+						ctrlTestReq_S.getMsgCtrlTestReq_S(),
+						AddCmdActivity.this);
+				// } catch (IOException e) {
+				// // TODO Auto-generated catch block
+				// Toast.makeText(AddCmdActivity.this, "请确认网络是否开启,连接失败",
+				// Toast.LENGTH_LONG).show();
+				// DisconnectionUtil.restart(AddCmdActivity.this);
+				// }
 
 			}
 		});
@@ -270,35 +275,35 @@ public class AddCmdActivity extends Activity {
 		filter.addAction("IOException");
 		registerReceiver(addCmdBroadcastReceiver, filter);
 
-		try {
-			WriteUtil.write(MsgId_E.MSGID_CTRL.getVal(), 0,
-					MsgType_E.MSGTYPE_REQ.getVal(), MsgOper_E.MSGOPER_QRY
-							.getVal(), (short) 2, new MsgQryReq_S((short) 0)
-							.getMsgQryReq_S());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			Toast.makeText(AddCmdActivity.this, "请确认网络是否开启,连接失败",
-					Toast.LENGTH_LONG).show();
-			DisconnectionUtil.restart(AddCmdActivity.this);
-		}
+		// try {
+		WriteUtil.write(MsgId_E.MSGID_CTRL.getVal(), ++uiMsgSeq,
+				MsgType_E.MSGTYPE_REQ.getVal(), MsgOper_E.MSGOPER_QRY.getVal(),
+				(short) 2, new MsgQryReq_S((short) 0).getMsgQryReq_S(),
+				AddCmdActivity.this);
+		// } catch (IOException e) {
+		// // TODO Auto-generated catch block
+		// Toast.makeText(AddCmdActivity.this, "请确认网络是否开启,连接失败",
+		// Toast.LENGTH_LONG).show();
+		// DisconnectionUtil.restart(AddCmdActivity.this);
+		// }
 
 		if (cmdType == CmdDevType_E.CMD_DEV_SENS.getVal()) {
-			try {
-				WriteUtil.write(MsgId_E.MSGID_CMD.getVal(), 1,
-						MsgType_E.MSGTYPE_REQ.getVal(),
-						MsgOper_E.MSGOPER_QRY.getVal(), (short) 2,
-						new MsgQryReq_S((short) 0).getMsgQryReq_S());
+			// try {
+			WriteUtil.write(MsgId_E.MSGID_CMD.getVal(), ++uiMsgSeq,
+					MsgType_E.MSGTYPE_REQ.getVal(), MsgOper_E.MSGOPER_QRY
+							.getVal(), (short) 2, new MsgQryReq_S((short) 0)
+							.getMsgQryReq_S(), AddCmdActivity.this);
 
-				WriteUtil.write(MsgId_E.MSGID_MODE.getVal(), 2,
-						MsgType_E.MSGTYPE_REQ.getVal(),
-						MsgOper_E.MSGOPER_QRY.getVal(), (short) 2,
-						new MsgQryReq_S((short) 0).getMsgQryReq_S());
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				Toast.makeText(AddCmdActivity.this, "请确认网络是否开启,连接失败",
-						Toast.LENGTH_LONG).show();
-				DisconnectionUtil.restart(AddCmdActivity.this);
-			}
+			WriteUtil.write(MsgId_E.MSGID_MODE.getVal(), ++uiMsgSeq,
+					MsgType_E.MSGTYPE_REQ.getVal(), MsgOper_E.MSGOPER_QRY
+							.getVal(), (short) 2, new MsgQryReq_S((short) 0)
+							.getMsgQryReq_S(), AddCmdActivity.this);
+			// } catch (IOException e) {
+			// // TODO Auto-generated catch block
+			// Toast.makeText(AddCmdActivity.this, "请确认网络是否开启,连接失败",
+			// Toast.LENGTH_LONG).show();
+			// DisconnectionUtil.restart(AddCmdActivity.this);
+			// }
 		}
 
 		// ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
@@ -320,9 +325,28 @@ public class AddCmdActivity extends Activity {
 
 		para_adapter = new ArrayAdapter<String>(this,
 				R.layout.simple_spinner_item, para);
+		if (appl_S != null) {
+			if (appl_S.getUcType() == ApplType_E.APPL_TYPE_CURTAIN.getVal()) {
+				para_adapter = new ArrayAdapter<String>(this,
+						R.layout.simple_spinner_item, para1);
+			}
+		}
 		para_adapter
 				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		para_sp.setAdapter(para_adapter);
+		if (uiParam == 1) {
+			para_sp.setSelection(0);
+			para_sp.setEnabled(false);
+			code_sp.setEnabled(false);
+		} else if (uiParam == 2) {
+			para_sp.setSelection(1);
+			para_sp.setEnabled(false);
+			code_sp.setEnabled(false);
+		} else if (uiParam == 3) {
+			para_sp.setSelection(2);
+			para_sp.setEnabled(false);
+			code_sp.setEnabled(false);
+		}
 
 		Button add_Btn = (Button) findViewById(R.id.add_btn);
 		ImageView back_Iv = (ImageView) findViewById(R.id.back);
@@ -412,17 +436,17 @@ public class AddCmdActivity extends Activity {
 					cmd_S.setUsDevIdx(sens_S.getUsIdx());
 				}
 				cmd_S.setUcDevType(cmdType);
-				try {
-					WriteUtil.write(MsgId_E.MSGID_CMD.getVal(), 0,
-							MsgType_E.MSGTYPE_REQ.getVal(),
-							MsgOper_E.MSGOPER_ADD.getVal(), Cmd_S.getSize(),
-							cmd_S.getCmd_S());
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					Toast.makeText(AddCmdActivity.this, "请确认网络是否开启,连接失败",
-							Toast.LENGTH_LONG).show();
-					DisconnectionUtil.restart(AddCmdActivity.this);
-				}
+				// try {
+				WriteUtil.write(MsgId_E.MSGID_CMD.getVal(), ++uiMsgSeq,
+						MsgType_E.MSGTYPE_REQ.getVal(),
+						MsgOper_E.MSGOPER_ADD.getVal(), Cmd_S.getSize(),
+						cmd_S.getCmd_S(), AddCmdActivity.this);
+				// } catch (IOException e) {
+				// // TODO Auto-generated catch block
+				// Toast.makeText(AddCmdActivity.this, "请确认网络是否开启,连接失败",
+				// Toast.LENGTH_LONG).show();
+				// DisconnectionUtil.restart(AddCmdActivity.this);
+				// }
 			}
 		});
 

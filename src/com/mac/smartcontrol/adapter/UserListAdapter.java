@@ -1,6 +1,5 @@
 package com.mac.smartcontrol.adapter;
 
-import java.io.IOException;
 import java.util.List;
 
 import android.app.Activity;
@@ -95,19 +94,21 @@ public class UserListAdapter extends BaseAdapter {
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
-					try {
-						WriteUtil.write(MsgId_E.MSGID_USER.getVal(), 0,
-								MsgType_E.MSGTYPE_REQ.getVal(),
-								MsgOper_E.MSGOPER_DEL.getVal(), MsgDelReq_S
-										.getSize(),
-								new MsgDelReq_S(user_S.getUsIdx())
-										.getMsgDelReq_S());
-						((UserListActivity) context).del_Idx = position;
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						Intent i = new Intent("IOException");
-						context.sendBroadcast(i);
-					}
+					// try {
+					WriteUtil.write(
+							MsgId_E.MSGID_USER.getVal(),
+							0,
+							MsgType_E.MSGTYPE_REQ.getVal(),
+							MsgOper_E.MSGOPER_DEL.getVal(),
+							MsgDelReq_S.getSize(),
+							new MsgDelReq_S(user_S.getUsIdx()).getMsgDelReq_S(),
+							context);
+					((UserListActivity) context).del_Idx = position;
+					// } catch (IOException e) {
+					// // TODO Auto-generated catch block
+					// Intent i = new Intent("IOException");
+					// context.sendBroadcast(i);
+					// }
 				}
 			});
 			holder.modify_Iv.setOnClickListener(new OnClickListener() {

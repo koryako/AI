@@ -1,5 +1,8 @@
 package com.mac.smartcontrol;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -34,6 +37,7 @@ public class LoginActivity extends Activity {
 	public EditText ip_et = null;
 	Intent intent = null;
 	public boolean isRepeat = false;
+	private boolean isExit = false;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -137,11 +141,41 @@ public class LoginActivity extends Activity {
 		});
 	}
 
+	private Timer timer;
+	private int currentFlag = 0;
+
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			if (!isExit) {
+				isExit = true;
+				Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+				timer = new Timer();
+				TimerTask task = new TimerTask() {
+
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
+						if (currentFlag == 3) {
+							isExit = false;
+							currentFlag = 0;
+							timer.cancel();
+						}
+						currentFlag++;
+					}
+				};
+				timer.schedule(task, 0, 1000);
+			} else {
+				android.os.Process.killProcess(android.os.Process.myPid());
+				timer.cancel();
+			}
+		}
+		return false;
+	}
+
 	@Override
 	public void finish() {
 		// TODO Auto-generated method stub
 		unregisterReceiver(userBroadcastReceiver);
 		super.finish();
 	}
-
 }

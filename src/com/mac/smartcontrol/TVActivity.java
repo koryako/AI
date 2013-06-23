@@ -1,6 +1,5 @@
 package com.mac.smartcontrol;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,12 +15,12 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.mac.smartcontrol.broadcast.ControlBroadcastReceiver;
-import com.mac.smartcontrol.util.DisconnectionUtil;
 import com.mac.smartcontrol.util.WriteUtil;
 
 import define.entity.Appl_S;
 import define.entity.Cmd_S;
 import define.oper.MsgOperCmd_E;
+import define.oper.MsgOperCtrl_E;
 import define.oper.body.req.MsgCmdQryByDevReq_S;
 import define.type.ApplType_E;
 import define.type.CmdDevType_E;
@@ -59,9 +58,10 @@ public class TVActivity extends Activity {
 	ImageView v_sub_Iv;
 	ImageView tvav_Iv;
 
-	String[] names = new String[] { "POWER", "0", "1", "2", "3", "4", "5", "6",
-			"7", "8", "9", "静音", "信息", "电视电源", "音量+", "音量-", "TV/AV", "左", "右",
-			"上", "下", "确定" };
+	public ImageView switch_Icon;
+	String[] names = new String[] { "开/关", "0", "1", "2", "3", "4", "5", "6",
+			"7", "8", "9", "静音", "信息", "音量+", "音量-", "TV/AV", "左", "右", "上",
+			"下", "确定" };
 	private Map<Integer, String> btn_Name;
 	Appl_S appl_S;
 	public List<Cmd_S> cmd_List;
@@ -75,6 +75,7 @@ public class TVActivity extends Activity {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.control_tv);
+		switch_Icon = (ImageView) findViewById(R.id.switch_state_iv);
 		cmd_List = new ArrayList<Cmd_S>();
 		appl_S = new Appl_S();
 		Bundle bundle = getIntent().getExtras();
@@ -87,24 +88,23 @@ public class TVActivity extends Activity {
 		filter = new IntentFilter();
 		filter.addAction(MsgId_E.MSGID_CMD.getVal() + "_"
 				+ MsgOperCmd_E.MSGOPER_CMD_QRY_BYDEV.getVal());
+		filter.addAction(MsgId_E.MSGID_CTRL.getVal() + "_"
+				+ MsgOperCtrl_E.MSGOPER_CTRL_STATUS.getVal());
 		registerReceiver(controlBroadcastReceiver, filter);
 		init_Btn_Name();
-		try {
-			WriteUtil.write(
-					MsgId_E.MSGID_CMD.getVal(),
-					1,
-					MsgType_E.MSGTYPE_REQ.getVal(),
-					MsgOperCmd_E.MSGOPER_CMD_QRY_BYDEV.getVal(),
-					MsgCmdQryByDevReq_S.getSize(),
-					new MsgCmdQryByDevReq_S(CmdDevType_E.CMD_DEV_APPL.getVal(),
-							appl_S.getUsIdx(), CmdType_E.CMD_TYPE_PREDEF
-									.getVal()).getMsgCmdQryByDevReq_S());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			Toast.makeText(TVActivity.this, "请确认网络是否开启,连接失败", Toast.LENGTH_LONG)
-					.show();
-			DisconnectionUtil.restart(TVActivity.this);
-		}
+		// try {
+		WriteUtil.write(MsgId_E.MSGID_CMD.getVal(), 1, MsgType_E.MSGTYPE_REQ
+				.getVal(), MsgOperCmd_E.MSGOPER_CMD_QRY_BYDEV.getVal(),
+				MsgCmdQryByDevReq_S.getSize(), new MsgCmdQryByDevReq_S(
+						CmdDevType_E.CMD_DEV_APPL.getVal(), appl_S.getUsIdx(),
+						CmdType_E.CMD_TYPE_PREDEF.getVal())
+						.getMsgCmdQryByDevReq_S(), this);
+		// } catch (IOException e) {
+		// // TODO Auto-generated catch block
+		// Toast.makeText(TVActivity.this, "请确认网络是否开启,连接失败", Toast.LENGTH_LONG)
+		// .show();
+		// DisconnectionUtil.restart(TVActivity.this);
+		// }
 		back_Iv = (ImageView) findViewById(R.id.back_iv);
 		user_defined_Iv = (ImageView) findViewById(R.id.user_defined_iv);
 		user_defined_Iv.setOnClickListener(new OnClickListener() {
@@ -146,7 +146,7 @@ public class TVActivity extends Activity {
 		slience_Iv = (ImageView) findViewById(R.id.slience_iv);
 		msg_Iv = (ImageView) findViewById(R.id.msg_iv);
 
-		tv_power_Iv = (ImageView) findViewById(R.id.tv_power_iv);
+		// tv_power_Iv = (ImageView) findViewById(R.id.tv_power_iv);
 		v_add_Iv = (ImageView) findViewById(R.id.v_add_iv);
 		v_sub_Iv = (ImageView) findViewById(R.id.v_sub_iv);
 		tvav_Iv = (ImageView) findViewById(R.id.tvav_iv);
@@ -171,7 +171,7 @@ public class TVActivity extends Activity {
 		slience_Iv.setOnClickListener(new BtnListener(R.id.slience_iv));
 		msg_Iv.setOnClickListener(new BtnListener(R.id.msg_iv));
 
-		tv_power_Iv.setOnClickListener(new BtnListener(R.id.tv_power_iv));
+		// tv_power_Iv.setOnClickListener(new BtnListener(R.id.tv_power_iv));
 		v_add_Iv.setOnClickListener(new BtnListener(R.id.v_add_iv));
 		v_sub_Iv.setOnClickListener(new BtnListener(R.id.v_sub_iv));
 		tvav_Iv.setOnClickListener(new BtnListener(R.id.tvav_iv));
@@ -196,16 +196,16 @@ public class TVActivity extends Activity {
 		btn_Name.put(R.id.slience_iv, names[11]);
 		btn_Name.put(R.id.msg_iv, names[12]);
 
-		btn_Name.put(R.id.tv_power_iv, names[13]);
-		btn_Name.put(R.id.v_add_iv, names[14]);
-		btn_Name.put(R.id.v_sub_iv, names[15]);
-		btn_Name.put(R.id.tvav_iv, names[16]);
+		// btn_Name.put(R.id.tv_power_iv, names[13]);
+		btn_Name.put(R.id.v_add_iv, names[13]);
+		btn_Name.put(R.id.v_sub_iv, names[14]);
+		btn_Name.put(R.id.tvav_iv, names[15]);
 
-		btn_Name.put(R.id.left_iv, names[17]);
-		btn_Name.put(R.id.right_iv, names[18]);
-		btn_Name.put(R.id.up_iv, names[19]);
-		btn_Name.put(R.id.down_iv, names[20]);
-		btn_Name.put(R.id.enter_btn, names[21]);
+		btn_Name.put(R.id.left_iv, names[16]);
+		btn_Name.put(R.id.right_iv, names[17]);
+		btn_Name.put(R.id.up_iv, names[18]);
+		btn_Name.put(R.id.down_iv, names[19]);
+		btn_Name.put(R.id.enter_btn, names[20]);
 	}
 
 	private int checkIsExist(String name) {
@@ -246,17 +246,17 @@ public class TVActivity extends Activity {
 				startActivityForResult(intent, 0);
 			} else {
 				Cmd_S cmd_S = cmd_List.get(idx);
-				try {
-					WriteUtil.write(MsgId_E.MSGID_CMD.getVal(), 1,
-							MsgType_E.MSGTYPE_REQ.getVal(),
-							MsgOperCmd_E.MSGOPER_CMD_EXC.getVal(),
-							Cmd_S.getSize(), cmd_S.getCmd_S());
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					Toast.makeText(TVActivity.this, "请确认网络是否开启,连接失败",
-							Toast.LENGTH_LONG).show();
-					DisconnectionUtil.restart(TVActivity.this);
-				}
+				// try {
+				WriteUtil.write(MsgId_E.MSGID_CMD.getVal(), 1,
+						MsgType_E.MSGTYPE_REQ.getVal(),
+						MsgOperCmd_E.MSGOPER_CMD_EXC.getVal(), Cmd_S.getSize(),
+						cmd_S.getCmd_S(), TVActivity.this);
+				// } catch (IOException e) {
+				// // TODO Auto-generated catch block
+				// Toast.makeText(TVActivity.this, "请确认网络是否开启,连接失败",
+				// Toast.LENGTH_LONG).show();
+				// DisconnectionUtil.restart(TVActivity.this);
+				// }
 			}
 		}
 	}

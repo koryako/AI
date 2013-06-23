@@ -1,7 +1,5 @@
 package com.mac.smartcontrol;
 
-import java.io.IOException;
-
 import android.app.Activity;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -16,7 +14,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mac.smartcontrol.broadcast.UserBroadcastReceiver;
-import com.mac.smartcontrol.util.DisconnectionUtil;
 import com.mac.smartcontrol.util.WriteUtil;
 
 import define.entity.User_S;
@@ -94,17 +91,17 @@ public class ModifyUserActivity extends Activity {
 				user_S.setSzName(userName);
 				user_S.setSzPass(password);
 				user_S.setUcType((byte) (usertype_sp.getSelectedItemPosition() + 1));
-				try {
-					WriteUtil.write(MsgId_E.MSGID_USER.getVal(), 0,
-							MsgType_E.MSGTYPE_REQ.getVal(),
-							MsgOper_E.MSGOPER_MOD.getVal(), User_S.getSize(),
-							user_S.getUser_S());
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					Toast.makeText(ModifyUserActivity.this, "请确认网络是否开启,连接失败",
-							Toast.LENGTH_LONG).show();
-					DisconnectionUtil.restart(ModifyUserActivity.this);
-				}
+				// try {
+				WriteUtil.write(MsgId_E.MSGID_USER.getVal(), 0,
+						MsgType_E.MSGTYPE_REQ.getVal(),
+						MsgOper_E.MSGOPER_MOD.getVal(), User_S.getSize(),
+						user_S.getUser_S(), ModifyUserActivity.this);
+				// } catch (IOException e) {
+				// // TODO Auto-generated catch block
+				// Toast.makeText(ModifyUserActivity.this, "请确认网络是否开启,连接失败",
+				// Toast.LENGTH_LONG).show();
+				// DisconnectionUtil.restart(ModifyUserActivity.this);
+				// }
 			}
 		});
 

@@ -11,11 +11,12 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.ipcamer.demo.StartCameraActivity;
 import com.mac.smartcontrol.CameraListActivity;
 import com.mac.smartcontrol.CmdListActivity;
 import com.mac.smartcontrol.R;
-import com.mac.smartcontrol.util.FormatTransfer;
 import com.mac.smartcontrol.widget.MarqueeText;
 
 import define.entity.Cama_S;
@@ -25,10 +26,13 @@ public class CameraListAdapter extends BaseAdapter {
 	private Context context;
 	private List<Cama_S> cameraList;
 
-	public CameraListAdapter(Context context, List<Cama_S> cameraList) {
+	private int type = -1; // 0是进入管理 1是进入监控
+
+	public CameraListAdapter(Context context, List<Cama_S> cameraList, int type) {
 		super();
 		this.context = context;
 		this.cameraList = cameraList;
+		this.type = type;
 	}
 
 	@Override
@@ -66,9 +70,7 @@ public class CameraListAdapter extends BaseAdapter {
 			holder.area_name_Tv = (MarqueeText) convertView
 					.findViewById(R.id.area_name);
 
-			holder.ip_Tv = (MarqueeText) convertView.findViewById(R.id.ip_tv);
-			holder.port_Tv = (MarqueeText) convertView
-					.findViewById(R.id.port_tv);
+			holder.uid_Tv = (MarqueeText) convertView.findViewById(R.id.uid_tv);
 			holder.enter_Iv = (ImageView) convertView
 					.findViewById(R.id.enter_btn);
 
@@ -84,17 +86,7 @@ public class CameraListAdapter extends BaseAdapter {
 		// .findViewById(R.id.modify_btn);
 		final Cama_S cama_S = cameraList.get(position);
 		holder.camera_name_Tv.setText(cama_S.getSzName());
-		byte[] ip_b = FormatTransfer.toLH(cama_S.getUiIpAddr());
-		String ip_Str = "";
-		for (int i = ip_b.length - 1; i >= 0; i--) {
-			if (ip_b[i] > 0) {
-				ip_Str += ip_b[i] + ".";
-			} else {
-				ip_Str += (ip_b[i] + 256) + ".";
-			}
-		}
-		holder.ip_Tv.setText(ip_Str.substring(0, ip_Str.length() - 1));
-		holder.port_Tv.setText(cama_S.getUsPort() + "");
+		holder.uid_Tv.setText(cama_S.getSzUid());
 
 		holder.enter_Iv.setOnClickListener(new OnClickListener() {
 
@@ -103,8 +95,14 @@ public class CameraListAdapter extends BaseAdapter {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent();
 				intent.putExtra("cmdType", CmdDevType_E.CMD_DEV_CAMA.getVal());
-				intent.putExtra("camare", cama_S.getCama_S());
-				intent.setClass(context, CmdListActivity.class);
+				intent.putExtra("camera", cama_S.getCama_S());
+				if (type == 0) {
+					intent.setClass(context, CmdListActivity.class);
+				} else {
+					Toast.makeText(context, R.string.connecting,
+							Toast.LENGTH_LONG).show();
+					intent.setClass(context, StartCameraActivity.class);
+				}
 				context.startActivity(intent);
 			}
 		});
@@ -116,8 +114,7 @@ public class CameraListAdapter extends BaseAdapter {
 		MarqueeText camera_name_Tv;
 		TextView area_name_Tv;
 
-		MarqueeText ip_Tv;
-		MarqueeText port_Tv;
+		MarqueeText uid_Tv;
 
 		ImageView enter_Iv;
 	}
@@ -125,8 +122,7 @@ public class CameraListAdapter extends BaseAdapter {
 	void resetViewHolder(ViewHolder viewHolder) {
 		viewHolder.camera_name_Tv.setText(null);
 		viewHolder.area_name_Tv.setText(null);
-		viewHolder.ip_Tv.setText(null);
-		viewHolder.port_Tv.setText(null);
+		viewHolder.uid_Tv.setText(null);
 
 	}
 }
