@@ -115,12 +115,6 @@ public class VoiceControlBroadcastReceiver extends BroadcastReceiver {
 		if (msgId == MsgId_E.MSGID_CMD.getVal()
 				&& msgOper == MsgOper_E.MSGOPER_QRY.getVal()) {
 			MainActivity mainActivity = (MainActivity) activity;
-			if (mainActivity.voiceName == null) {
-				return;
-			}
-			if (mainActivity.voiceName.size() > 0) {
-				return;
-			}
 			MsgQryAck_S msgQryAck_S = new MsgQryAck_S();
 			msgQryAck_S.setMsgQryAck_S(body);
 			int tag = -1;
@@ -136,27 +130,26 @@ public class VoiceControlBroadcastReceiver extends BroadcastReceiver {
 							if (cmd_S.getSzVoice().equals(
 									mainActivity.voiceName.get(j))) {
 								tag = j;
-								// try {
 								WriteUtil.write(MsgId_E.MSGID_CMD.getVal(), 1,
 										MsgType_E.MSGTYPE_REQ.getVal(),
 										MsgOperCmd_E.MSGOPER_CMD_EXC.getVal(),
 										Cmd_S.getSize(), cmd_S.getCmd_S(),
 										context);
-								// } catch (IOException e) {
-								// // TODO Auto-generated catch block
-								// Toast.makeText(context, "请确认网络是否开启,连接失败",
-								// Toast.LENGTH_LONG).show();
-								// }
-								mainActivity.voiceName.clear();
-								Toast.makeText(
-										context,
-										"已执行："
-												+ mainActivity.voiceName
-														.get(tag),
+								Toast.makeText(context,
+										"已执行语音为：" + cmd_S.getSzVoice() + "的指令",
 										Toast.LENGTH_LONG).show();
 								return;
 							}
 						}
+					}
+					if (tag == -1) {
+						StringBuffer buffer = new StringBuffer();
+						for (int i = 0; i < mainActivity.voiceName.size(); i++) {
+							buffer.append(mainActivity.voiceName.get(i) + ",");
+						}
+						Toast.makeText(context,
+								"未找到以下语音对应的指令：[" + buffer.toString() + "]",
+								Toast.LENGTH_SHORT).show();
 					}
 				} else {
 					ErrCode_E.showError(activity, msgQryAck_S.getUsError());
@@ -167,12 +160,6 @@ public class VoiceControlBroadcastReceiver extends BroadcastReceiver {
 		if (msgId == MsgId_E.MSGID_MODE.getVal()
 				&& msgOper == MsgOper_E.MSGOPER_QRY.getVal()) {
 			MainActivity mainActivity = (MainActivity) activity;
-			if (mainActivity.voiceName == null) {
-				return;
-			}
-			if (mainActivity.voiceName.size() > 0) {
-				return;
-			}
 			MsgQryAck_S msgQryAck_S = new MsgQryAck_S();
 			msgQryAck_S.setMsgQryAck_S(body);
 			int tag = -1;
@@ -204,13 +191,20 @@ public class VoiceControlBroadcastReceiver extends BroadcastReceiver {
 								mainActivity.voiceName.clear();
 								Toast.makeText(
 										context,
-										"已执行："
-												+ mainActivity.voiceName
-														.get(tag),
+										"已执行语音为：" + mode_S.getSzVoice() + "的模式",
 										Toast.LENGTH_LONG).show();
 								return;
 							}
 						}
+					}
+					if (tag == -1) {
+						StringBuffer buffer = new StringBuffer();
+						for (int i = 0; i < mainActivity.voiceName.size(); i++) {
+							buffer.append(mainActivity.voiceName.get(i) + ",");
+						}
+						Toast.makeText(context,
+								"未找到以下语音对应的模式：[" + buffer.toString() + "]",
+								Toast.LENGTH_SHORT).show();
 					}
 				} else {
 					ErrCode_E.showError(activity, msgQryAck_S.getUsError());

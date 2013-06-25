@@ -87,6 +87,20 @@ public class SocketService extends Service {
 						socket = new Socket(ip, port);
 						is = socket.getInputStream();
 						os = socket.getOutputStream();
+						readRunnable = new ReadRunnable(SocketService.this);
+						readThread = new Thread(readRunnable);
+						readThread.start();
+						messageQueueRunnable = new MessageQueueRunnable(
+								SocketService.this);
+						messageQueueThread = new Thread(messageQueueRunnable);
+						messageQueueThread.start();
+						Bundle bundle = intent.getExtras();
+						byte b[] = bundle.getByteArray("data");
+						WriteUtil.write(MsgId_E.MSGID_USER.getVal(), 0,
+								MsgType_E.MSGTYPE_REQ.getVal(),
+								MsgOper_E.MSGOPER_MAX.getVal(),
+								MsgUserLoginReq_S.getSize(), b,
+								SocketService.this);
 					} catch (UnknownHostException e) {
 						Intent i = new Intent("UnknownHostException");
 						SocketService.this.sendBroadcast(i);
@@ -95,20 +109,8 @@ public class SocketService extends Service {
 						Intent i = new Intent("IOException");
 						SocketService.this.sendBroadcast(i);
 					}
-					readRunnable = new ReadRunnable(SocketService.this);
-					readThread = new Thread(readRunnable);
-					readThread.start();
-					messageQueueRunnable = new MessageQueueRunnable(
-							SocketService.this);
-					messageQueueThread = new Thread(messageQueueRunnable);
-					messageQueueThread.start();
+
 				}
-				Bundle bundle = intent.getExtras();
-				byte b[] = bundle.getByteArray("data");
-				WriteUtil.write(MsgId_E.MSGID_USER.getVal(), 0,
-						MsgType_E.MSGTYPE_REQ.getVal(),
-						MsgOper_E.MSGOPER_MAX.getVal(),
-						MsgUserLoginReq_S.getSize(), b, SocketService.this);
 				// } catch (UnknownHostException e) {
 				// // TODO Auto-generated catch block
 				// Intent i = new Intent("UnknownHostException");

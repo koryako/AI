@@ -115,7 +115,7 @@ public class AddCameraActivity extends Activity {
 				// }
 				cama_S.setSzName(camera_name);
 				cama_S.setSzUid(camera_uid);
-				cama_S.setSzName(camera_user);
+				cama_S.setSzUser(camera_user);
 				cama_S.setSzPass(camera_pass);
 				cama_S.setUsRgnIdx(areaList.get(
 						area_sp.getSelectedItemPosition()).getUsIdx());

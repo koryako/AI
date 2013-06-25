@@ -27,7 +27,7 @@ import define.type.MsgId_E;
 import define.type.MsgType_E;
 
 public class CurtainActivity extends Activity {
-	ImageView switch_Iv;
+	public ImageView switch_Iv;
 	ImageView pause_Iv;
 	ImageView user_defined_Iv;
 	ImageView back_Iv;
@@ -110,7 +110,9 @@ public class CurtainActivity extends Activity {
 
 	private int checkIsExist(String name) {
 		for (int i = 0; i < cmd_List.size(); i++) {
-			if (cmd_List.get(i).getSzName().equals(name)) {
+			if (cmd_List.get(i).getSzName().equals(name)
+					&& cmd_List.get(i).getUcType() == CmdType_E.CMD_TYPE_PREDEF
+							.getVal()) {
 				return i;
 			}
 		}

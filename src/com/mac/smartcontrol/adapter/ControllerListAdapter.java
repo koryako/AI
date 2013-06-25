@@ -14,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.mac.smartcontrol.AreaListActivity;
 import com.mac.smartcontrol.ControllerListActivity;
 import com.mac.smartcontrol.R;
 import com.mac.smartcontrol.util.WriteUtil;
@@ -82,7 +81,8 @@ public class ControllerListAdapter extends BaseAdapter {
 
 		final Ctrl_S ctrl_S = ctrlList.get(position);
 		holder.controller_name_Tv.setText(ctrl_S.getSzName());
-		holder.controller_address_Tv.setText(ctrl_S.getUlAddr() + "");
+		holder.controller_address_Tv.setText(Long.toHexString(ctrl_S
+				.getUlAddr()));
 		if (ctrl_S.getUcStatus() == 1) {
 			holder.controller_state_Tv.setText("ÔÚÏß");
 			holder.delete_Iv.setVisibility(View.GONE);
@@ -101,7 +101,7 @@ public class ControllerListAdapter extends BaseAdapter {
 						MsgOper_E.MSGOPER_DEL.getVal(), MsgDelReq_S.getSize(),
 						new MsgDelReq_S(ctrl_S.getUsIdx()).getMsgDelReq_S(),
 						context);
-				((AreaListActivity) context).del_Idx = position;
+				((ControllerListActivity) context).del_Idx = position;
 				// } catch (IOException e) {
 				// // TODO Auto-generated catch block
 				// Intent i = new Intent("IOException");

@@ -1,6 +1,7 @@
 package com.mac.smartcontrol;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.http.HttpResponse;
@@ -55,7 +56,7 @@ public class MainActivity extends ActivityGroup {
 	private final int VOICE_RECOGNITION_REQUEST_CODE = 1234;
 	VoiceControlBroadcastReceiver broadcastReceiver;
 	LocationAddressBroadcastReceiver addressBroadcastReceiver;
-	public List<String> voiceName;
+	public List<String> voiceName = new ArrayList<String>();
 	TextView weather_Tv;
 	SQLiteHelper sqLiteHelper;
 	// 默认北京
@@ -404,19 +405,24 @@ public class MainActivity extends ActivityGroup {
 		if (requestCode == VOICE_RECOGNITION_REQUEST_CODE
 				&& resultCode == RESULT_OK) {
 			// 取得语音的字符
-			voiceName = data
-					.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-
+			voiceName.clear();
+			voiceName.addAll(data
+					.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS));
 			// try {
-			WriteUtil.write(MsgId_E.MSGID_CMD.getVal(), 1,
-					MsgType_E.MSGTYPE_REQ.getVal(), MsgOper_E.MSGOPER_QRY
-							.getVal(), (short) 2, new MsgQryReq_S((short) 0)
-							.getMsgQryReq_S(), this);
+			if (voiceName.size() > 0) {
+				WriteUtil.write(MsgId_E.MSGID_CMD.getVal(), 1,
+						MsgType_E.MSGTYPE_REQ.getVal(),
+						MsgOper_E.MSGOPER_QRY.getVal(), (short) 2,
+						new MsgQryReq_S((short) 0).getMsgQryReq_S(), this);
 
-			WriteUtil.write(MsgId_E.MSGID_MODE.getVal(), 2,
-					MsgType_E.MSGTYPE_REQ.getVal(), MsgOper_E.MSGOPER_QRY
-							.getVal(), (short) 2, new MsgQryReq_S((short) 0)
-							.getMsgQryReq_S(), this);
+				WriteUtil.write(MsgId_E.MSGID_MODE.getVal(), 2,
+						MsgType_E.MSGTYPE_REQ.getVal(),
+						MsgOper_E.MSGOPER_QRY.getVal(), (short) 2,
+						new MsgQryReq_S((short) 0).getMsgQryReq_S(), this);
+			} else {
+				Toast.makeText(MainActivity.this, "未识别出文本", Toast.LENGTH_LONG)
+						.show();
+			}
 			// } catch (IOException e) {
 			// // TODO Auto-generated catch block
 			// Toast.makeText(MainActivity.this, "请确认网络是否开启,连接失败",

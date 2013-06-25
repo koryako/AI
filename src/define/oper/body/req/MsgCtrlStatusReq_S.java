@@ -26,7 +26,7 @@ public class MsgCtrlStatusReq_S {
 	}
 
 	public short getSize() {
-		return (short) (2 + pucData.size() * CtrlStatus_S.getSize());
+		return (short) (4 + pucData.size() * CtrlStatus_S.getSize());
 	}
 
 	public void setUsCnt(short usCnt) {

@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/manage_bar_bg"
+        android:gravity="center_vertical" >
+
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/back_iv_selector" />
+
+        <TextView
+            android:id="@+id/list_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="@string/add_cmd"
+            android:textSize="@dimen/list_title_size" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/list_bg"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="@dimen/add_padding_size" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:gravity="center" >
+
+            <TextView
+                android:id="@+id/cmdname_tv"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:text="@string/cmd_name" />
+
+            <EditText
+                android:id="@+id/cmdname_et"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/edittext_bg"
+                android:ems="10"
+                android:paddingLeft="@dimen/padding_large"
+                android:textColor="@color/white" >
+
+                <requestFocus />
+            </EditText>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/add_margin_size"
+            android:gravity="center" >
+
+            <TextView
+                android:id="@+id/voicename_tv"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:text="@string/voice_name" />
+
+            <EditText
+                android:id="@+id/voicename_et"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/edittext_bg"
+                android:ems="10"
+                android:paddingLeft="@dimen/padding_large"
+                android:textColor="@color/white" >
+            </EditText>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/add_margin_size"
+            android:gravity="center" >
+
+            <TextView
+                android:id="@+id/ctrl_tv"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:text="@string/ctrl_name" />
+
+            <Spinner
+                android:id="@+id/ctrl_sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/edittext_bg"
+                android:paddingLeft="@dimen/padding_large"
+                android:textColor="@color/white" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/add_margin_size"
+            android:gravity="center" >
+
+            <TextView
+                android:id="@+id/codcode_tv"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:text="@string/cmd_code" />
+
+            <Spinner
+                android:id="@+id/cmdcode_sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/edittext_bg"
+                android:paddingLeft="@dimen/padding_large"
+                android:textColor="@color/white" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/param_ll"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/add_margin_size"
+            android:gravity="center" >
+
+            <TextView
+                android:id="@+id/param_tv"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:text="@string/cmd_para" />
+
+            <Spinner
+                android:id="@+id/param_sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/edittext_bg"
+                android:paddingLeft="@dimen/padding_large"
+                android:textColor="@color/white" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/infrared_ll"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/add_margin_size"
+            android:gravity="center" >
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:text="@string/Infrared_code" />
+
+            <TextView
+                android:id="@+id/infrared_code_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/edittext_bg"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/padding_large"
+                android:text="0" />
+            
+            <Button
+                android:id="@+id/study_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_bg_selector"
+                android:text="@string/btn_study"
+                 />
+        </LinearLayout>
+        
+        
+        <LinearLayout
+            android:id="@+id/cmd_ll"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/add_margin_size"
+            android:gravity="center" >
+
+            <TextView
+                android:id="@+id/cmd_tv"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:text="@string/add_cmd_cmd" />
+
+            <Spinner
+                android:id="@+id/cmd_sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/edittext_bg"
+                android:paddingLeft="@dimen/padding_large"
+                android:textColor="@color/white" />
+        </LinearLayout>
+        
+        
+        <LinearLayout
+            android:id="@+id/mode_ll"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/add_margin_size"
+            android:gravity="center" >
+
+            <TextView
+                android:id="@+id/mode_tv"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:text="@string/add_cmd_mode" />
+
+            <Spinner
+                android:id="@+id/mode_sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/edittext_bg"
+                android:paddingLeft="@dimen/padding_large"
+                android:textColor="@color/white" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/add_margin_size"
+            android:gravity="center" >
+
+            <Button
+                android:id="@+id/test_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/btn_bg_selector"
+                android:text="@string/btn_test" />
+
+               <Button
+                android:id="@+id/add_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginLeft="@dimen/padding_medium"
+                android:background="@drawable/btn_bg_selector"
+                android:text="@string/btn_add" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

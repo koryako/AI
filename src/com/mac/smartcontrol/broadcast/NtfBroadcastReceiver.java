@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.mac.smartcontrol.application.SmartControlApplication;
-import com.mac.smartcontrol.util.DisconnectionUtil;
 import com.mac.smartcontrol.util.WriteUtil;
 
 import define.entity.MsgSensTrigger_S;
@@ -53,9 +52,6 @@ public class NtfBroadcastReceiver extends BroadcastReceiver {
 				// }
 			}
 
-		} else if (action.equals("IO_Exception")) {
-			DisconnectionUtil.restart(context);
-			// smartControlApplication.unRegisterReceiver();
 		} else {
 			byte msgId = Byte.parseByte(action.split("_")[0]);
 			byte msgOper = Byte.parseByte(action.split("_")[1]);

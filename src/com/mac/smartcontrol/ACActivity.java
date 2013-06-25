@@ -140,11 +140,12 @@ public class ACActivity extends Activity {
 
 	private int checkIsExist(String name) {
 		for (int i = 0; i < cmd_List.size(); i++) {
-			if (cmd_List.get(i).getSzName().equals(name)) {
+			if (cmd_List.get(i).getSzName().equals(name)
+					&& cmd_List.get(i).getUcType() == CmdType_E.CMD_TYPE_PREDEF
+							.getVal()) {
 				return i;
 			}
 		}
-
 		return -1;
 	}
 

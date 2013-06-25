@@ -79,49 +79,6 @@ public class ControlBroadcastReceiver extends BroadcastReceiver {
 						Cmd_S cmd_S = new Cmd_S();
 						cmd_S.setCmd_S(cmd_S_Byte);
 
-						if (device_type == ApplType_E.APPL_TYPE_SWITCH.getVal()) {
-							switchActivity = (SwitchActivity) activity;
-							switchActivity.cmd_List.addAll(list);
-							switchActivity.b = true;
-
-						} else if (device_type == ApplType_E.APPL_TYPE_TVSET
-								.getVal()) {
-							tvActivity = (TVActivity) activity;
-							tvActivity.cmd_List.addAll(list);
-							tvActivity.b = true;
-						} else if (device_type == ApplType_E.APPL_TYPE_HDPLAY
-								.getVal()) {
-							hdPlayActivity = (HDPlayActivity) activity;
-							hdPlayActivity.cmd_List.addAll(list);
-							hdPlayActivity.b = true;
-						} else if (device_type == ApplType_E.APPL_TYPE_AIRCOND
-								.getVal()) {
-							acActivity = (ACActivity) activity;
-							acActivity.cmd_List.addAll(list);
-							acActivity.b = true;
-						} else if (device_type == ApplType_E.APPL_TYPE_CURTAIN
-								.getVal()) {
-							curtainActivity = (CurtainActivity) activity;
-							curtainActivity.cmd_List.addAll(list);
-							curtainActivity.b = true;
-						} else if (device_type == ApplType_E.APPL_TYPE_FAN
-								.getVal()) {
-							fansActivity = (FansActivity) activity;
-							fansActivity.cmd_List.addAll(list);
-							fansActivity.b = true;
-						} else if (device_type == ApplType_E.APPL_TYPE_WATER
-								.getVal()) {
-							switchActivity = (SwitchActivity) activity;
-							switchActivity.cmd_List.addAll(list);
-							switchActivity.b = true;
-							switchActivity.state = true;
-						} else if (device_type == ApplType_E.APPL_TYPE_CUSTOM
-								.getVal()) {
-							// switchActivity.cmd_List.addAll(list);
-							// switchActivity = (SwitchActivity) activity;
-							// switchActivity.cmd_List.addAll(list);
-						}
-
 						if (cmd_S.getSzName().equals("¿ª")
 								|| cmd_S.getSzName().equals("¹Ø")) {
 							MsgCtrlStatusReq_S ctrlStatusReq_S = new MsgCtrlStatusReq_S();
@@ -140,6 +97,46 @@ public class ControlBroadcastReceiver extends BroadcastReceiver {
 									context);
 						}
 						list.add(cmd_S);
+					}
+					if (device_type == ApplType_E.APPL_TYPE_SWITCH.getVal()) {
+						switchActivity = (SwitchActivity) activity;
+						switchActivity.cmd_List.addAll(list);
+						switchActivity.b = true;
+
+					} else if (device_type == ApplType_E.APPL_TYPE_TVSET
+							.getVal()) {
+						tvActivity = (TVActivity) activity;
+						tvActivity.cmd_List.addAll(list);
+						tvActivity.b = true;
+					} else if (device_type == ApplType_E.APPL_TYPE_HDPLAY
+							.getVal()) {
+						hdPlayActivity = (HDPlayActivity) activity;
+						hdPlayActivity.cmd_List.addAll(list);
+						hdPlayActivity.b = true;
+					} else if (device_type == ApplType_E.APPL_TYPE_AIRCOND
+							.getVal()) {
+						acActivity = (ACActivity) activity;
+						acActivity.cmd_List.addAll(list);
+						acActivity.b = true;
+					} else if (device_type == ApplType_E.APPL_TYPE_CURTAIN
+							.getVal()) {
+						curtainActivity = (CurtainActivity) activity;
+						curtainActivity.cmd_List.addAll(list);
+						curtainActivity.b = true;
+					} else if (device_type == ApplType_E.APPL_TYPE_FAN.getVal()) {
+						fansActivity = (FansActivity) activity;
+						fansActivity.cmd_List.addAll(list);
+						fansActivity.b = true;
+					} else if (device_type == ApplType_E.APPL_TYPE_WATER
+							.getVal()) {
+						switchActivity = (SwitchActivity) activity;
+						switchActivity.cmd_List.addAll(list);
+						switchActivity.b = true;
+					} else if (device_type == ApplType_E.APPL_TYPE_CUSTOM
+							.getVal()) {
+						// switchActivity.cmd_List.addAll(list);
+						// switchActivity = (SwitchActivity) activity;
+						// switchActivity.cmd_List.addAll(list);
 					}
 				} else {
 					if (device_type == ApplType_E.APPL_TYPE_SWITCH.getVal()) {
@@ -192,8 +189,16 @@ public class ControlBroadcastReceiver extends BroadcastReceiver {
 
 						if (ctrlStatus_S.getUiValue() == 1) {
 							switchActivity.switch_Icon
+									.setImageResource(R.drawable.switch_state_open);
+							switchActivity.switch_Iv
 									.setImageResource(R.drawable.switch_btn_open);
 							switchActivity.state = true;
+						} else if (ctrlStatus_S.getUiValue() == 2) {
+							switchActivity.switch_Icon
+									.setImageResource(R.drawable.switch_state_close);
+							switchActivity.switch_Iv
+									.setImageResource(R.drawable.switch_btn_close);
+							switchActivity.state = false;
 						}
 
 					} else if (device_type == ApplType_E.APPL_TYPE_TVSET
@@ -202,6 +207,9 @@ public class ControlBroadcastReceiver extends BroadcastReceiver {
 						if (ctrlStatus_S.getUiValue() == 1) {
 							tvActivity.switch_Icon
 									.setImageResource(R.drawable.switch_btn_open);
+						} else if (ctrlStatus_S.getUiValue() == 2) {
+							tvActivity.switch_Icon
+									.setImageResource(R.drawable.switch_btn_close);
 						}
 					} else if (device_type == ApplType_E.APPL_TYPE_HDPLAY
 							.getVal()) {
@@ -209,6 +217,9 @@ public class ControlBroadcastReceiver extends BroadcastReceiver {
 						if (ctrlStatus_S.getUiValue() == 1) {
 							hdPlayActivity.switch_Icon
 									.setImageResource(R.drawable.switch_btn_open);
+						} else if (ctrlStatus_S.getUiValue() == 2) {
+							hdPlayActivity.switch_Icon
+									.setImageResource(R.drawable.switch_btn_close);
 						}
 					} else if (device_type == ApplType_E.APPL_TYPE_AIRCOND
 							.getVal()) {
@@ -216,28 +227,50 @@ public class ControlBroadcastReceiver extends BroadcastReceiver {
 						if (ctrlStatus_S.getUiValue() == 1) {
 							acActivity.switch_Icon
 									.setImageResource(R.drawable.switch_btn_open);
+						} else if (ctrlStatus_S.getUiValue() == 2) {
+							acActivity.switch_Icon
+									.setImageResource(R.drawable.switch_btn_close);
 						}
 					} else if (device_type == ApplType_E.APPL_TYPE_CURTAIN
 							.getVal()) {
 						curtainActivity = (CurtainActivity) activity;
 						if (ctrlStatus_S.getUiValue() == 1) {
 							curtainActivity.switch_Icon
+									.setImageResource(R.drawable.switch_state_open);
+							curtainActivity.switch_Iv
 									.setImageResource(R.drawable.switch_btn_open);
 							curtainActivity.state = true;
+						} else if (ctrlStatus_S.getUiValue() == 2) {
+							curtainActivity.switch_Icon
+									.setImageResource(R.drawable.switch_state_close);
+							curtainActivity.switch_Iv
+									.setImageResource(R.drawable.switch_btn_close);
+							curtainActivity.state = false;
 						}
 					} else if (device_type == ApplType_E.APPL_TYPE_FAN.getVal()) {
 						fansActivity = (FansActivity) activity;
 						if (ctrlStatus_S.getUiValue() == 1) {
 							fansActivity.switch_Icon
 									.setImageResource(R.drawable.switch_btn_open);
+						} else if (ctrlStatus_S.getUiValue() == 2) {
+							fansActivity.switch_Icon
+									.setImageResource(R.drawable.switch_btn_close);
 						}
 					} else if (device_type == ApplType_E.APPL_TYPE_WATER
 							.getVal()) {
 						switchActivity = (SwitchActivity) activity;
 						if (ctrlStatus_S.getUiValue() == 1) {
 							switchActivity.switch_Icon
+									.setImageResource(R.drawable.switch_state_open);
+							switchActivity.switch_Iv
 									.setImageResource(R.drawable.switch_btn_open);
 							switchActivity.state = true;
+						} else if (ctrlStatus_S.getUiValue() == 2) {
+							switchActivity.switch_Icon
+									.setImageResource(R.drawable.switch_state_close);
+							switchActivity.switch_Iv
+									.setImageResource(R.drawable.switch_btn_close);
+							switchActivity.state = false;
 						}
 					} else if (device_type == ApplType_E.APPL_TYPE_CUSTOM
 							.getVal()) {
@@ -247,88 +280,5 @@ public class ControlBroadcastReceiver extends BroadcastReceiver {
 			}
 
 		}
-
-		// if (msgId == MsgId_E.MSGID_CMD.getVal()
-		// && msgOper == MsgOperCmd_E.MSGOPER_CMD_EXC.getVal()) {
-		// MsgCmdExcAck_S cmdExcAck_S = new MsgCmdExcAck_S();
-		// cmdExcAck_S.setMsgCmdExcAck_S(body);
-		// if (device_type == ApplType_E.APPL_TYPE_SWITCH.getVal()) {
-		// switchActivity = (SwitchActivity) activity;
-		//
-		// if (cmdExcAck_S.getUsError() == 0) {
-		// switchActivity.switch_Icon
-		// .setImageResource(R.drawable.switch_btn_open);
-		// if (switchActivity.state) {
-		// switchActivity.switch_Icon
-		// .setImageResource(R.drawable.switch_btn_open);
-		// } else {
-		// switchActivity.state = false;
-		// }
-		// }
-		//
-		// } else if (device_type == ApplType_E.APPL_TYPE_TVSET.getVal()) {
-		// tvActivity = (TVActivity) activity;
-		// if (cmdExcAck_S.getUsError() == 0) {
-		// if (switchActivity.state) {
-		// switchActivity.switch_Icon
-		// .setImageResource(R.drawable.switch_btn_open);
-		// } else {
-		// switchActivity.state = false;
-		// }
-		// }
-		// } else if (device_type == ApplType_E.APPL_TYPE_HDPLAY.getVal()) {
-		// hdPlayActivity = (HDPlayActivity) activity;
-		// if (cmdExcAck_S.getUsError() == 0) {
-		// if (switchActivity.state) {
-		// switchActivity.switch_Icon
-		// .setImageResource(R.drawable.switch_btn_open);
-		// } else {
-		// switchActivity.state = false;
-		// }
-		// }
-		// } else if (device_type == ApplType_E.APPL_TYPE_AIRCOND.getVal()) {
-		// acActivity = (ACActivity) activity;
-		// if (cmdExcAck_S.getUsError() == 0) {
-		// if (switchActivity.state) {
-		// switchActivity.switch_Icon
-		// .setImageResource(R.drawable.switch_btn_open);
-		// } else {
-		// switchActivity.state = false;
-		// }
-		// }
-		// } else if (device_type == ApplType_E.APPL_TYPE_CURTAIN.getVal()) {
-		// curtainActivity = (CurtainActivity) activity;
-		// if (cmdExcAck_S.getUsError() == 0) {
-		// if (switchActivity.state) {
-		// switchActivity.switch_Icon
-		// .setImageResource(R.drawable.switch_btn_open);
-		// } else {
-		// switchActivity.state = false;
-		// }
-		// }
-		// } else if (device_type == ApplType_E.APPL_TYPE_FAN.getVal()) {
-		// fansActivity = (FansActivity) activity;
-		// if (cmdExcAck_S.getUsError() == 0) {
-		// if (fansActivity.state) {
-		// fansActivity.switch_Icon
-		// .setImageResource(R.drawable.switch_btn_open);
-		// } else {
-		// switchActivity.state = false;
-		// }
-		// }
-		// } else if (device_type == ApplType_E.APPL_TYPE_WATER.getVal()) {
-		// switchActivity = (SwitchActivity) activity;
-		// if (cmdExcAck_S.getUsError() == 0) {
-		// if (switchActivity.state) {
-		// switchActivity.switch_Icon
-		// .setImageResource(R.drawable.switch_btn_open);
-		// } else {
-		// switchActivity.state = false;
-		// }
-		// }
-		// } else if (device_type == ApplType_E.APPL_TYPE_CUSTOM.getVal()) {
-		// // switchActivity.cmd_List.addAll(list);
-		// }
-		// }
 	}
 }

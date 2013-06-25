@@ -61,7 +61,7 @@ public class MsgCtrlStatusAck_S {
 		System.arraycopy(b, 0, usIdx_b, 0, 2);
 		usIdx = FormatTransfer.lBytesToShort(usIdx_b);
 
-		ucErr = b[3];
+		ucErr = b[2];
 
 		byte[] usCnt_b = new byte[2];
 		System.arraycopy(b, 3, usCnt_b, 0, 2);
@@ -69,10 +69,10 @@ public class MsgCtrlStatusAck_S {
 
 		for (int i = 0; i < usCnt; i++) {
 			byte[] c_s_b = new byte[CtrlStatus_S.getSize()];
-			System.arraycopy(b, (6 + i * CtrlStatus_S.getSize()), c_s_b, 0,
+			System.arraycopy(b, (5 + i * CtrlStatus_S.getSize()), c_s_b, 0,
 					CtrlStatus_S.getSize());
 			CtrlStatus_S ctrlStatus_S = new CtrlStatus_S();
-			ctrlStatus_S.setCtrlStatus_S(usCnt_b);
+			ctrlStatus_S.setCtrlStatus_S(c_s_b);
 			pucData.add(ctrlStatus_S);
 		}
 	}

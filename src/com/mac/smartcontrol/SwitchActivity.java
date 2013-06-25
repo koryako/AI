@@ -18,6 +18,7 @@ import com.mac.smartcontrol.util.WriteUtil;
 import define.entity.Appl_S;
 import define.entity.Cmd_S;
 import define.oper.MsgOperCmd_E;
+import define.oper.MsgOperCtrl_E;
 import define.oper.body.req.MsgCmdQryByDevReq_S;
 import define.type.ApplType_E;
 import define.type.CmdDevType_E;
@@ -26,7 +27,7 @@ import define.type.MsgId_E;
 import define.type.MsgType_E;
 
 public class SwitchActivity extends Activity {
-	ImageView switch_Iv;
+	public ImageView switch_Iv;
 	ImageView user_defined_Iv;
 	ImageView back_Iv;
 	public List<Cmd_S> cmd_List;
@@ -124,28 +125,21 @@ public class SwitchActivity extends Activity {
 					startActivityForResult(intent, 0);
 				} else {
 					Cmd_S cmd_S = cmd_List.get(idx);
-					// try {
 					WriteUtil.write(MsgId_E.MSGID_CMD.getVal(), 1,
 							MsgType_E.MSGTYPE_REQ.getVal(),
 							MsgOperCmd_E.MSGOPER_CMD_EXC.getVal(),
 							Cmd_S.getSize(), cmd_S.getCmd_S(),
 							SwitchActivity.this);
-					if (state) {
-						switch_Iv.setImageResource(R.drawable.switch_btn_close);
-						switch_Icon
-								.setImageResource(R.drawable.switch_state_close);
-					} else {
-						switch_Iv.setImageResource(R.drawable.switch_btn_open);
-						switch_Icon
-								.setImageResource(R.drawable.switch_state_open);
-					}
-					state = !state;
-					// } catch (IOException e) {
-					// // TODO Auto-generated catch block
-					// Toast.makeText(SwitchActivity.this, "请确认网络是否开启,连接失败",
-					// Toast.LENGTH_LONG).show();
-					// DisconnectionUtil.restart(SwitchActivity.this);
+					// if (state) {
+					// switch_Iv.setImageResource(R.drawable.switch_btn_close);
+					// switch_Icon
+					// .setImageResource(R.drawable.switch_state_close);
+					// } else {
+					// switch_Iv.setImageResource(R.drawable.switch_btn_open);
+					// switch_Icon
+					// .setImageResource(R.drawable.switch_state_open);
 					// }
+					// state = !state;
 				}
 			}
 		});
@@ -155,6 +149,8 @@ public class SwitchActivity extends Activity {
 		filter = new IntentFilter();
 		filter.addAction(MsgId_E.MSGID_CMD.getVal() + "_"
 				+ MsgOperCmd_E.MSGOPER_CMD_QRY_BYDEV.getVal());
+		filter.addAction(MsgId_E.MSGID_CTRL.getVal() + "_"
+				+ MsgOperCtrl_E.MSGOPER_CTRL_STATUS.getVal());
 		// filter.addAction(MsgId_E.MSGID_CMD.getVal() + "_"
 		// + MsgOperCmd_E.MSGOPER_CMD_EXC.getVal());
 		filter.addAction("IOException");
@@ -164,7 +160,9 @@ public class SwitchActivity extends Activity {
 
 	private int checkIsExist(String name) {
 		for (int i = 0; i < cmd_List.size(); i++) {
-			if (cmd_List.get(i).getSzName().equals(name)) {
+			if (cmd_List.get(i).getSzName().equals(name)
+					&& cmd_List.get(i).getUcType() == CmdType_E.CMD_TYPE_PREDEF
+							.getVal()) {
 				return i;
 			}
 		}

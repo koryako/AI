@@ -38,6 +38,7 @@ public class LoginActivity extends Activity {
 	Intent intent = null;
 	public boolean isRepeat = false;
 	private boolean isExit = false;
+	public ImageView login_Iv;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -50,7 +51,7 @@ public class LoginActivity extends Activity {
 		ip_et = (EditText) findViewById(R.id.ip_et);
 		username_et = (EditText) findViewById(R.id.username_et);
 		password_et = (EditText) findViewById(R.id.password_et);
-		ImageView login_Iv = (ImageView) findViewById(R.id.login_btn);
+		login_Iv = (ImageView) findViewById(R.id.login_btn);
 		final ImageView remeber_Iv = (ImageView) findViewById(R.id.remeber_iv);
 		LinearLayout remeber_ll = (LinearLayout) findViewById(R.id.remeber_ll);
 		remeber_ll.setOnClickListener(new OnClickListener() {
@@ -97,6 +98,7 @@ public class LoginActivity extends Activity {
 							Toast.LENGTH_SHORT).show();
 					return;
 				}
+				login_Iv.setEnabled(false);
 				SocketService.ip = ip_et.getText().toString().trim();
 				String username = username_et.getText().toString().trim();
 				String password = password_et.getText().toString().trim();
@@ -123,20 +125,21 @@ public class LoginActivity extends Activity {
 								// TODO Auto-generated method stub
 								if (keyCode == KeyEvent.KEYCODE_BACK) {
 									stopService(intent);
+									login_Iv.setEnabled(true);
 								}
 								return false;
 							}
 						});
 				progressDialog.show();
 
-				new Thread(new Runnable() {
-
-					@Override
-					public void run() {
-						// TODO Auto-generated method stub
-						startService(intent);
-					}
-				}).start();
+				// new Thread(new Runnable() {
+				//
+				// @Override
+				// public void run() {
+				// // TODO Auto-generated method stub
+				startService(intent);
+				// }
+				// }).start();
 			}
 		});
 	}
@@ -165,8 +168,8 @@ public class LoginActivity extends Activity {
 				};
 				timer.schedule(task, 0, 1000);
 			} else {
-				android.os.Process.killProcess(android.os.Process.myPid());
 				timer.cancel();
+				finish();
 			}
 		}
 		return false;

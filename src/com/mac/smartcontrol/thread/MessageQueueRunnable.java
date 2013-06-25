@@ -35,22 +35,24 @@ public class MessageQueueRunnable implements Runnable {
 							.getUsSsnId();
 				}
 				if (message.getMessage_Header().getUcMsgType() == MsgType_E.MSGTYPE_NTF
-						.getVal()) {
+						.getVal()
+						&& message.getMessage_Header().getUsMsgId() == MsgId_E.MSGID_SENS
+								.getVal()) {
 					Intent intent = new Intent("ntf");
 					intent.putExtra("data", message.getUsBody());
 
 					try {
 						service.sendBroadcast(intent);
 					} catch (Exception e) {
-						// TODO Auto-generated catch block
 						isRun = false;
+
 						service.stopSelf();
 					}
 					synchronized (MessageQueue.getList()) {
 						MessageQueue.remove(i);
 					}
 
-					return;
+					continue;
 				}
 				String action = message.getMessage_Header().getUsMsgId() + "_"
 						+ message.getMessage_Header().getUcMsgOper();

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:gravity="center"
+    android:descendantFocusability="blocksDescendants"
+    android:layout_height="wrap_content" >
+
+    
+     <ImageView
+            android:id="@+id/device_icon_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginLeft="@dimen/padding_small"
+            android:src="@drawable/tv_icon" />
+    
+           
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:gravity="center" >
+
+          <com.mac.smartcontrol.widget.MarqueeText
+                android:id="@+id/device_name_tv"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:ellipsize="marquee"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:scrollHorizontally="true"
+                 android:layout_gravity="center"
+                 android:gravity="center"
+                 android:layout_marginLeft="@dimen/add_margin_size"
+                android:singleLine="true"
+                 android:text="客厅电视" 
+                />
+        
+        <com.mac.smartcontrol.widget.MarqueeText
+            android:id="@+id/area_name"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:singleLine="true"
+            android:ellipsize="marquee"
+            android:layout_marginLeft="@dimen/padding_small"
+            android:layout_weight="1"
+            android:text="客厅" />
+
+       
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/operate_ll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        >
+
+        <ImageView
+            android:id="@+id/enter_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_medium"
+            android:src="@drawable/list_enter_iv_selector" />
+    </LinearLayout>
+
+</LinearLayout>

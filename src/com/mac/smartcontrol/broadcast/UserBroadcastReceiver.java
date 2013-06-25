@@ -146,6 +146,7 @@ public class UserBroadcastReceiver extends BroadcastReceiver {
 			if (loginActivity.progressDialog != null) {
 				loginActivity.progressDialog.dismiss();
 			}
+			loginActivity.login_Iv.setEnabled(true);
 			if (msgUserLoginAck_S.getUsError() == 0) {
 				if (loginActivity.isRemeber) {
 					loginActivity.editor.putString("ip", loginActivity.ip_et
